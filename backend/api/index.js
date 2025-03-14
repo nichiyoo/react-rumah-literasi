@@ -63,7 +63,7 @@ const donationRoutes = require('../routes/donation.routes');
 
 app.use('/api/auth', authRoutes);
 
-app.use(authenticate);
+// app.use(authenticate);
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/events', eventRoutes);

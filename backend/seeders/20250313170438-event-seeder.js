@@ -21,11 +21,7 @@ module.exports = {
 						title: 'Book Donation Event',
 						description:
 							'In support of the worldwide book donation movement, we are organizing a book donation event to raise funds for the World Book Day Foundation.',
-						date: new Intl.DateTimeFormat('id-ID', {
-							year: 'numeric',
-							month: 'numeric',
-							day: 'numeric',
-						}).format(new Date()),
+						date: new Date().toISOString().split('T')[0],
 						user_id: 1,
 						created_at: new Date(),
 						updated_at: new Date(),

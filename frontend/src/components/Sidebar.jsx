@@ -5,7 +5,7 @@ import { LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 import { cn } from '@/libs/utils';
-import SidebarCard from '@/components/SidebarCard';
+import SidebarCard from '@/components/sidebar-card';
 import { SIDEBAR_MENUS } from '@/libs/constant';
 
 import axios, { isAxiosError } from '@/libs/axios';
@@ -14,7 +14,7 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from '@/components/ui/Accordion';
+} from '@/components/ui/accordion';
 
 const Sidebar = ({ className }) => {
 	const navigate = useNavigate();

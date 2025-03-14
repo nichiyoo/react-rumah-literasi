@@ -23,7 +23,7 @@ const AuthController = {
 			req.session.userId = user.uuid;
 			return res.json(
 				new ApiResponse('User logged in successfully', {
-					...user,
+					...user.dataValues,
 					password: undefined,
 				})
 			);
