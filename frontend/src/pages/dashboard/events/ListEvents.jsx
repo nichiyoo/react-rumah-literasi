@@ -16,27 +16,27 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-const ListBooks = () => {
-	const [books, setBooks] = React.useState(null);
+const ListEvents = () => {
+	const [events, setEvents] = React.useState(null);
 
 	React.useEffect(() => {
-		const fetchBooks = async () => {
+		const fetchEvents = async () => {
 			try {
-				const { data } = await axios.get('/books');
-				const { data: users } = data;
-				setBooks(users);
+				const { data } = await axios.get('/events');
+				const { data: events } = data;
+				setEvents(events);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 
-		fetchBooks();
+		fetchEvents();
 	}, []);
 
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Book List</HeadingTitle>
+				<HeadingTitle>Events List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -49,29 +49,23 @@ const ListBooks = () => {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Title</TableHead>
-							<TableHead>Author</TableHead>
-							<TableHead>Publisher</TableHead>
-							<TableHead>Year</TableHead>
-							<TableHead>Language</TableHead>
-							<TableHead>Amount</TableHead>
+							<TableHead>Description</TableHead>
+							<TableHead>Date</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{books && books.length > 0 ? (
-							books.map((book) => (
-								<TableRow key={book.id}>
-									<TableCell>{book.title}</TableCell>
-									<TableCell>{book.author}</TableCell>
-									<TableCell>{book.publisher}</TableCell>
-									<TableCell>{book.year}</TableCell>
-									<TableCell>{book.language}</TableCell>
-									<TableCell>{book.amount}</TableCell>
+						{events && events.length > 0 ? (
+							events.map((event) => (
+								<TableRow key={event.id}>
+									<TableCell>{event.title}</TableCell>
+									<TableCell>{event.description}</TableCell>
+									<TableCell>{event.date}</TableCell>
 								</TableRow>
 							))
 						) : (
 							<TableRow>
-								<TableCell colSpan={7} className='py-10 text-center'>
+								<TableCell colSpan={4} className='py-10 text-center'>
 									<span className='text-gray-500'>
 										Tidak ada data yang ditemukan
 									</span>
@@ -85,4 +79,4 @@ const ListBooks = () => {
 	);
 };
 
-export default ListBooks;
+export default ListEvents;

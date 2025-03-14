@@ -1,66 +1,52 @@
 'use strict';
 const { Model } = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => {
-	class User extends Model {
+	class Gift extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			this.hasMany(models.Event, {
+			this.belongsTo(models.User, {
 				foreignKey: 'user_id',
-				as: 'events',
-			});
-
-			this.hasMany(models.Donation, {
-				foreignKey: 'user_id',
-				as: 'donations',
-			});
-
-			this.hasMany(models.Gift, {
-				foreignKey: 'user_id',
-				as: 'gifts',
+				as: 'user',
 			});
 		}
 	}
-	User.init(
+	Gift.init(
 		{
-			uuid: {
-				allowNull: false,
+			title: {
 				type: DataTypes.STRING,
-				defaultValue: DataTypes.UUIDV4,
+				allowNull: false,
 				validate: {
 					notEmpty: true,
 				},
 			},
-			name: {
-				allowNull: false,
+			genre: {
 				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-					len: [3, 100],
-				},
-			},
-			email: {
 				allowNull: false,
-				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-					isEmail: true,
-				},
-			},
-			password: {
-				allowNull: false,
-				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
-			role: {
-				allowNull: false,
+			amount: {
 				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			address: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			user_id: {
+				allowNull: false,
+				type: DataTypes.INTEGER,
 				validate: {
 					notEmpty: true,
 				},
@@ -68,15 +54,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			sequelize,
-			modelName: 'User',
-			tableName: 'users',
+			modelName: 'Gift',
+			tableName: 'gifts',
 			underscored: true,
-			defaultScope: {
-				attributes: {
-					exclude: ['password'],
-				},
-			},
 		}
 	);
-	return User;
+	return Gift;
 };

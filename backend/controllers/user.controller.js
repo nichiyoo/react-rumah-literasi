@@ -2,18 +2,15 @@ const argon2 = require('argon2');
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
-const { User, Event } = require('../models');
+const { User } = require('../models');
 
 const UserController = {
 	async index(req, res, next) {
 		try {
 			const users = await User.findAll({
-				include: [
-					{
-						model: Event,
-					},
-				],
+				include: ['events', 'donations'],
 			});
+
 			return res.json(new ApiResponse('Users retrieved successfully', users));
 		} catch (error) {
 			next(error);
@@ -44,6 +41,7 @@ const UserController = {
 
 			const user = await User.findOne({
 				where: { uuid },
+				include: ['events', 'donations'],
 			});
 
 			if (!user) throw new ApiError(404, 'User not found');

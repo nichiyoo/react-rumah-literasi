@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class Event extends Model {
+	class Donation extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -14,25 +14,18 @@ module.exports = (sequelize, DataTypes) => {
 			});
 		}
 	}
-	Event.init(
+	Donation.init(
 		{
-			title: {
+			account: {
 				allowNull: false,
 				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
-			description: {
+			receipt: {
 				allowNull: false,
-				type: DataTypes.TEXT,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			date: {
-				allowNull: false,
-				type: DataTypes.DATEONLY,
+				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
@@ -47,10 +40,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			sequelize,
-			modelName: 'Event',
-			tableName: 'events',
+			modelName: 'Donation',
+			tableName: 'donations',
 			underscored: true,
 		}
 	);
-	return Event;
+	return Donation;
 };

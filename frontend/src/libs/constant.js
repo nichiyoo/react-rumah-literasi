@@ -1,16 +1,19 @@
-import { User2 } from 'lucide-react';
-import { Phone } from 'lucide-react';
-import { Instagram } from 'lucide-react';
-import { Facebook } from 'lucide-react';
 import { Gift } from 'lucide-react';
-import { Cog } from 'lucide-react';
-import { Library } from 'lucide-react';
-import { Calendar } from 'lucide-react';
-import { Twitter } from 'lucide-react';
-import { Mail } from 'lucide-react';
-import { Globe } from 'lucide-react';
-import { Book } from 'lucide-react';
-import { Home } from 'lucide-react';
+import {
+	User2,
+	Phone,
+	Instagram,
+	Facebook,
+	HeartHandshake,
+	Bolt,
+	Library,
+	Calendar,
+	Twitter,
+	Mail,
+	Globe,
+	Book,
+	Home,
+} from 'lucide-react';
 
 export const SIDEBAR_MENUS = [
 	{
@@ -35,6 +38,11 @@ export const SIDEBAR_MENUS = [
 			{
 				href: '/dashboard/donations',
 				label: 'List Donations',
+				icon: HeartHandshake,
+			},
+			{
+				href: '/dashboard/gifts',
+				label: 'List Gifts',
 				icon: Gift,
 			},
 			{
@@ -56,7 +64,7 @@ export const SIDEBAR_MENUS = [
 			{
 				href: '/dashboard/settings',
 				label: 'Settings',
-				icon: Cog,
+				icon: Bolt,
 			},
 		],
 	},

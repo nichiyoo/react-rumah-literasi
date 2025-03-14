@@ -16,27 +16,27 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-const ListBooks = () => {
-	const [books, setBooks] = React.useState(null);
+const ListGifts = () => {
+	const [gifts, setGifts] = React.useState(null);
 
 	React.useEffect(() => {
-		const fetchBooks = async () => {
+		const fetchGifts = async () => {
 			try {
-				const { data } = await axios.get('/books');
-				const { data: users } = data;
-				setBooks(users);
+				const { data } = await axios.get('/gifts');
+				const { data: gifts } = data;
+				setGifts(gifts);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 
-		fetchBooks();
+		fetchGifts();
 	}, []);
 
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Book List</HeadingTitle>
+				<HeadingTitle>Gifts List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -49,29 +49,25 @@ const ListBooks = () => {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Title</TableHead>
-							<TableHead>Author</TableHead>
-							<TableHead>Publisher</TableHead>
-							<TableHead>Year</TableHead>
-							<TableHead>Language</TableHead>
+							<TableHead>Genre</TableHead>
 							<TableHead>Amount</TableHead>
+							<TableHead>Address</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{books && books.length > 0 ? (
-							books.map((book) => (
-								<TableRow key={book.id}>
-									<TableCell>{book.title}</TableCell>
-									<TableCell>{book.author}</TableCell>
-									<TableCell>{book.publisher}</TableCell>
-									<TableCell>{book.year}</TableCell>
-									<TableCell>{book.language}</TableCell>
-									<TableCell>{book.amount}</TableCell>
+						{gifts && gifts.length > 0 ? (
+							gifts.map((gift) => (
+								<TableRow key={gift.id}>
+									<TableCell>{gift.title}</TableCell>
+									<TableCell>{gift.genre}</TableCell>
+									<TableCell>{gift.amount}</TableCell>
+									<TableCell>{gift.address}</TableCell>
 								</TableRow>
 							))
 						) : (
 							<TableRow>
-								<TableCell colSpan={7} className='py-10 text-center'>
+								<TableCell colSpan={5} className='py-10 text-center'>
 									<span className='text-gray-500'>
 										Tidak ada data yang ditemukan
 									</span>
@@ -85,4 +81,4 @@ const ListBooks = () => {
 	);
 };
 
-export default ListBooks;
+export default ListGifts;

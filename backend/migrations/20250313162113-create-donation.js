@@ -2,28 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, DataTypes) {
-		await queryInterface.createTable('events', {
+		await queryInterface.createTable('donations', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			title: {
+			account: {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},
-			description: {
+			receipt: {
 				allowNull: false,
-				type: DataTypes.TEXT,
+				type: DataTypes.STRING,
 			},
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
-			},
-			date: {
-				allowNull: false,
-				type: DataTypes.DATEONLY,
 			},
 			created_at: {
 				allowNull: false,
@@ -36,6 +32,6 @@ module.exports = {
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable('events');
+		await queryInterface.dropTable('donations');
 	},
 };

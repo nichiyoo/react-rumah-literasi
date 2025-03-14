@@ -18,7 +18,7 @@ const Sidebar = ({ className }) => {
 			<div className='flex flex-col justify-between h-full p-6 pt-10'>
 				<div className='flex flex-col gap-6'>
 					{SIDEBAR_MENUS.map((menu) => (
-						<Accordion type='multiple' defaultValue={[menu.id]}>
+						<Accordion type='multiple' defaultValue={[menu.id]} key={menu.id}>
 							<AccordionItem value={menu.id}>
 								<AccordionTrigger>{menu.label}</AccordionTrigger>
 								<AccordionContent className='ml-2'>

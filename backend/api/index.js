@@ -26,9 +26,16 @@ const errorHandler = require('../middleware/errors');
 
 const userRoutes = require('../routes/user.routes');
 const bookRoutes = require('../routes/book.routes');
+const eventRoutes = require('../routes/event.routes');
+const giftRoutes = require('../routes/gift.routes');
+const donationRoutes = require('../routes/donation.routes');
 
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/gifts', giftRoutes);
+app.use('/api/donations', donationRoutes);
+
 app.use(errorHandler);
 
 app.get('*', (req, res) => {

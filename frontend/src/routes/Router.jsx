@@ -6,12 +6,16 @@ import LandingLayout from '@/layouts/LandingLayout.jsx';
 import DashboardLayout from '@/layouts/DashboardLayout.jsx';
 
 import Home from '@/pages/Home.jsx';
+import NotFound from '@/pages/NotFound.jsx';
 import SignIn from '@/pages/auth/SignIn.jsx';
 import SignUp from '@/pages/auth/SignUp.jsx';
 import Dashboard from '@/pages/dashboard/Dashboard.jsx';
+
 import ListBooks from '@/pages/dashboard/books/ListBooks';
 import ListUsers from '@/pages/dashboard/users/ListUsers';
-import NotFound from '@/pages/NotFound';
+import ListEvents from '@/pages/dashboard/events/ListEvents';
+import ListGifts from '@/pages/dashboard/gifts/ListGifts';
+import ListDonations from '@/pages/dashboard/donations/ListDonations';
 
 const Router = () => {
 	return (
@@ -30,6 +34,9 @@ const Router = () => {
 					<Route index element={<Dashboard />} />
 					<Route path='books' element={<ListBooks />} />
 					<Route path='users' element={<ListUsers />} />
+					<Route path='events' element={<ListEvents />} />
+					<Route path='gifts' element={<ListGifts />} />
+					<Route path='donations' element={<ListDonations />} />
 				</Route>
 
 				<Route path='admin' element={<AdminLayout />}></Route>
