@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link, Outlet } from 'react-router';
 
-import { Logo } from '@/components/ui/Logo';
-import Sidebar from '@/components/Sidebar';
-import Avatar from '@/components/Avatar';
+import { Logo } from '@/components/ui/logo';
+import Sidebar from '@/components/sidebar';
+import Avatar from '@/components/avatar';
 
 const DashboardLayout = () => {
 	return (

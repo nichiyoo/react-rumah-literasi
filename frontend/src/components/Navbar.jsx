@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 
 import { cn } from '@/libs/utils';
-import { Logo } from '@/components/ui/Logo';
+import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
 
 const Navbar = ({ className }) => {

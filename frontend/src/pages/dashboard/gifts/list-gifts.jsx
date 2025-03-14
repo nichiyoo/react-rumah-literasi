@@ -4,13 +4,13 @@ import useSWR from 'swr';
 import { Link } from 'react-router';
 
 import { fetcher } from '@/libs/axios';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 import {
 	Heading,
 	HeadingDescription,
 	HeadingTitle,
-} from '@/components/ui/Heading';
+} from '@/components/ui/heading';
 
 import {
 	Table,
@@ -21,8 +21,8 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-const ListUsers = () => {
-	const { data, error, isLoading } = useSWR('/users', fetcher);
+const ListGifts = () => {
+	const { data, error, isLoading } = useSWR('/gifts', fetcher);
 
 	const result = data;
 	const loading = isLoading;
@@ -31,7 +31,7 @@ const ListUsers = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>User List</HeadingTitle>
+				<HeadingTitle>Gifts List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -39,8 +39,8 @@ const ListUsers = () => {
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/users/create'>
-						<Button>Create User</Button>
+					<Link to='/dashboard/gifts/create'>
+						<Button>Create Gift</Button>
 					</Link>
 				</div>
 			</Heading>
@@ -49,16 +49,17 @@ const ListUsers = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Nama</TableHead>
-							<TableHead>Email</TableHead>
-							<TableHead>Role</TableHead>
+							<TableHead>Title</TableHead>
+							<TableHead>Genre</TableHead>
+							<TableHead>Amount</TableHead>
+							<TableHead>Address</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{loading && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={5} className='py-10 text-center'>
 									<span className='text-zinc-500'>Loading data...</span>
 								</TableCell>
 							</TableRow>
@@ -66,7 +67,7 @@ const ListUsers = () => {
 
 						{error && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={5} className='py-10 text-center'>
 									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
@@ -74,17 +75,18 @@ const ListUsers = () => {
 
 						{empty && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={5} className='py-10 text-center'>
 									<span className='text-zinc-500'>No data found</span>
 								</TableCell>
 							</TableRow>
 						)}
 
-						{result?.data.map((user) => (
-							<TableRow key={user.uuid}>
-								<TableCell>{user.name}</TableCell>
-								<TableCell>{user.email}</TableCell>
-								<TableCell>{user.role}</TableCell>
+						{result?.data.map((gift) => (
+							<TableRow key={gift.id}>
+								<TableCell>{gift.title}</TableCell>
+								<TableCell>{gift.genre}</TableCell>
+								<TableCell>{gift.amount}</TableCell>
+								<TableCell>{gift.address}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
 										<button className='bg-transparent hover:text-amber-500'>
@@ -104,4 +106,4 @@ const ListUsers = () => {
 	);
 };
 
-export default ListUsers;
+export default ListGifts;

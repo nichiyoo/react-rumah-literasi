@@ -10,8 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { isAxiosError } from '@/libs/axios';
 
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/Label';
-import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 const SignUpSchema = z.object({
 	name: z.string().min(3),

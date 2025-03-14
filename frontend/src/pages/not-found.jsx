@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/Button';
-import { Logo } from '@/components/ui/Logo';
+import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/ui/logo';
 
 const NotFound = () => {
 	return (

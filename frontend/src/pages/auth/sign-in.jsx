@@ -10,13 +10,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { isAxiosError } from '@/libs/axios';
 
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/Label';
-import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import {
 	Checkbox,
 	CheckboxGroup,
 	CheckboxLabel,
-} from '@/components/ui/Checkbox';
+} from '@/components/ui/checkbox';
 
 const SignInSchema = z.object({
 	email: z.string().email(),

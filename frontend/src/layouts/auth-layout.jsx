@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link, Outlet } from 'react-router';
 
-import { Logo } from '@/components/ui/Logo';
+import { Logo } from '@/components/ui/logo';
 
 const AuthLayout = () => {
 	return (

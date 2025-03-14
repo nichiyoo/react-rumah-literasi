@@ -2,13 +2,15 @@ import * as React from 'react';
 
 import useSWR from 'swr';
 import { Link } from 'react-router';
+
 import { fetcher } from '@/libs/axios';
+import { Button } from '@/components/ui/button';
 
 import {
 	Heading,
 	HeadingDescription,
 	HeadingTitle,
-} from '@/components/ui/Heading';
+} from '@/components/ui/heading';
 
 import {
 	Table,
@@ -19,10 +21,8 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-import { Button } from '@/components/ui/Button';
-
-const ListEvents = () => {
-	const { data, error, isLoading } = useSWR('/events', fetcher);
+const ListBooks = () => {
+	const { data, error, isLoading } = useSWR('/books', fetcher);
 
 	const result = data;
 	const loading = isLoading;
@@ -31,7 +31,7 @@ const ListEvents = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Events List</HeadingTitle>
+				<HeadingTitle>Book List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -39,8 +39,8 @@ const ListEvents = () => {
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/events/create'>
-						<Button>Create Event</Button>
+					<Link to='/dashboard/books/create'>
+						<Button>Create Book</Button>
 					</Link>
 				</div>
 			</Heading>
@@ -50,15 +50,18 @@ const ListEvents = () => {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Title</TableHead>
-							<TableHead>Description</TableHead>
-							<TableHead>Date</TableHead>
+							<TableHead>Author</TableHead>
+							<TableHead>Publisher</TableHead>
+							<TableHead>Year</TableHead>
+							<TableHead>Language</TableHead>
+							<TableHead>Amount</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{loading && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={7} className='py-10 text-center'>
 									<span className='text-zinc-500'>Loading data...</span>
 								</TableCell>
 							</TableRow>
@@ -66,7 +69,7 @@ const ListEvents = () => {
 
 						{error && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={7} className='py-10 text-center'>
 									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
@@ -74,17 +77,20 @@ const ListEvents = () => {
 
 						{empty && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={7} className='py-10 text-center'>
 									<span className='text-zinc-500'>No data found</span>
 								</TableCell>
 							</TableRow>
 						)}
 
-						{result?.data.map((event) => (
-							<TableRow key={event.id}>
-								<TableCell>{event.title}</TableCell>
-								<TableCell>{event.description}</TableCell>
-								<TableCell>{event.date}</TableCell>
+						{result?.data.map((book) => (
+							<TableRow key={book.id}>
+								<TableCell>{book.title}</TableCell>
+								<TableCell>{book.author}</TableCell>
+								<TableCell>{book.publisher}</TableCell>
+								<TableCell>{book.year}</TableCell>
+								<TableCell>{book.language}</TableCell>
+								<TableCell>{book.amount}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
 										<button className='bg-transparent hover:text-amber-500'>
@@ -104,4 +110,4 @@ const ListEvents = () => {
 	);
 };
 
-export default ListEvents;
+export default ListBooks;

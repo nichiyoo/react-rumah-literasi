@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import { Logo } from '@/components/ui/Logo';
+import { Logo } from '@/components/ui/logo';
 import { WIDGET_CONTACT, WIDGET_NAV, WIDGET_SOCIAL } from '@/libs/constant';
 
 const Footer = () => {

@@ -4,7 +4,7 @@ import {
 	Heading,
 	HeadingDescription,
 	HeadingTitle,
-} from '@/components/ui/Heading';
+} from '@/components/ui/heading';
 
 const Dashboard = () => {
 	return (

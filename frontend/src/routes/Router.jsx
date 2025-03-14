@@ -1,21 +1,21 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-import AuthLayout from '@/layouts/AuthLayout.jsx';
-import AdminLayout from '@/layouts/AdminLayout.jsx';
-import LandingLayout from '@/layouts/LandingLayout.jsx';
-import DashboardLayout from '@/layouts/DashboardLayout.jsx';
+import AuthLayout from '@/layouts/auth-layout.jsx';
+import AdminLayout from '@/layouts/admin-layout.jsx';
+import LandingLayout from '@/layouts/landing-layout.jsx';
+import DashboardLayout from '@/layouts/dashboard-layout.jsx';
 
-import Home from '@/pages/Home.jsx';
-import NotFound from '@/pages/NotFound.jsx';
-import SignIn from '@/pages/auth/SignIn.jsx';
-import SignUp from '@/pages/auth/SignUp.jsx';
-import Dashboard from '@/pages/dashboard/Dashboard.jsx';
+import Home from '@/pages/home.jsx';
+import NotFound from '@/pages/not-found.jsx';
+import SignIn from '@/pages/auth/sign-in.jsx';
+import SignUp from '@/pages/auth/sign-up.jsx';
+import Dashboard from '@/pages/dashboard/dashboard.jsx';
 
-import ListBooks from '@/pages/dashboard/books/ListBooks';
-import ListUsers from '@/pages/dashboard/users/ListUsers';
-import ListEvents from '@/pages/dashboard/events/ListEvents';
-import ListGifts from '@/pages/dashboard/gifts/ListGifts';
-import ListDonations from '@/pages/dashboard/donations/ListDonations';
+import ListBooks from '@/pages/dashboard/books/list-books';
+import ListUsers from '@/pages/dashboard/users/list-users';
+import ListEvents from '@/pages/dashboard/events/list-events';
+import ListGifts from '@/pages/dashboard/gifts/list-gifts';
+import ListDonations from '@/pages/dashboard/donations/list-donations';
 
 const Router = () => {
 	return (

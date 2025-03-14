@@ -2,15 +2,13 @@ import * as React from 'react';
 
 import useSWR from 'swr';
 import { Link } from 'react-router';
-
 import { fetcher } from '@/libs/axios';
-import { Button } from '@/components/ui/Button';
 
 import {
 	Heading,
 	HeadingDescription,
 	HeadingTitle,
-} from '@/components/ui/Heading';
+} from '@/components/ui/heading';
 
 import {
 	Table,
@@ -21,8 +19,10 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-const ListDonations = () => {
-	const { data, error, isLoading } = useSWR('/donations', fetcher);
+import { Button } from '@/components/ui/button';
+
+const ListEvents = () => {
+	const { data, error, isLoading } = useSWR('/events', fetcher);
 
 	const result = data;
 	const loading = isLoading;
@@ -31,7 +31,7 @@ const ListDonations = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Donations List</HeadingTitle>
+				<HeadingTitle>Events List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -39,8 +39,8 @@ const ListDonations = () => {
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/donations/create'>
-						<Button>Create Donation</Button>
+					<Link to='/dashboard/events/create'>
+						<Button>Create Event</Button>
 					</Link>
 				</div>
 			</Heading>
@@ -49,15 +49,16 @@ const ListDonations = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Account</TableHead>
-							<TableHead>Receipt</TableHead>
+							<TableHead>Title</TableHead>
+							<TableHead>Description</TableHead>
+							<TableHead>Date</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{loading && (
 							<TableRow>
-								<TableCell colSpan={3} className='py-10 text-center'>
+								<TableCell colSpan={4} className='py-10 text-center'>
 									<span className='text-zinc-500'>Loading data...</span>
 								</TableCell>
 							</TableRow>
@@ -65,7 +66,7 @@ const ListDonations = () => {
 
 						{error && (
 							<TableRow>
-								<TableCell colSpan={3} className='py-10 text-center'>
+								<TableCell colSpan={4} className='py-10 text-center'>
 									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
@@ -73,16 +74,17 @@ const ListDonations = () => {
 
 						{empty && (
 							<TableRow>
-								<TableCell colSpan={3} className='py-10 text-center'>
+								<TableCell colSpan={4} className='py-10 text-center'>
 									<span className='text-zinc-500'>No data found</span>
 								</TableCell>
 							</TableRow>
 						)}
 
-						{result?.data.map((donation) => (
-							<TableRow key={donation.id}>
-								<TableCell>{donation.account}</TableCell>
-								<TableCell>{donation.receipt}</TableCell>
+						{result?.data.map((event) => (
+							<TableRow key={event.id}>
+								<TableCell>{event.title}</TableCell>
+								<TableCell>{event.description}</TableCell>
+								<TableCell>{event.date}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
 										<button className='bg-transparent hover:text-amber-500'>
@@ -102,4 +104,4 @@ const ListDonations = () => {
 	);
 };
 
-export default ListDonations;
+export default ListEvents;
