@@ -28,7 +28,9 @@ module.exports = {
 			},
 			role: {
 				allowNull: false,
-				type: DataTypes.STRING,
+				type: DataTypes.ENUM,
+				values: ['student', 'admin', 'librarian'],
+				defaultValue: 'student',
 			},
 			created_at: {
 				allowNull: false,

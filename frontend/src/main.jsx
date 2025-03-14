@@ -1,12 +1,18 @@
 import '@/index.css';
 import '@fontsource-variable/bricolage-grotesque';
 
-import Router from '@/routes/Router.jsx';
+import * as React from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
+import Router from '@/routes/Router.jsx';
+import { Toaster } from '@/components/ui/Toaster';
+
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
-		<Router />
+		<React.Fragment>
+			<Router />
+			<Toaster />
+		</React.Fragment>
 	</StrictMode>
 );

@@ -13,7 +13,7 @@ const Home = () => {
 					<h1 className='text-6xl font-bold'>
 						Shout My Name From The Rooftops
 					</h1>
-					<p className='text-gray-600'>
+					<p className='text-zinc-600'>
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia quidem
 						ullam cupiditate laboriosam animi quae, aliquid quo, repellendus
 						iste voluptas aspernatur hic provident ipsam architecto rem eum aut
@@ -44,7 +44,7 @@ const Home = () => {
 				/>
 				<div className='flex flex-col gap-6'>
 					<h2 className='text-4xl font-bold'>About Us</h2>
-					<p className='text-gray-600'>
+					<p className='text-zinc-600'>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
 						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut

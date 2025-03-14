@@ -16,7 +16,7 @@ HeadingTitle.displayName = 'HeadingTitle';
 const HeadingDescription = React.forwardRef(
 	({ className, children, ...props }, ref) => {
 		return (
-			<p className={cn('text-gray-600', className)} ref={ref} {...props}>
+			<p className={cn('text-zinc-600', className)} ref={ref} {...props}>
 				{children}
 			</p>
 		);

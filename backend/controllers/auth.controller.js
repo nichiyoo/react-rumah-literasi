@@ -5,31 +5,39 @@ const ApiResponse = require('../libs/response');
 const { User } = require('../models');
 
 const AuthController = {
-	async login(req, res, next) {
+	async signin(req, res, next) {
 		try {
 			const { email, password } = req.body;
 			if (!email || !password) {
 				throw new ApiError(400, 'Email or password is required');
 			}
 
-			const user = await User.findOne({
+			const user = await User.scope('authentication').findOne({
 				where: { email },
 			});
 			if (!user) throw new ApiError(404, 'User not found');
 
-			const valid = await argon2.verify(password, user.password);
+			const valid = await argon2.verify(user.password, password);
 			if (!valid) throw new ApiError(401, 'Invalid email or password');
 
-			return res.json(new ApiResponse('User logged in successfully', user));
+			req.session.userId = user.uuid;
+			return res.json(
+				new ApiResponse('User logged in successfully', {
+					...user,
+					password: undefined,
+				})
+			);
 		} catch (error) {
 			next(error);
 		}
 	},
 
-	async register(req, res, next) {
+	async signup(req, res, next) {
 		try {
-			const password = req.body.password;
-			if (!password) throw new ApiError(400, 'Password is required');
+			const { name, email, password } = req.body;
+			if (!name || !email || !password) {
+				throw new ApiError(400, 'Name, email or password is required');
+			}
 
 			const found = await User.findOne({
 				where: {
@@ -40,25 +48,21 @@ const AuthController = {
 
 			const hashed = await argon2.hash(password);
 			const user = await User.create({
-				email,
+				...req.body,
 				password: hashed,
 			});
 
+			req.session.user = user;
 			return res.json(new ApiResponse('User registered successfully', user));
 		} catch (error) {
 			next(error);
 		}
 	},
 
-	async logout(req, res, next) {
+	async signout(req, res, next) {
 		try {
-			const user = await User.findOne({
-				where: { uuid: req.user.uuid },
-			});
-
-			if (!user) throw new ApiError(404, 'User not found');
-
-			return res.json(new ApiResponse('User logged out successfully', user));
+			req.session.destroy();
+			return res.json(new ApiResponse('User logged out successfully'));
 		} catch (error) {
 			next(error);
 		}
@@ -66,10 +70,11 @@ const AuthController = {
 
 	async profile(req, res, next) {
 		try {
+			console.log(req.user);
+
 			const user = await User.findOne({
 				where: { uuid: req.user.uuid },
 			});
-
 			if (!user) throw new ApiError(404, 'User not found');
 
 			return res.json(new ApiResponse('Profile retrieved successfully', user));

@@ -14,7 +14,7 @@ module.exports = {
 		 *   isBetaMember: false
 		 * }], {});
 		 */
-		const hashed = await argon2.hash('11111111');
+		const hashed = await argon2.hash('password');
 
 		try {
 			await queryInterface.bulkInsert(

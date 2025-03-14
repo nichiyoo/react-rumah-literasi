@@ -61,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
 			role: {
 				allowNull: false,
 				type: DataTypes.STRING,
+				defaultValue: 'student',
 				validate: {
 					notEmpty: true,
 				},
@@ -74,6 +75,11 @@ module.exports = (sequelize, DataTypes) => {
 			defaultScope: {
 				attributes: {
 					exclude: ['password'],
+				},
+			},
+			scopes: {
+				authentication: {
+					attributes: {},
 				},
 			},
 		}

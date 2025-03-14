@@ -7,7 +7,7 @@ const Checkbox = React.forwardRef(({ className, ...props }, ref) => {
 		<input
 			type='checkbox'
 			className={cn(
-				'w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500',
+				'w-4 h-4 border-zinc-300 rounded text-primary-600 focus:ring-primary-500',
 				className
 			)}
 			ref={ref}
@@ -23,7 +23,7 @@ const CheckboxLabel = React.forwardRef(
 		return (
 			<label
 				ref={ref}
-				className={cn('block text-sm font-medium text-gray-900', className)}
+				className={cn('block text-sm font-medium text-zinc-900', className)}
 				{...props}>
 				{children}
 			</label>

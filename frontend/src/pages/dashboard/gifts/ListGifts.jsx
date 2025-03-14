@@ -1,5 +1,10 @@
 import * as React from 'react';
-import axios from '@/libs/axios';
+
+import useSWR from 'swr';
+import { Link } from 'react-router';
+
+import { fetcher } from '@/libs/axios';
+import { Button } from '@/components/ui/Button';
 
 import {
 	Heading,
@@ -17,21 +22,11 @@ import {
 } from '@/components/ui/table';
 
 const ListGifts = () => {
-	const [gifts, setGifts] = React.useState(null);
+	const { data, error, isLoading } = useSWR('/gifts', fetcher);
 
-	React.useEffect(() => {
-		const fetchGifts = async () => {
-			try {
-				const { data } = await axios.get('/gifts');
-				const { data: gifts } = data;
-				setGifts(gifts);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-
-		fetchGifts();
-	}, []);
+	const result = data;
+	const loading = isLoading;
+	const empty = result && result.data.length == 0;
 
 	return (
 		<div className='grid gap-8'>
@@ -42,9 +37,15 @@ const ListGifts = () => {
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
 					reprehenderit ea tempore.
 				</HeadingDescription>
+
+				<div className='flex items-center justify-end'>
+					<Link to='/dashboard/gifts/create'>
+						<Button>Create Gift</Button>
+					</Link>
+				</div>
 			</Heading>
 
-			<div className='w-full overflow-x-auto border border-gray-200 rounded-lg'>
+			<div className='w-full overflow-x-auto border rounded-lg border-zinc-200'>
 				<Table>
 					<TableHeader>
 						<TableRow>
@@ -56,24 +57,48 @@ const ListGifts = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{gifts && gifts.length > 0 ? (
-							gifts.map((gift) => (
-								<TableRow key={gift.id}>
-									<TableCell>{gift.title}</TableCell>
-									<TableCell>{gift.genre}</TableCell>
-									<TableCell>{gift.amount}</TableCell>
-									<TableCell>{gift.address}</TableCell>
-								</TableRow>
-							))
-						) : (
+						{loading && (
 							<TableRow>
 								<TableCell colSpan={5} className='py-10 text-center'>
-									<span className='text-gray-500'>
-										Tidak ada data yang ditemukan
-									</span>
+									<span className='text-zinc-500'>Loading data...</span>
 								</TableCell>
 							</TableRow>
 						)}
+
+						{error && (
+							<TableRow>
+								<TableCell colSpan={5} className='py-10 text-center'>
+									<span className='text-zinc-500'>Failed to load data</span>
+								</TableCell>
+							</TableRow>
+						)}
+
+						{empty && (
+							<TableRow>
+								<TableCell colSpan={5} className='py-10 text-center'>
+									<span className='text-zinc-500'>No data found</span>
+								</TableCell>
+							</TableRow>
+						)}
+
+						{result?.data.map((gift) => (
+							<TableRow key={gift.id}>
+								<TableCell>{gift.title}</TableCell>
+								<TableCell>{gift.genre}</TableCell>
+								<TableCell>{gift.amount}</TableCell>
+								<TableCell>{gift.address}</TableCell>
+								<TableCell>
+									<div className='flex items-center gap-2'>
+										<button className='bg-transparent hover:text-amber-500'>
+											Edit
+										</button>
+										<button className='bg-transparent hover:text-red-500'>
+											Delete
+										</button>
+									</div>
+								</TableCell>
+							</TableRow>
+						))}
 					</TableBody>
 				</Table>
 			</div>

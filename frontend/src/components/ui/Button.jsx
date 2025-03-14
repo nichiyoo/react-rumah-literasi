@@ -12,7 +12,7 @@ const Button = React.forwardRef(
 					variant === 'primary' &&
 						'bg-primary-500 text-white hover:bg-primary-600 focus:bg-primary-600 border-transparent',
 					variant === 'outline' &&
-						'bg-transparent text-primary-500 hover:bg-primary-500 hover:text-white focus:bg-primary-500 focus:text-white border-gray-200',
+						'bg-transparent text-primary-500 hover:bg-primary-500 hover:text-white focus:bg-primary-500 focus:text-white border-zinc-200',
 					className
 				)}
 				{...props}>

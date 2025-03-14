@@ -1,11 +1,13 @@
 {
 	"development": {
 		"dialect": "sqlite",
-		"storage": "./database/development.sqlite"
+		"storage": "./database/development.sqlite",
+		"migrationStorageTableName": "sequelize_meta"
 	},
 	"test": {
 		"dialect": "sqlite",
-		"storage": "./database/test.sqlite"
+		"storage": "./database/test.sqlite",
+		"migrationStorageTableName": "sequelize_meta"
 	},
 	"production": {
 		"username": "root",
