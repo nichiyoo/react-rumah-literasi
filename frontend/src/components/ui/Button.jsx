@@ -8,15 +8,17 @@ const Button = React.forwardRef(
 			<button
 				ref={ref}
 				className={cn(
-					'inline-flex items-center justify-center rounded-full border px-7 py-2.5 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500',
+					'flex items-center justify-center rounded-xl border px-5 py-2.5 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ',
 					variant === 'primary' &&
-						'bg-primary-500 text-white hover:bg-primary-600 focus:bg-primary-600 border-transparent',
+						'bg-primary-500 text-white hover:bg-primary-600 focus:bg-primary-600 border-transparent focus:ring-primary-500',
 					variant === 'outline' &&
-						'bg-transparent text-primary-500 hover:bg-primary-500 hover:text-white focus:bg-primary-500 focus:text-white border-zinc-200',
+						'bg-transparent text-primary-500 hover:bg-primary-500 hover:text-white focus:bg-primary-500 focus:text-white border-zinc-200 focus:ring-primary-500',
+					variant === 'desctructive' &&
+						'bg-red-500 text-white hover:bg-red-600 focus:bg-red-600 border-transparent focus:ring-red-500',
 					className
 				)}
 				{...props}>
-				<span>{children}</span>
+				{children}
 			</button>
 		);
 	}

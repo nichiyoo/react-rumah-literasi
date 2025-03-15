@@ -32,3 +32,4 @@ database/*.sqlite
 
 # Temporary files
 tmp
+uploads

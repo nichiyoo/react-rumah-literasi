@@ -7,12 +7,13 @@ import { createRoot } from 'react-dom/client';
 
 import Router from '@/routes/router.jsx';
 import { Toaster } from '@/components/ui/toaster';
+import { ConfirmProvider } from '@/contexts/confirm';
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
-		<React.Fragment>
+		<ConfirmProvider>
 			<Router />
 			<Toaster />
-		</React.Fragment>
+		</ConfirmProvider>
 	</StrictMode>
 );

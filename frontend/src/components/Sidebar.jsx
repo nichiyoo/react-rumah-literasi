@@ -22,7 +22,7 @@ const Sidebar = ({ className }) => {
 	const handleLogout = async () => {
 		try {
 			await axios.post('/auth/signout');
-			toast.success('Logout successful', {
+			toast('Logout successful', {
 				description: 'You are now logged out',
 			});
 

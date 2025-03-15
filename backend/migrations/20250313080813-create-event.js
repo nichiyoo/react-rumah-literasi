@@ -17,10 +17,6 @@ module.exports = {
 				allowNull: false,
 				type: DataTypes.TEXT,
 			},
-			user_id: {
-				allowNull: false,
-				type: DataTypes.INTEGER,
-			},
 			date: {
 				allowNull: false,
 				type: DataTypes.DATEONLY,

@@ -8,7 +8,7 @@ const UserController = {
 	async index(req, res, next) {
 		try {
 			const users = await User.findAll({
-				include: ['events', 'donations'],
+				include: ['donations', 'gifts'],
 			});
 
 			return res.json(new ApiResponse('Users retrieved successfully', users));
@@ -41,7 +41,7 @@ const UserController = {
 
 			const user = await User.findOne({
 				where: { uuid },
-				include: ['events', 'donations'],
+				include: ['donations', 'gifts'],
 			});
 
 			if (!user) throw new ApiError(404, 'User not found');
@@ -64,7 +64,7 @@ const UserController = {
 
 			user.name = req.body.name;
 			user.email = req.body.email;
-			user.password = req.body.password;
+			user.password = await argon2.hash(req.body.password);
 			user.role = req.body.role;
 
 			await user.save();

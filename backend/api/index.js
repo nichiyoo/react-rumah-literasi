@@ -1,10 +1,10 @@
+const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 const sequelizeStore = require('connect-session-sequelize')(session.Store);
-const upload = require('express-fileupload');
 const { sequelize } = require('../models');
 
 dotenv.config();
@@ -39,17 +39,10 @@ app.use(
 	})
 );
 
-app.use(
-	upload({
-		limits: { fileSize: 1024 * 1024 * 10 },
-		useTempFiles: true,
-		tempFileDir: '/tmp',
-	})
-);
-
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
 
 const errorHandler = require('../middleware/errors');
 const { authenticate } = require('../middleware/authenticate');
@@ -63,7 +56,7 @@ const donationRoutes = require('../routes/donation.routes');
 
 app.use('/api/auth', authRoutes);
 
-// app.use(authenticate);
+app.use(authenticate);
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/events', eventRoutes);

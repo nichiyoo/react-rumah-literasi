@@ -24,7 +24,7 @@ module.exports = {
 						language: 'English',
 						amount: 10,
 						cover:
-							'https://upload.wikimedia.org/wikipedia/en/thumb/b/b1/F._Scott_Fitzgerald_-_The_Great_Gatsby.jpg/220px-F._Scott_Fitzgerald_-_The_Great_Gatsby.jpg',
+							'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/The_Great_Gatsby_cover_1925_wikisource.jpg/640px-The_Great_Gatsby_cover_1925_wikisource.jpg',
 						created_at: new Date(),
 						updated_at: new Date(),
 					},
@@ -36,7 +36,7 @@ module.exports = {
 						language: 'English',
 						amount: 10,
 						cover:
-							'https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/The_Catcher_in_the_Rye.jpg/220px-The_Catcher_in_the_Rye.jpg',
+							'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Catcher-in-the-rye-red-cover.jpg/640px-Catcher-in-the-rye-red-cover.jpg',
 						created_at: new Date(),
 						updated_at: new Date(),
 					},

@@ -6,9 +6,7 @@ const { Event } = require('../models');
 const EventController = {
 	async index(req, res, next) {
 		try {
-			const events = await Event.findAll({
-				include: 'user',
-			});
+			const events = await Event.findAll();
 			return res.json(new ApiResponse('Events retrieved successfully', events));
 		} catch (error) {
 			next(error);
@@ -31,7 +29,6 @@ const EventController = {
 
 			const event = await Event.findOne({
 				where: { id },
-				include: 'user',
 			});
 
 			if (!event) throw new ApiError(404, 'Event not found');
@@ -52,9 +49,9 @@ const EventController = {
 
 			if (!event) throw new ApiError(404, 'Event not found');
 
-			event.title = req.body.title || event.title;
-			event.description = req.body.description || event.description;
-			event.date = req.body.date || event.date;
+			event.title = req.body.title;
+			event.description = req.body.description;
+			event.date = req.body.date;
 
 			await event.save();
 			return res.json(new ApiResponse('Event updated successfully', event));

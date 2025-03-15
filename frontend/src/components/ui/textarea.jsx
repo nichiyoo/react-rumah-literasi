@@ -2,18 +2,19 @@ import * as React from 'react';
 
 import { cn } from '@/libs/utils';
 
-const Input = React.forwardRef(({ className, ...props }, ref) => {
+const Textarea = React.forwardRef(({ className, ...props }, ref) => {
 	return (
-		<input
+		<textarea
 			ref={ref}
+			rows={4}
 			className={cn(
 				'block p-3 w-full border border-zinc-300 rounded-xl shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100',
 				className
 			)}
-			{...props}></input>
+			{...props}></textarea>
 	);
 });
 
-Input.displayName = 'Input';
+Textarea.displayName = 'Textarea';
 
-export { Input };
+export { Textarea };

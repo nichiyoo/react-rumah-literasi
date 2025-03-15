@@ -38,7 +38,7 @@ const SignUp = () => {
 	const onSubmit = handleSubmit(async (data) => {
 		try {
 			await axios.post('/auth/signup', data);
-			toast.success('Register successful', {
+			toast('Register successful', {
 				description: 'You are now registered',
 			});
 

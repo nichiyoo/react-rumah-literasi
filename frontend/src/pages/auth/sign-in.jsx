@@ -41,7 +41,7 @@ const SignIn = () => {
 	const onSubmit = handleSubmit(async (data) => {
 		try {
 			await axios.post('/auth/signin', data);
-			toast.success('Login successful', {
+			toast('Login successful', {
 				description: 'You are now logged in',
 			});
 

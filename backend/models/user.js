@@ -9,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			this.hasMany(models.Event, {
-				foreignKey: 'user_id',
-				as: 'events',
-			});
-
 			this.hasMany(models.Donation, {
 				foreignKey: 'user_id',
 				as: 'donations',
@@ -60,7 +55,8 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			role: {
 				allowNull: false,
-				type: DataTypes.STRING,
+				type: DataTypes.ENUM,
+				values: ['student', 'admin', 'librarian'],
 				defaultValue: 'student',
 				validate: {
 					notEmpty: true,

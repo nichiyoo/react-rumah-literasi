@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 import useSWR from 'swr';
+import { toast } from 'sonner';
 import { Link } from 'react-router';
 
-import { fetcher } from '@/libs/axios';
 import { Button } from '@/components/ui/button';
+import { useConfirm } from '@/hooks/use-confirm';
+import axios, { fetcher, isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -22,11 +24,42 @@ import {
 } from '@/components/ui/table';
 
 const ListUsers = () => {
-	const { data, error, isLoading } = useSWR('/users', fetcher);
+	const { confirm } = useConfirm();
 
-	const result = data;
-	const loading = isLoading;
+	const {
+		error,
+		mutate,
+		data: result,
+		isLoading: loading,
+	} = useSWR('/users', fetcher);
 	const empty = result && result.data.length == 0;
+
+	const handleDelete = async (uuid) => {
+		confirm({
+			title: 'Confirm Order',
+			variant: 'desctructive',
+			description: 'Are you sure you want to delete this record?',
+		})
+			.then(async () => {
+				try {
+					await axios.delete('/users/' + uuid);
+					mutate();
+					toast('User deleted', {
+						description: 'Successfully deleted user',
+					});
+				} catch (error) {
+					toast.error('Failed to delete user', {
+						description: isAxiosError(error)
+							? error.response.data.message
+							: error.message,
+					});
+					console.log(error);
+				}
+			})
+			.catch(() => {
+				// pass
+			});
+	};
 
 	return (
 		<div className='grid gap-8'>
@@ -82,15 +115,31 @@ const ListUsers = () => {
 
 						{result?.data.map((user) => (
 							<TableRow key={user.uuid}>
-								<TableCell>{user.name}</TableCell>
+								<TableCell>
+									<div className='flex items-center gap-4'>
+										<img
+											alt={user.name}
+											src={
+												'https://ui-avatars.com/api/?bold=true&font-size=0.33&format=svg&background=f4f4f5&name=' +
+												user.name
+											}
+											className='flex-none border rounded-full size-10 border-zinc-200'
+										/>
+										<span className='font-medium'>{user.name}</span>
+									</div>
+								</TableCell>
 								<TableCell>{user.email}</TableCell>
 								<TableCell>{user.role}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<button className='bg-transparent hover:text-amber-500'>
-											Edit
-										</button>
-										<button className='bg-transparent hover:text-red-500'>
+										<Link to={'/dashboard/users/' + user.uuid}>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
+											</button>
+										</Link>
+										<button
+											onClick={() => handleDelete(user.uuid)}
+											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>
 									</div>

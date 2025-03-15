@@ -8,10 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			this.belongsTo(models.User, {
-				foreignKey: 'user_id',
-				as: 'user',
-			});
+			//
 		}
 	}
 	Event.init(
@@ -33,13 +30,6 @@ module.exports = (sequelize, DataTypes) => {
 			date: {
 				allowNull: false,
 				type: DataTypes.DATEONLY,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			user_id: {
-				allowNull: false,
-				type: DataTypes.INTEGER,
 				validate: {
 					notEmpty: true,
 				},

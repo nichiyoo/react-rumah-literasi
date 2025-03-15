@@ -1,5 +1,7 @@
 'use strict';
+const path = require('path');
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
 	class Book extends Model {
 		/**
@@ -60,6 +62,9 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: false,
 				validate: {
 					notEmpty: true,
+				},
+				get() {
+					return process.env.APP_URL + '/' + this.getDataValue('cover');
 				},
 			},
 		},

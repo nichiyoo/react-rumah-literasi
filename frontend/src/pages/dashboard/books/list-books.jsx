@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 import useSWR from 'swr';
+import { toast } from 'sonner';
 import { Link } from 'react-router';
 
-import { fetcher } from '@/libs/axios';
 import { Button } from '@/components/ui/button';
+import { useConfirm } from '@/hooks/use-confirm';
+import axios, { fetcher, isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -22,11 +24,42 @@ import {
 } from '@/components/ui/table';
 
 const ListBooks = () => {
-	const { data, error, isLoading } = useSWR('/books', fetcher);
+	const { confirm } = useConfirm();
 
-	const result = data;
-	const loading = isLoading;
+	const {
+		error,
+		mutate,
+		data: result,
+		isLoading: loading,
+	} = useSWR('/books', fetcher);
 	const empty = result && result.data.length == 0;
+
+	const handleDelete = async (id) => {
+		confirm({
+			title: 'Confirm Order',
+			variant: 'desctructive',
+			description: 'Are you sure you want to delete this record?',
+		})
+			.then(async () => {
+				try {
+					await axios.delete('/books/' + id);
+					mutate();
+					toast('Book deleted', {
+						description: 'Successfully deleted book',
+					});
+				} catch (error) {
+					toast.error('Failed to delete book', {
+						description: isAxiosError(error)
+							? error.response.data.message
+							: error.message,
+					});
+					console.log(error);
+				}
+			})
+			.catch(() => {
+				// pass
+			});
+	};
 
 	return (
 		<div className='grid gap-8'>
@@ -85,7 +118,16 @@ const ListBooks = () => {
 
 						{result?.data.map((book) => (
 							<TableRow key={book.id}>
-								<TableCell>{book.title}</TableCell>
+								<TableCell>
+									<div className='flex items-center gap-4'>
+										<img
+											src={book.cover}
+											alt={book.title}
+											className='flex-none rounded-full size-10'
+										/>
+										<span className='font-medium'>{book.title}</span>
+									</div>
+								</TableCell>
 								<TableCell>{book.author}</TableCell>
 								<TableCell>{book.publisher}</TableCell>
 								<TableCell>{book.year}</TableCell>
@@ -93,10 +135,14 @@ const ListBooks = () => {
 								<TableCell>{book.amount}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<button className='bg-transparent hover:text-amber-500'>
-											Edit
-										</button>
-										<button className='bg-transparent hover:text-red-500'>
+										<Link to={'/dashboard/books/' + book.id}>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
+											</button>
+										</Link>
+										<button
+											onClick={() => handleDelete(book.id)}
+											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>
 									</div>

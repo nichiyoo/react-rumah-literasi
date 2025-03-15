@@ -16,6 +16,12 @@ import ListUsers from '@/pages/dashboard/users/list-users';
 import ListEvents from '@/pages/dashboard/events/list-events';
 import ListGifts from '@/pages/dashboard/gifts/list-gifts';
 import ListDonations from '@/pages/dashboard/donations/list-donations';
+import CreateBook from '@/pages/dashboard/books/create-book';
+import EditBook from '@/pages/dashboard/books/edit-book';
+import CreateEvent from '@/pages/dashboard/events/create-event';
+import EditEvent from '@/pages/dashboard/events/edit-event';
+import CreateUser from '@/pages/dashboard/users/create-user';
+import EditUser from '@/pages/dashboard/users/edit-user';
 
 const Router = () => {
 	return (
@@ -32,9 +38,25 @@ const Router = () => {
 
 				<Route path='dashboard' element={<DashboardLayout />}>
 					<Route index element={<Dashboard />} />
-					<Route path='books' element={<ListBooks />} />
-					<Route path='users' element={<ListUsers />} />
-					<Route path='events' element={<ListEvents />} />
+
+					<Route path='books'>
+						<Route index element={<ListBooks />} />
+						<Route path='create' element={<CreateBook />} />
+						<Route path=':id' element={<EditBook />} />
+					</Route>
+
+					<Route path='events'>
+						<Route index element={<ListEvents />} />
+						<Route path='create' element={<CreateEvent />} />
+						<Route path=':id' element={<EditEvent />} />
+					</Route>
+
+					<Route path='users'>
+						<Route index element={<ListUsers />} />
+						<Route path='create' element={<CreateUser />} />
+						<Route path=':id' element={<EditUser />} />
+					</Route>
+
 					<Route path='gifts' element={<ListGifts />} />
 					<Route path='donations' element={<ListDonations />} />
 				</Route>

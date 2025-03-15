@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 import useSWR from 'swr';
+import { toast } from 'sonner';
 import { Link } from 'react-router';
 
-import { fetcher } from '@/libs/axios';
 import { Button } from '@/components/ui/button';
+import { useConfirm } from '@/hooks/use-confirm';
+import axios, { fetcher, isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -22,11 +24,42 @@ import {
 } from '@/components/ui/table';
 
 const ListDonations = () => {
-	const { data, error, isLoading } = useSWR('/donations', fetcher);
+	const { confirm } = useConfirm();
 
-	const result = data;
-	const loading = isLoading;
+	const {
+		error,
+		mutate,
+		data: result,
+		isLoading: loading,
+	} = useSWR('/donations', fetcher);
 	const empty = result && result.data.length == 0;
+
+	const handleDelete = async (id) => {
+		confirm({
+			title: 'Confirm Order',
+			variant: 'desctructive',
+			description: 'Are you sure you want to delete this record?',
+		})
+			.then(async () => {
+				try {
+					await axios.delete('/donations/' + id);
+					mutate();
+					toast('Donation deleted', {
+						description: 'Successfully deleted donation',
+					});
+				} catch (error) {
+					toast.error('Failed to delete donation', {
+						description: isAxiosError(error)
+							? error.response.data.message
+							: error.message,
+					});
+					console.log(error);
+				}
+			})
+			.catch(() => {
+				// pass
+			});
+	};
 
 	return (
 		<div className='grid gap-8'>
@@ -88,7 +121,9 @@ const ListDonations = () => {
 										<button className='bg-transparent hover:text-amber-500'>
 											Edit
 										</button>
-										<button className='bg-transparent hover:text-red-500'>
+										<button
+											onClick={() => handleDelete(donation.id)}
+											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>
 									</div>

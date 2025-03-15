@@ -15,7 +15,11 @@ const BookController = {
 
 	async store(req, res, next) {
 		try {
-			const book = await Book.create(req.body);
+			const book = await Book.create({
+				...req.body,
+				cover: req.file.path,
+			});
+
 			return res.json(new ApiResponse('Book created successfully', book));
 		} catch (error) {
 			next(error);
@@ -49,13 +53,13 @@ const BookController = {
 
 			if (!book) throw new ApiError(404, 'Book not found');
 
-			book.title = req.body.title || book.title;
-			book.author = req.body.author || book.author;
-			book.publisher = req.body.publisher || book.publisher;
-			book.year = req.body.year || book.year;
-			book.language = req.body.language || book.language;
-			book.amount = req.body.amount || book.amount;
-			book.cover = req.body.cover || book.cover;
+			book.title = req.body.title;
+			book.author = req.body.author;
+			book.publisher = req.body.publisher;
+			book.year = req.body.year;
+			book.language = req.body.language;
+			book.amount = req.body.amount;
+			if (req.file) book.cover = req.file.path;
 
 			await book.save();
 			return res.json(new ApiResponse('Book updated successfully', book));

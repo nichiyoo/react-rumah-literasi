@@ -1,8 +1,12 @@
 import * as React from 'react';
 
 import useSWR from 'swr';
+import { toast } from 'sonner';
 import { Link } from 'react-router';
-import { fetcher } from '@/libs/axios';
+
+import { Button } from '@/components/ui/button';
+import { useConfirm } from '@/hooks/use-confirm';
+import axios, { fetcher, isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -19,14 +23,43 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-import { Button } from '@/components/ui/button';
-
 const ListEvents = () => {
-	const { data, error, isLoading } = useSWR('/events', fetcher);
+	const { confirm } = useConfirm();
 
-	const result = data;
-	const loading = isLoading;
+	const {
+		error,
+		mutate,
+		data: result,
+		isLoading: loading,
+	} = useSWR('/events', fetcher);
 	const empty = result && result.data.length == 0;
+
+	const handleDelete = async (id) => {
+		confirm({
+			title: 'Confirm Order',
+			variant: 'desctructive',
+			description: 'Are you sure you want to delete this record?',
+		})
+			.then(async () => {
+				try {
+					await axios.delete('/events/' + id);
+					mutate();
+					toast('Event deleted', {
+						description: 'Successfully deleted event',
+					});
+				} catch (error) {
+					toast.error('Failed to delete event', {
+						description: isAxiosError(error)
+							? error.response.data.message
+							: error.message,
+					});
+					console.log(error);
+				}
+			})
+			.catch(() => {
+				// pass
+			});
+	};
 
 	return (
 		<div className='grid gap-8'>
@@ -82,15 +115,19 @@ const ListEvents = () => {
 
 						{result?.data.map((event) => (
 							<TableRow key={event.id}>
-								<TableCell>{event.title}</TableCell>
+								<TableCell className='font-medium'>{event.title}</TableCell>
 								<TableCell>{event.description}</TableCell>
 								<TableCell>{event.date}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<button className='bg-transparent hover:text-amber-500'>
-											Edit
-										</button>
-										<button className='bg-transparent hover:text-red-500'>
+										<Link to={'/dashboard/events/' + event.id}>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
+											</button>
+										</Link>
+										<button
+											onClick={() => handleDelete(event.id)}
+											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>
 									</div>
