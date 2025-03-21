@@ -123,7 +123,7 @@ const ListBooks = () => {
 										<img
 											src={book.cover}
 											alt={book.title}
-											className='flex-none rounded-full size-10'
+											className='flex-none object-cover rounded-full size-10'
 										/>
 										<span className='font-medium'>{book.title}</span>
 									</div>
