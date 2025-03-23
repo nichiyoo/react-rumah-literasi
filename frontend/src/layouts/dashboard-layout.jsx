@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router';
 
 import { Logo } from '@/components/ui/logo';
 import Sidebar from '@/components/sidebar';
-import Avatar from '@/components/avatar';
+import Profile from '@/components/profile';
 
 const DashboardLayout = () => {
 	return (
@@ -17,8 +17,8 @@ const DashboardLayout = () => {
 					</div>
 
 					<div className='flex items-center justify-between w-full gap-2 px-10'>
-						<span>User Dashboard</span>
-						<Avatar />
+						<span className='font-medium'>User Dashboard</span>
+						<Profile />
 					</div>
 				</div>
 			</div>

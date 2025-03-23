@@ -29,9 +29,10 @@ const ListDonations = () => {
 	const {
 		error,
 		mutate,
-		data: result,
+		data: result = { data: [] },
 		isLoading: loading,
 	} = useSWR('/donations', fetcher);
+
 	const empty = result && result.data.length == 0;
 
 	const handleDelete = async (id) => {
@@ -96,14 +97,6 @@ const ListDonations = () => {
 							</TableRow>
 						)}
 
-						{error && (
-							<TableRow>
-								<TableCell colSpan={3} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={3} className='py-10 text-center'>
@@ -112,24 +105,32 @@ const ListDonations = () => {
 							</TableRow>
 						)}
 
-						{result?.data.map((donation) => (
-							<TableRow key={donation.id}>
-								<TableCell>{donation.account}</TableCell>
-								<TableCell>{donation.receipt}</TableCell>
-								<TableCell>
-									<div className='flex items-center gap-2'>
-										<button className='bg-transparent hover:text-amber-500'>
-											Edit
-										</button>
-										<button
-											onClick={() => handleDelete(donation.id)}
-											className='bg-transparent hover:text-red-500'>
-											Delete
-										</button>
-									</div>
+						{error ? (
+							<TableRow>
+								<TableCell colSpan={3} className='py-10 text-center'>
+									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
-						))}
+						) : (
+							result.data.map((donation) => (
+								<TableRow key={donation.id}>
+									<TableCell>{donation.account}</TableCell>
+									<TableCell>{donation.receipt}</TableCell>
+									<TableCell>
+										<div className='flex items-center gap-2'>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
+											</button>
+											<button
+												onClick={() => handleDelete(donation.id)}
+												className='bg-transparent hover:text-red-500'>
+												Delete
+											</button>
+										</div>
+									</TableCell>
+								</TableRow>
+							))
+						)}
 					</TableBody>
 				</Table>
 			</div>

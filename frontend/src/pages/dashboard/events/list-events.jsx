@@ -29,7 +29,7 @@ const ListEvents = () => {
 	const {
 		error,
 		mutate,
-		data: result,
+		data: result = { data: [] },
 		isLoading: loading,
 	} = useSWR('/events', fetcher);
 	const empty = result && result.data.length == 0;
@@ -97,14 +97,6 @@ const ListEvents = () => {
 							</TableRow>
 						)}
 
-						{error && (
-							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={4} className='py-10 text-center'>
@@ -113,27 +105,35 @@ const ListEvents = () => {
 							</TableRow>
 						)}
 
-						{result?.data.map((event) => (
-							<TableRow key={event.id}>
-								<TableCell className='font-medium'>{event.title}</TableCell>
-								<TableCell>{event.description}</TableCell>
-								<TableCell>{event.date}</TableCell>
-								<TableCell>
-									<div className='flex items-center gap-2'>
-										<Link to={'/dashboard/events/' + event.id}>
-											<button className='bg-transparent hover:text-amber-500'>
-												Edit
-											</button>
-										</Link>
-										<button
-											onClick={() => handleDelete(event.id)}
-											className='bg-transparent hover:text-red-500'>
-											Delete
-										</button>
-									</div>
+						{error ? (
+							<TableRow>
+								<TableCell colSpan={4} className='py-10 text-center'>
+									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
-						))}
+						) : (
+							result.data.map((event) => (
+								<TableRow key={event.id}>
+									<TableCell className='font-medium'>{event.title}</TableCell>
+									<TableCell>{event.description}</TableCell>
+									<TableCell>{event.date}</TableCell>
+									<TableCell>
+										<div className='flex items-center gap-2'>
+											<Link to={'/dashboard/events/' + event.id}>
+												<button className='bg-transparent hover:text-amber-500'>
+													Edit
+												</button>
+											</Link>
+											<button
+												onClick={() => handleDelete(event.id)}
+												className='bg-transparent hover:text-red-500'>
+												Delete
+											</button>
+										</div>
+									</TableCell>
+								</TableRow>
+							))
+						)}
 					</TableBody>
 				</Table>
 			</div>

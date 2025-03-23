@@ -22,6 +22,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { Avatar } from '@/components/ui/avatar';
 
 const ListUsers = () => {
 	const { confirm } = useConfirm();
@@ -29,7 +30,7 @@ const ListUsers = () => {
 	const {
 		error,
 		mutate,
-		data: result,
+		data: result = { data: [] },
 		isLoading: loading,
 	} = useSWR('/users', fetcher);
 	const empty = result && result.data.length == 0;
@@ -97,14 +98,6 @@ const ListUsers = () => {
 							</TableRow>
 						)}
 
-						{error && (
-							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={4} className='py-10 text-center'>
@@ -113,39 +106,40 @@ const ListUsers = () => {
 							</TableRow>
 						)}
 
-						{result?.data.map((user) => (
-							<TableRow key={user.uuid}>
-								<TableCell>
-									<div className='flex items-center gap-4'>
-										<img
-											alt={user.name}
-											src={
-												'https://ui-avatars.com/api/?bold=true&font-size=0.33&format=svg&background=f4f4f5&name=' +
-												user.name
-											}
-											className='flex-none border rounded-full size-10 border-zinc-200'
-										/>
-										<span className='font-medium'>{user.name}</span>
-									</div>
-								</TableCell>
-								<TableCell>{user.email}</TableCell>
-								<TableCell>{user.role}</TableCell>
-								<TableCell>
-									<div className='flex items-center gap-2'>
-										<Link to={'/dashboard/users/' + user.uuid}>
-											<button className='bg-transparent hover:text-amber-500'>
-												Edit
-											</button>
-										</Link>
-										<button
-											onClick={() => handleDelete(user.uuid)}
-											className='bg-transparent hover:text-red-500'>
-											Delete
-										</button>
-									</div>
+						{error ? (
+							<TableRow>
+								<TableCell colSpan={4} className='py-10 text-center'>
+									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
-						))}
+						) : (
+							result.data.map((user) => (
+								<TableRow key={user.uuid}>
+									<TableCell>
+										<div className='flex items-center gap-4'>
+											<Avatar name={user.name} className='flex-none' />
+											<span className='font-medium'>{user.name}</span>
+										</div>
+									</TableCell>
+									<TableCell>{user.email}</TableCell>
+									<TableCell>{user.role}</TableCell>
+									<TableCell>
+										<div className='flex items-center gap-2'>
+											<Link to={'/dashboard/users/' + user.uuid}>
+												<button className='bg-transparent hover:text-amber-500'>
+													Edit
+												</button>
+											</Link>
+											<button
+												onClick={() => handleDelete(user.uuid)}
+												className='bg-transparent hover:text-red-500'>
+												Delete
+											</button>
+										</div>
+									</TableCell>
+								</TableRow>
+							))
+						)}
 					</TableBody>
 				</Table>
 			</div>

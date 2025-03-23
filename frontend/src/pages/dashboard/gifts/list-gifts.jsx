@@ -1,9 +1,11 @@
 import * as React from 'react';
 
 import useSWR from 'swr';
+import { toast } from 'sonner';
 import { Link } from 'react-router';
 
-import { fetcher } from '@/libs/axios';
+import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import { useConfirm } from '@/hooks/use-confirm';
 import { Button } from '@/components/ui/button';
 
 import {
@@ -22,10 +24,42 @@ import {
 } from '@/components/ui/table';
 
 const ListGifts = () => {
-	const { data, error, isLoading } = useSWR('/gifts', fetcher);
+	const { confirm } = useConfirm();
 
-	const result = data;
-	const loading = isLoading;
+	const {
+		error,
+		mutate,
+		data: result = { data: [] },
+		isLoading: loading,
+	} = useSWR('/gifts', fetcher);
+
+	const handleDelete = async (id) => {
+		confirm({
+			title: 'Confirm Order',
+			variant: 'desctructive',
+			description: 'Are you sure you want to delete this record?',
+		})
+			.then(async () => {
+				try {
+					await axios.delete('/donations/' + id);
+					mutate();
+					toast('Donation deleted', {
+						description: 'Successfully deleted donation',
+					});
+				} catch (error) {
+					toast.error('Failed to delete donation', {
+						description: isAxiosError(error)
+							? error.response.data.message
+							: error.message,
+					});
+					console.log(error);
+				}
+			})
+			.catch(() => {
+				// pass
+			});
+	};
+
 	const empty = result && result.data.length == 0;
 
 	return (
@@ -65,14 +99,6 @@ const ListGifts = () => {
 							</TableRow>
 						)}
 
-						{error && (
-							<TableRow>
-								<TableCell colSpan={5} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={5} className='py-10 text-center'>
@@ -81,24 +107,34 @@ const ListGifts = () => {
 							</TableRow>
 						)}
 
-						{result?.data.map((gift) => (
-							<TableRow key={gift.id}>
-								<TableCell>{gift.title}</TableCell>
-								<TableCell>{gift.genre}</TableCell>
-								<TableCell>{gift.amount}</TableCell>
-								<TableCell>{gift.address}</TableCell>
-								<TableCell>
-									<div className='flex items-center gap-2'>
-										<button className='bg-transparent hover:text-amber-500'>
-											Edit
-										</button>
-										<button className='bg-transparent hover:text-red-500'>
-											Delete
-										</button>
-									</div>
+						{error ? (
+							<TableRow>
+								<TableCell colSpan={5} className='py-10 text-center'>
+									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
-						))}
+						) : (
+							result.data.map((gift) => (
+								<TableRow key={gift.id}>
+									<TableCell>{gift.title}</TableCell>
+									<TableCell>{gift.genre}</TableCell>
+									<TableCell>{gift.amount}</TableCell>
+									<TableCell>{gift.address}</TableCell>
+									<TableCell>
+										<div className='flex items-center gap-2'>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
+											</button>
+											<button
+												onClick={() => handleDelete(gift.id)}
+												className='bg-transparent hover:text-red-500'>
+												Delete
+											</button>
+										</div>
+									</TableCell>
+								</TableRow>
+							))
+						)}
 					</TableBody>
 				</Table>
 			</div>

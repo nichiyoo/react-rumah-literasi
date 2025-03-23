@@ -29,7 +29,7 @@ const ListBooks = () => {
 	const {
 		error,
 		mutate,
-		data: result,
+		data: result = { data: [] },
 		isLoading: loading,
 	} = useSWR('/books', fetcher);
 	const empty = result && result.data.length == 0;
@@ -100,14 +100,6 @@ const ListBooks = () => {
 							</TableRow>
 						)}
 
-						{error && (
-							<TableRow>
-								<TableCell colSpan={7} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={7} className='py-10 text-center'>
@@ -116,39 +108,47 @@ const ListBooks = () => {
 							</TableRow>
 						)}
 
-						{result?.data.map((book) => (
-							<TableRow key={book.id}>
-								<TableCell>
-									<div className='flex items-center gap-4'>
-										<img
-											src={book.cover}
-											alt={book.title}
-											className='flex-none object-cover rounded-full size-10'
-										/>
-										<span className='font-medium'>{book.title}</span>
-									</div>
-								</TableCell>
-								<TableCell>{book.author}</TableCell>
-								<TableCell>{book.publisher}</TableCell>
-								<TableCell>{book.year}</TableCell>
-								<TableCell>{book.language}</TableCell>
-								<TableCell>{book.amount}</TableCell>
-								<TableCell>
-									<div className='flex items-center gap-2'>
-										<Link to={'/dashboard/books/' + book.id}>
-											<button className='bg-transparent hover:text-amber-500'>
-												Edit
-											</button>
-										</Link>
-										<button
-											onClick={() => handleDelete(book.id)}
-											className='bg-transparent hover:text-red-500'>
-											Delete
-										</button>
-									</div>
+						{error ? (
+							<TableRow>
+								<TableCell colSpan={7} className='py-10 text-center'>
+									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
-						))}
+						) : (
+							result.data.map((book) => (
+								<TableRow key={book.id}>
+									<TableCell>
+										<div className='flex items-center gap-4'>
+											<img
+												src={book.cover}
+												alt={book.title}
+												className='flex-none object-cover rounded-full size-10'
+											/>
+											<span className='font-medium'>{book.title}</span>
+										</div>
+									</TableCell>
+									<TableCell>{book.author}</TableCell>
+									<TableCell>{book.publisher}</TableCell>
+									<TableCell>{book.year}</TableCell>
+									<TableCell>{book.language}</TableCell>
+									<TableCell>{book.amount}</TableCell>
+									<TableCell>
+										<div className='flex items-center gap-2'>
+											<Link to={'/dashboard/books/' + book.id}>
+												<button className='bg-transparent hover:text-amber-500'>
+													Edit
+												</button>
+											</Link>
+											<button
+												onClick={() => handleDelete(book.id)}
+												className='bg-transparent hover:text-red-500'>
+												Delete
+											</button>
+										</div>
+									</TableCell>
+								</TableRow>
+							))
+						)}
 					</TableBody>
 				</Table>
 			</div>
