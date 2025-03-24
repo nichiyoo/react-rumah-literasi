@@ -8,6 +8,8 @@ const AuthController = {
 	async signin(req, res, next) {
 		try {
 			const { email, password } = req.body;
+			console.log(req.body);
+
 			if (!email || !password) {
 				throw new ApiError(400, 'Email or password is required');
 			}

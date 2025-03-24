@@ -23,6 +23,7 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import { Avatar } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 const ListUsers = () => {
 	const { confirm } = useConfirm();
@@ -33,7 +34,8 @@ const ListUsers = () => {
 		data: result = { data: [] },
 		isLoading: loading,
 	} = useSWR('/users', fetcher);
-	const empty = result && result.data.length == 0;
+
+	const empty = !error && result.data.length == 0;
 
 	const handleDelete = async (uuid) => {
 		confirm({
@@ -86,13 +88,14 @@ const ListUsers = () => {
 							<TableHead>Nama</TableHead>
 							<TableHead>Email</TableHead>
 							<TableHead>Role</TableHead>
+							<TableHead>Verified</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{loading && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={5} className='py-10 text-center'>
 									<span className='text-zinc-500'>Loading data...</span>
 								</TableCell>
 							</TableRow>
@@ -100,7 +103,7 @@ const ListUsers = () => {
 
 						{empty && (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={5} className='py-10 text-center'>
 									<span className='text-zinc-500'>No data found</span>
 								</TableCell>
 							</TableRow>
@@ -108,7 +111,7 @@ const ListUsers = () => {
 
 						{error ? (
 							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
+								<TableCell colSpan={5} className='py-10 text-center'>
 									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
@@ -123,6 +126,9 @@ const ListUsers = () => {
 									</TableCell>
 									<TableCell>{user.email}</TableCell>
 									<TableCell>{user.role}</TableCell>
+									<TableCell>
+										<Badge>{user.is_verified ? 'Yes' : 'No'}</Badge>
+									</TableCell>
 									<TableCell>
 										<div className='flex items-center gap-2'>
 											<Link to={'/dashboard/users/' + user.uuid}>

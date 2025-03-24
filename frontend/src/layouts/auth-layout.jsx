@@ -2,8 +2,17 @@ import * as React from 'react';
 import { Link, Outlet } from 'react-router';
 
 import { Logo } from '@/components/ui/logo';
+import useAuth from '@/hooks/use-auth';
+import { useNavigate } from 'react-router';
 
 const AuthLayout = () => {
+	const { user, loading } = useAuth();
+	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		if (!loading && user) navigate('/dashboard');
+	}, [user, loading, navigate]);
+
 	return (
 		<main className='relative grid w-full h-screen lg:grid-cols-2'>
 			<Link to='/' className='absolute top-0 left-0 m-6'>

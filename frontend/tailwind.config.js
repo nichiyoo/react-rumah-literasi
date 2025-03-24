@@ -16,8 +16,8 @@ export default {
 				sans: ['var(--font-sans)', ...fontFamily.sans],
 			},
 			colors: {
-				secondary: colors.sky,
-				primary: {
+				primary: colors.pink,
+				temporary: {
 					50: '#eff6ff',
 					100: '#dbebfe',
 					200: '#c0dcfd',

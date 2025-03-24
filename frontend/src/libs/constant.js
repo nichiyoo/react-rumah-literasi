@@ -1,6 +1,6 @@
+import { UsersRound } from 'lucide-react';
 import { Gift } from 'lucide-react';
 import {
-	User2,
 	Phone,
 	Instagram,
 	Facebook,
@@ -59,7 +59,7 @@ export const SIDEBAR_MENUS = [
 			{
 				href: '/dashboard/users',
 				label: 'List Users',
-				icon: User2,
+				icon: UsersRound,
 			},
 			{
 				href: '/dashboard/settings',

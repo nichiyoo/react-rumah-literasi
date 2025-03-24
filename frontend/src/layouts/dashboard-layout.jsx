@@ -4,8 +4,17 @@ import { Link, Outlet } from 'react-router';
 import { Logo } from '@/components/ui/logo';
 import Sidebar from '@/components/sidebar';
 import Profile from '@/components/profile';
+import { useNavigate } from 'react-router';
+import useAuth from '@/hooks/use-auth';
 
 const DashboardLayout = () => {
+	const { user, loading } = useAuth();
+	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		if (!loading && !user) navigate('/auth/signin');
+	}, [user, loading, navigate]);
+
 	return (
 		<div className='relative flex'>
 			<div className='absolute w-full bg-white border-b'>

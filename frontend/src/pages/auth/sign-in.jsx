@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import axios, { isAxiosError } from '@/libs/axios';
+import useAuth from '@/hooks/use-auth';
+import { isAxiosError } from '@/libs/axios';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -24,6 +25,7 @@ const SignInSchema = z.object({
 });
 
 const SignIn = () => {
+	const { signin } = useAuth();
 	const navigate = useNavigate();
 
 	const {
@@ -40,11 +42,10 @@ const SignIn = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
-			await axios.post('/auth/signin', data);
+			await signin(data);
 			toast('Login successful', {
 				description: 'You are now logged in',
 			});
-
 			navigate('/dashboard');
 		} catch (error) {
 			toast.error('Failed to login', {

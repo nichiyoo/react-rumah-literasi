@@ -60,7 +60,7 @@ const ListGifts = () => {
 			});
 	};
 
-	const empty = result && result.data.length == 0;
+	const empty = !error && result.data.length == 0;
 
 	return (
 		<div className='grid gap-8'>

@@ -32,7 +32,8 @@ const ListBooks = () => {
 		data: result = { data: [] },
 		isLoading: loading,
 	} = useSWR('/books', fetcher);
-	const empty = result && result.data.length == 0;
+
+	const empty = !error && result.data.length == 0;
 
 	const handleDelete = async (id) => {
 		confirm({

@@ -5,15 +5,19 @@ import * as React from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
+import { AuthProvider } from '@/contexts/auth-context';
+import { ConfirmProvider } from '@/contexts/confirm-context';
+
 import Router from '@/routes/router.jsx';
 import { Toaster } from '@/components/ui/toaster';
-import { ConfirmProvider } from '@/contexts/confirm';
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
-		<ConfirmProvider>
-			<Router />
-			<Toaster />
-		</ConfirmProvider>
+		<AuthProvider>
+			<ConfirmProvider>
+				<Router />
+				<Toaster />
+			</ConfirmProvider>
+		</AuthProvider>
 	</StrictMode>
 );

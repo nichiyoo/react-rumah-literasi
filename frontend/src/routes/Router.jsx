@@ -22,6 +22,7 @@ import CreateEvent from '@/pages/dashboard/events/create-event';
 import EditEvent from '@/pages/dashboard/events/edit-event';
 import CreateUser from '@/pages/dashboard/users/create-user';
 import EditUser from '@/pages/dashboard/users/edit-user';
+import ProfileDetail from '@/pages/setting/profile';
 
 const Router = () => {
 	return (
@@ -59,6 +60,8 @@ const Router = () => {
 
 					<Route path='gifts' element={<ListGifts />} />
 					<Route path='donations' element={<ListDonations />} />
+
+					<Route path='profile' element={<ProfileDetail />} />
 				</Route>
 
 				<Route path='admin' element={<AdminLayout />}></Route>

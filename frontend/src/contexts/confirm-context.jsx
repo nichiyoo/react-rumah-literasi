@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/dialog';
 
 import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
 import { Check } from 'lucide-react';
 
 const ConfirmContext = React.createContext({
