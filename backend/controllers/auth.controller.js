@@ -1,13 +1,13 @@
 const argon2 = require('argon2');
 const { render } = require('@react-email/components');
-const React = require('react');
 
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 const OneTimePassword = require('../libs/otp');
+const transporter = require('../libs/nodemailer');
 
 const { User } = require('../models');
-const OneTimePasswordEmail = require('../emails/otp-notification');
+const OneTimePasswordEmail = require('../emails/otp-notification.jsx').default;
 
 const AuthController = {
 	async signin(req, res, next) {
@@ -33,10 +33,7 @@ const AuthController = {
 			};
 
 			const rendered = await render(
-				React.createElement(OneTimePasswordEmail, {
-					otp: otp.code,
-					name: user.name,
-				})
+				<OneTimePasswordEmail otp={otp.code} name={user.name} />
 			);
 
 			await transporter.sendMail({
@@ -81,10 +78,7 @@ const AuthController = {
 			};
 
 			const rendered = await render(
-				React.createElement(OneTimePasswordEmail, {
-					otp: otp.code,
-					name: user.name,
-				})
+				<OneTimePasswordEmail otp={otp.code} name={user.name} />
 			);
 
 			await transporter.sendMail({

@@ -29,6 +29,10 @@
 		"uuid": "^11.1.0"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.26.10",
+		"@babel/preset-env": "^7.26.9",
+		"@babel/preset-react": "^7.26.3",
+		"@babel/register": "^7.25.9",
 		"@react-email/components": "^0.0.34",
 		"nodemon": "^3.1.9",
 		"react": "^19.0.0",
