@@ -26,7 +26,6 @@ module.exports = {
 						email: 'admin@example.com',
 						password: hashed,
 						role: 'admin',
-						is_verified: true,
 						created_at: new Date(),
 						updated_at: new Date(),
 					},

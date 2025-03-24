@@ -46,11 +46,6 @@ const ProfileDetail = () => {
 						<Label htmlFor='password'>Role</Label>
 						<Input type='text' value={user.role} disabled />
 					</div>
-
-					<div>
-						<Label htmlFor='is_verified'>Verified</Label>
-						<Input type='text' value={user.is_verified} disabled />
-					</div>
 				</div>
 			)}
 		</div>

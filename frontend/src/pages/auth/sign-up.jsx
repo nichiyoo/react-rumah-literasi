@@ -43,7 +43,12 @@ const SignUp = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
+			toast('Registering...', {
+				description: 'Checking your credentials and creating your account',
+			});
+
 			await signup(data);
+
 			toast('Register successful', {
 				description: 'You are now registered',
 			});

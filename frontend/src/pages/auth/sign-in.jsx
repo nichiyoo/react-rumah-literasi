@@ -46,7 +46,12 @@ const SignIn = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
+			toast('Logging in...', {
+				description: 'We are verifying your credentials',
+			});
+
 			await signin(data);
+
 			toast('Login successful', {
 				description: 'Please verify your account',
 			});
