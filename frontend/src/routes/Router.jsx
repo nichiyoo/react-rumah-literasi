@@ -63,7 +63,6 @@ const Router = () => {
 
 					<Route path='gifts' element={<ListGifts />} />
 					<Route path='donations' element={<ListDonations />} />
-
 					<Route path='profile' element={<ProfileDetail />} />
 				</Route>
 

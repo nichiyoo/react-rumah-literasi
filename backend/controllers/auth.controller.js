@@ -1,9 +1,13 @@
 const argon2 = require('argon2');
+const { render } = require('@react-email/components');
+const React = require('react');
+
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 const OneTimePassword = require('../libs/otp');
 
 const { User } = require('../models');
+const OneTimePasswordEmail = require('../emails/otp-notification');
 
 const AuthController = {
 	async signin(req, res, next) {
@@ -28,9 +32,21 @@ const AuthController = {
 				uuid: user.uuid,
 			};
 
-			req.session.otp = otp;
-			console.log(req.session.otp);
+			const rendered = await render(
+				React.createElement(OneTimePasswordEmail, {
+					otp: otp.code,
+					name: user.name,
+				})
+			);
 
+			await transporter.sendMail({
+				from: '"Rumah Literasi" <noreply@rumahliterasi.com>',
+				to: user.email,
+				subject: 'Your verification code for secure access',
+				html: rendered,
+			});
+
+			req.session.otp = otp;
 			return res.json(
 				new ApiResponse('OTP generated successfully', req.session.id)
 			);
@@ -64,9 +80,21 @@ const AuthController = {
 				uuid: user.uuid,
 			};
 
-			req.session.otp = otp;
-			console.log(req.session.otp);
+			const rendered = await render(
+				React.createElement(OneTimePasswordEmail, {
+					otp: otp.code,
+					name: user.name,
+				})
+			);
 
+			await transporter.sendMail({
+				from: '"Rumah Literasi" <noreply@rumahliterasi.com>',
+				to: user.email,
+				subject: 'Your verification code for secure access',
+				html: rendered,
+			});
+
+			req.session.otp = otp;
 			return res.json(
 				new ApiResponse('User registered successfully', req.session.id)
 			);
