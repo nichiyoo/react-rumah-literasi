@@ -1,13 +1,11 @@
 const argon2 = require('argon2');
-const { render } = require('@react-email/components');
 
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 const OneTimePassword = require('../libs/otp');
-const transporter = require('../libs/nodemailer');
+const EmailController = require('./email.controller');
 
 const { User } = require('../models');
-const OneTimePasswordEmail = require('../emails/otp-notification.jsx').default;
 
 const AuthController = {
 	async signin(req, res, next) {
@@ -25,23 +23,14 @@ const AuthController = {
 			const valid = await argon2.verify(user.password, password);
 			if (!valid) throw new ApiError(401, 'Invalid email or password');
 
-			const otp = {
-				code: OneTimePassword.generate(),
+			const otp = OneTimePassword.generate();
+			EmailController.verification(otp, user);
+
+			req.session.otp = {
+				code: otp,
 				uuid: user.uuid,
 			};
 
-			const rendered = await render(
-				<OneTimePasswordEmail otp={otp.code} name={user.name} />
-			);
-
-			await transporter.sendMail({
-				from: '"Rumah Literasi" <noreply@rumahliterasi.com>',
-				to: user.email,
-				subject: 'Your verification code for secure access',
-				html: rendered,
-			});
-
-			req.session.otp = otp;
 			return res.json(
 				new ApiResponse('OTP generated successfully', req.session.id)
 			);
@@ -70,23 +59,14 @@ const AuthController = {
 				password: hashed,
 			});
 
-			const otp = {
-				code: OneTimePassword.generate(),
+			const otp = OneTimePassword.generate();
+			EmailController.verification(otp, user);
+
+			req.session.otp = {
+				code: otp,
 				uuid: user.uuid,
 			};
 
-			const rendered = await render(
-				<OneTimePasswordEmail otp={otp.code} name={user.name} />
-			);
-
-			await transporter.sendMail({
-				from: '"Rumah Literasi" <noreply@rumahliterasi.com>',
-				to: user.email,
-				subject: 'Your verification code for secure access',
-				html: rendered,
-			});
-
-			req.session.otp = otp;
 			return res.json(
 				new ApiResponse('User registered successfully', req.session.id)
 			);
