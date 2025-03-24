@@ -25,7 +25,7 @@ import {
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
-const ListUsers = () => {
+const ListMembers = () => {
 	const { confirm } = useConfirm();
 
 	const {
@@ -33,7 +33,7 @@ const ListUsers = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/users', fetcher);
+	} = useSWR('/members', fetcher);
 
 	const empty = !error && result.data.length == 0;
 
@@ -45,13 +45,13 @@ const ListUsers = () => {
 		})
 			.then(async () => {
 				try {
-					await axios.delete('/users/' + uuid);
+					await axios.delete('/members/' + uuid);
 					mutate();
-					toast('User deleted', {
-						description: 'Successfully deleted user',
+					toast('Member deleted', {
+						description: 'Successfully deleted member',
 					});
 				} catch (error) {
-					toast.error('Failed to delete user', {
+					toast.error('Failed to delete member', {
 						description: isAxiosError(error)
 							? error.response.data.message
 							: error.message,
@@ -67,7 +67,7 @@ const ListUsers = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>User List</HeadingTitle>
+				<HeadingTitle>Member List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -75,8 +75,8 @@ const ListUsers = () => {
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/users/create'>
-						<Button>Create User</Button>
+					<Link to='/dashboard/members/create'>
+						<Button>Create Member</Button>
 					</Link>
 				</div>
 			</Heading>
@@ -116,28 +116,28 @@ const ListUsers = () => {
 								</TableCell>
 							</TableRow>
 						) : (
-							result.data.map((user) => (
-								<TableRow key={user.uuid}>
+							result.data.map((member) => (
+								<TableRow key={member.uuid}>
 									<TableCell>
 										<div className='flex items-center gap-4'>
-											<Avatar name={user.name} className='flex-none' />
-											<span className='font-medium'>{user.name}</span>
+											<Avatar name={member.name} className='flex-none' />
+											<span className='font-medium'>{member.name}</span>
 										</div>
 									</TableCell>
-									<TableCell>{user.email}</TableCell>
-									<TableCell>{user.role}</TableCell>
+									<TableCell>{member.email}</TableCell>
+									<TableCell>{member.role}</TableCell>
 									<TableCell>
-										<Badge>{user.is_verified ? 'Yes' : 'No'}</Badge>
+										<Badge>{member.is_verified ? 'Yes' : 'No'}</Badge>
 									</TableCell>
 									<TableCell>
 										<div className='flex items-center gap-2'>
-											<Link to={'/dashboard/users/' + user.uuid}>
+											<Link to={'/dashboard/members/' + member.uuid}>
 												<button className='bg-transparent hover:text-amber-500'>
 													Edit
 												</button>
 											</Link>
 											<button
-												onClick={() => handleDelete(user.uuid)}
+												onClick={() => handleDelete(member.uuid)}
 												className='bg-transparent hover:text-red-500'>
 												Delete
 											</button>
@@ -153,4 +153,4 @@ const ListUsers = () => {
 	);
 };
 
-export default ListUsers;
+export default ListMembers;

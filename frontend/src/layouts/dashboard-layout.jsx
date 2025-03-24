@@ -5,7 +5,7 @@ import { Logo } from '@/components/ui/logo';
 import Sidebar from '@/components/sidebar';
 import Profile from '@/components/profile';
 import { useNavigate } from 'react-router';
-import useAuth from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 
 const DashboardLayout = () => {
 	const { user, loading } = useAuth();

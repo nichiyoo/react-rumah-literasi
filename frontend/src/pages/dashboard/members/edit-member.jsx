@@ -11,9 +11,9 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import UserForm from '@/components/users/form-user';
+import MemberForm from '@/components/members/form-member';
 
-const EditUser = () => {
+const EditMember = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
@@ -22,22 +22,22 @@ const EditUser = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/users/' + id, fetcher);
+	} = useSWR('/members/' + id, fetcher);
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.put('/users/' + result.data.uuid, data, {
+			await axios.put('/members/' + result.data.uuid, data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			toast('User updated', {
-				description: 'Successfully updated user',
+			toast('Member updated', {
+				description: 'Successfully updated member',
 			});
 
 			mutate();
-			navigate('/dashboard/users');
+			navigate('/dashboard/members');
 		} catch (error) {
-			toast.error('Failed to update user', {
+			toast.error('Failed to update member', {
 				description: isAxiosError(error)
 					? error.response?.data?.message
 					: error.message,
@@ -49,7 +49,7 @@ const EditUser = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Edit User</HeadingTitle>
+				<HeadingTitle>Edit Member</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -70,10 +70,14 @@ const EditUser = () => {
 			)}
 
 			{result && (
-				<UserForm initial={result.data} action={onSubmit} label='Update User' />
+				<MemberForm
+					initial={result.data}
+					action={onSubmit}
+					label='Update Member'
+				/>
 			)}
 		</div>
 	);
 };
 
-export default EditUser;
+export default EditMember;

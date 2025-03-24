@@ -7,20 +7,20 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
-const UserSchema = z.object({
+const MemberSchema = z.object({
 	name: z.string().min(3),
 	email: z.string().min(3),
 	password: z.string().min(3),
 	role: z.enum(['student', 'admin', 'librarian']),
 });
 
-const UserForm = ({ initial, action, label }) => {
+const MemberForm = ({ initial, action, label }) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(UserSchema),
+		resolver: zodResolver(MemberSchema),
 		defaultValues: initial || {
 			name: '',
 			email: '',
@@ -90,4 +90,4 @@ const UserForm = ({ initial, action, label }) => {
 	);
 };
 
-export default UserForm;
+export default MemberForm;

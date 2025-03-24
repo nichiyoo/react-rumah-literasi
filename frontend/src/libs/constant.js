@@ -57,8 +57,8 @@ export const SIDEBAR_MENUS = [
 		label: 'Administrator',
 		submenus: [
 			{
-				href: '/dashboard/users',
-				label: 'List Users',
+				href: '/dashboard/members',
+				label: 'List Members',
 				icon: UsersRound,
 			},
 			{

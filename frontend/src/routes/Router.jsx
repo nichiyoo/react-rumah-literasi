@@ -12,7 +12,7 @@ import SignUp from '@/pages/auth/sign-up.jsx';
 import Dashboard from '@/pages/dashboard/dashboard.jsx';
 
 import ListBooks from '@/pages/dashboard/books/list-books';
-import ListUsers from '@/pages/dashboard/users/list-users';
+import ListUsers from '@/pages/dashboard/members/list-member';
 import ListEvents from '@/pages/dashboard/events/list-events';
 import ListGifts from '@/pages/dashboard/gifts/list-gifts';
 import ListDonations from '@/pages/dashboard/donations/list-donations';
@@ -20,8 +20,8 @@ import CreateBook from '@/pages/dashboard/books/create-book';
 import EditBook from '@/pages/dashboard/books/edit-book';
 import CreateEvent from '@/pages/dashboard/events/create-event';
 import EditEvent from '@/pages/dashboard/events/edit-event';
-import CreateUser from '@/pages/dashboard/users/create-user';
-import EditUser from '@/pages/dashboard/users/edit-user';
+import CreateUser from '@/pages/dashboard/members/create-member';
+import EditUser from '@/pages/dashboard/members/edit-member';
 import ProfileDetail from '@/pages/setting/profile';
 
 const Router = () => {
@@ -52,7 +52,7 @@ const Router = () => {
 						<Route path=':id' element={<EditEvent />} />
 					</Route>
 
-					<Route path='users'>
+					<Route path='members'>
 						<Route index element={<ListUsers />} />
 						<Route path='create' element={<CreateUser />} />
 						<Route path=':id' element={<EditUser />} />

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link, Outlet } from 'react-router';
 
 import { Logo } from '@/components/ui/logo';
-import useAuth from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 import { useNavigate } from 'react-router';
 
 const AuthLayout = () => {

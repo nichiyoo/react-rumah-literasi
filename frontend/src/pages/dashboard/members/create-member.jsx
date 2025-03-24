@@ -11,26 +11,26 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import UserForm from '@/components/users/form-user';
+import MemberForm from '@/components/members/form-member';
 
-const CreateUser = () => {
+const CreateMember = () => {
 	const navigate = useNavigate();
 	const { mutate } = useSWRConfig();
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.post('/users', data, {
+			await axios.post('/members', data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			toast('User created', {
-				description: 'Successfully created user',
+			toast('Member created', {
+				description: 'Successfully created member',
 			});
 
-			mutate('/users');
-			navigate('/dashboard/users');
+			mutate('/members');
+			navigate('/dashboard/members');
 		} catch (error) {
-			toast.error('Failed to create user', {
+			toast.error('Failed to create member', {
 				description: isAxiosError(error)
 					? error.response?.data?.message
 					: error.message,
@@ -42,7 +42,7 @@ const CreateUser = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Create User</HeadingTitle>
+				<HeadingTitle>Create Member</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -50,9 +50,9 @@ const CreateUser = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<UserForm action={onSubmit} label='Create User' />
+			<MemberForm action={onSubmit} label='Create Member' />
 		</div>
 	);
 };
 
-export default CreateUser;
+export default CreateMember;

@@ -11,12 +11,12 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
 const ProfileDetail = () => {
-	const { user, loading } = useAuth();
+	const { member: user, loading } = useAuth();
 
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>User Profile</HeadingTitle>
+				<HeadingTitle>Member Profile</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
