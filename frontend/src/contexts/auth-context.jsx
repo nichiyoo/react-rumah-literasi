@@ -1,18 +1,22 @@
 import * as React from 'react';
 
-import axios from '@/libs/axios';
+import axios, { destroySession } from '@/libs/axios';
+import useLocalStorage from '@/hooks/use-localstorage';
 
 const AuthContext = React.createContext({
 	user: null,
+	session: null,
 	loading: true,
 	signin: async () => {},
 	signup: async () => {},
+	verify: async () => {},
 	signout: async () => {},
 });
 
 export function AuthProvider({ children }) {
 	const [user, setUser] = React.useState(null);
 	const [loading, setLoading] = React.useState(true);
+	const [session, setSession] = useLocalStorage('session', null);
 
 	React.useEffect(() => {
 		const profile = async () => {
@@ -29,14 +33,18 @@ export function AuthProvider({ children }) {
 		};
 
 		if (!user) profile();
-	}, [user, setUser]);
+
+		destroySession(() => {
+			setUser(null);
+		});
+	}, [user, setUser, setSession]);
 
 	const signin = async ({ email, password }) => {
 		const { data } = await axios.post('/auth/signin', {
 			email,
 			password,
 		});
-		setUser(data.data);
+		setSession(data.data);
 	};
 
 	const signup = async ({ name, email, password }) => {
@@ -45,16 +53,34 @@ export function AuthProvider({ children }) {
 			email,
 			password,
 		});
+		setSession(data.data);
+	};
+
+	const verify = async ({ otp }) => {
+		const { data } = await axios.post('/auth/verify', {
+			otp,
+		});
+		setSession(null);
 		setUser(data.data);
 	};
 
 	const signout = async () => {
 		await axios.post('/auth/signout');
 		setUser(null);
+		setSession(null);
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, loading, signin, signup, signout }}>
+		<AuthContext.Provider
+			value={{
+				user,
+				session,
+				loading,
+				signin,
+				signup,
+				verify,
+				signout,
+			}}>
 			{children}
 		</AuthContext.Provider>
 	);

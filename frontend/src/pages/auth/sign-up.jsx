@@ -7,11 +7,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import axios, { isAxiosError } from '@/libs/axios';
+import { isAxiosError } from '@/libs/axios';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/use-auth';
 
 const SignUpSchema = z.object({
 	name: z.string().min(3),
@@ -20,7 +21,12 @@ const SignUpSchema = z.object({
 });
 
 const SignUp = () => {
+	const { loading, session, signup } = useAuth();
 	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		if (!loading && session) navigate('/auth/otp');
+	}, [session, loading, navigate]);
 
 	const {
 		register,
@@ -37,11 +43,10 @@ const SignUp = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
-			await axios.post('/auth/signup', data);
+			await signup(data);
 			toast('Register successful', {
 				description: 'You are now registered',
 			});
-
 			navigate('/auth/signin');
 		} catch (error) {
 			toast.error('Failed to register', {

@@ -2,10 +2,14 @@ import * as React from 'react';
 import { Link } from 'react-router';
 
 import { cn } from '@/libs/utils';
+import { useAuth } from '@/hooks/use-auth';
+
 import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
 
 const Navbar = ({ className }) => {
+	const { user } = useAuth();
+
 	return (
 		<nav className={cn('w-full', className)}>
 			<div className='flex items-center justify-between'>
@@ -32,12 +36,15 @@ const Navbar = ({ className }) => {
 				</ul>
 
 				<div className='flex items-center gap-2'>
-					<Link to='/dashboard'>
-						<Button variant='outline'>Dashboard</Button>
-					</Link>
-					<Link to='/auth/signin'>
-						<Button>Login</Button>
-					</Link>
+					{user ? (
+						<Link to='/dashboard'>
+							<Button variant='outline'>Dashboard</Button>
+						</Link>
+					) : (
+						<Link to='/auth/signin'>
+							<Button>Login</Button>
+						</Link>
+					)}
 				</div>
 			</div>
 		</nav>

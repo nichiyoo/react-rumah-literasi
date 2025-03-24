@@ -22,6 +22,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 const ListBooks = () => {
 	const { confirm } = useConfirm();
@@ -131,7 +132,9 @@ const ListBooks = () => {
 									<TableCell>{book.author}</TableCell>
 									<TableCell>{book.publisher}</TableCell>
 									<TableCell>{book.year}</TableCell>
-									<TableCell>{book.language}</TableCell>
+									<TableCell>
+										<Badge>{book.language}</Badge>
+									</TableCell>
 									<TableCell>{book.amount}</TableCell>
 									<TableCell>
 										<div className='flex items-center gap-2'>

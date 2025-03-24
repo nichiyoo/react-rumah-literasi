@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 
 const Home = () => {
-	const ref = React.memberef(null);
+	const ref = React.useRef(null);
 
 	return (
 		<React.Fragment>

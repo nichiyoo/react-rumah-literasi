@@ -18,4 +18,18 @@ export const fetcher = async (args) => {
 	return res.data;
 };
 
+let handleSignout = () => {};
+
+axios.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response?.status === 401) handleSignout();
+		return Promise.reject(error);
+	}
+);
+
+export const destroySession = (callback) => {
+	handleSignout = callback;
+};
+
 export default axios;

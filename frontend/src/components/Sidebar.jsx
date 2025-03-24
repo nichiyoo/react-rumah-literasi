@@ -4,7 +4,7 @@ import { LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 import { cn } from '@/libs/utils';
-import useAuth from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 import { isAxiosError } from '@/libs/axios';
 import { SIDEBAR_MENUS } from '@/libs/constant';
 

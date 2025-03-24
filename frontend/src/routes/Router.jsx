@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
 import AuthLayout from '@/layouts/auth-layout.jsx';
 import AdminLayout from '@/layouts/admin-layout.jsx';
@@ -23,6 +23,7 @@ import EditEvent from '@/pages/dashboard/events/edit-event';
 import CreateUser from '@/pages/dashboard/members/create-member';
 import EditUser from '@/pages/dashboard/members/edit-member';
 import ProfileDetail from '@/pages/setting/profile';
+import OneTimePassword from '@/pages/auth/otp';
 
 const Router = () => {
 	return (
@@ -33,8 +34,10 @@ const Router = () => {
 				</Route>
 
 				<Route path='auth' element={<AuthLayout />}>
+					<Route index element={<Navigate to='/auth/signin' />} />
 					<Route path='signin' element={<SignIn />} />
 					<Route path='signup' element={<SignUp />} />
+					<Route path='otp' element={<OneTimePassword />} />
 				</Route>
 
 				<Route path='dashboard' element={<DashboardLayout />}>

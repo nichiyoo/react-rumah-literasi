@@ -1,6 +1,7 @@
 const argon2 = require('argon2');
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
+const OneTimePassword = require('../libs/otp');
 
 const { User } = require('../models');
 
@@ -22,12 +23,16 @@ const AuthController = {
 			const valid = await argon2.verify(user.password, password);
 			if (!valid) throw new ApiError(401, 'Invalid email or password');
 
-			req.session.userId = user.uuid;
+			const otp = {
+				code: OneTimePassword.generate(),
+				uuid: user.uuid,
+			};
+
+			req.session.otp = otp;
+			console.log(req.session.otp);
+
 			return res.json(
-				new ApiResponse('User logged in successfully', {
-					...user.dataValues,
-					password: undefined,
-				})
+				new ApiResponse('OTP generated successfully', req.session.id)
 			);
 		} catch (error) {
 			next(error);
@@ -54,8 +59,39 @@ const AuthController = {
 				password: hashed,
 			});
 
-			req.session.user = user;
-			return res.json(new ApiResponse('User registered successfully', user));
+			const otp = {
+				code: OneTimePassword.generate(),
+				uuid: user.uuid,
+			};
+
+			req.session.otp = otp;
+			console.log(req.session.otp);
+
+			return res.json(
+				new ApiResponse('User registered successfully', req.session.id)
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	async verify(req, res, next) {
+		try {
+			const { otp } = req.body;
+
+			const user = await User.findOne({
+				where: {
+					uuid: req.session.otp.uuid,
+				},
+			});
+
+			if (!user) throw new ApiError(404, 'User not found');
+			if (!OneTimePassword.verify(otp, req.session.otp.code)) {
+				throw new ApiError(401, 'One time password is invalid or expired');
+			}
+
+			req.session.userId = user.uuid;
+			return res.json(new ApiResponse('User logged in successfully', user));
 		} catch (error) {
 			next(error);
 		}
@@ -72,8 +108,6 @@ const AuthController = {
 
 	async profile(req, res, next) {
 		try {
-			console.log(req.user);
-
 			const user = await User.findOne({
 				where: { uuid: req.user.uuid },
 			});

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import useAuth from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 import { isAxiosError } from '@/libs/axios';
 
 import { Button } from '@/components/ui/button';
@@ -25,8 +25,12 @@ const SignInSchema = z.object({
 });
 
 const SignIn = () => {
-	const { signin } = useAuth();
+	const { loading, session, signin } = useAuth();
 	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		if (!loading && session) navigate('/auth/otp');
+	}, [session, loading, navigate]);
 
 	const {
 		register,
@@ -44,7 +48,7 @@ const SignIn = () => {
 		try {
 			await signin(data);
 			toast('Login successful', {
-				description: 'You are now logged in',
+				description: 'Please verify your account',
 			});
 			navigate('/dashboard');
 		} catch (error) {

@@ -6,12 +6,12 @@ import { useAuth } from '@/hooks/use-auth';
 import { useNavigate } from 'react-router';
 
 const AuthLayout = () => {
-	const { user, loading } = useAuth();
+	const { user, session, loading } = useAuth();
 	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		if (!loading && user) navigate('/dashboard');
-	}, [user, loading, navigate]);
+	}, [user, session, loading, navigate]);
 
 	return (
 		<main className='relative grid w-full h-screen lg:grid-cols-2'>

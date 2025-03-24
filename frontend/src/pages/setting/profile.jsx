@@ -6,12 +6,12 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import useAuth from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
 const ProfileDetail = () => {
-	const { member: user, loading } = useAuth();
+	const { user, loading } = useAuth();
 
 	return (
 		<div className='grid gap-8'>
