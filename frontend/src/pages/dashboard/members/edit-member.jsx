@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { useParams, useNavigate } from 'react-router';
 
-import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import axios, { isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/heading';
 
 import MemberForm from '@/components/members/form-member';
+import Loading from '@/components/loading';
+import Error from '@/components/error';
 
 const EditMember = () => {
 	const { id } = useParams();
@@ -22,7 +24,7 @@ const EditMember = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/members/' + id, fetcher);
+	} = useSWR('/membersa/' + id);
 
 	const onSubmit = async (data) => {
 		try {
@@ -57,17 +59,8 @@ const EditMember = () => {
 				</HeadingDescription>
 			</Heading>
 
-			{loading && (
-				<div className='w-full h-96 rounded-xl bg-zinc-100'>
-					<span>Loading...</span>
-				</div>
-			)}
-
-			{error && (
-				<div className='w-full h-96 rounded-xl bg-zinc-100'>
-					<span>Error: {error.message}</span>
-				</div>
-			)}
+			<Loading loading={loading} />
+			<Error error={error} loading={loading} />
 
 			{result && (
 				<MemberForm

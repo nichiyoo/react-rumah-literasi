@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
-import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import axios, { isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -18,11 +18,13 @@ import {
 	Table,
 	TableBody,
 	TableCell,
+	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import Loading from '@/components/loading';
 
 const ListBooks = () => {
 	const { confirm } = useConfirm();
@@ -32,18 +34,9 @@ const ListBooks = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/books', fetcher, {
-		onError: (error) => {
-			toast.error('Failed to load data', {
-				description: isAxiosError(error)
-					? error.response.data.message
-					: error.message,
-			});
-			console.log(error);
-		},
-	});
+	} = useSWR('/books');
 
-	const empty = !error && result.data.length == 0;
+	const empty = !error && !loading && result.data.length == 0;
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -103,14 +96,6 @@ const ListBooks = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{loading && (
-							<TableRow>
-								<TableCell colSpan={7} className='py-10 text-center'>
-									<span className='text-zinc-500'>Loading data...</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={7} className='py-10 text-center'>
@@ -164,6 +149,7 @@ const ListBooks = () => {
 						)}
 					</TableBody>
 				</Table>
+				<Loading loading={loading} />
 			</div>
 		</div>
 	);

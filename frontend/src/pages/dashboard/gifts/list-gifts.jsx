@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
 
-import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import axios, { isAxiosError } from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
 import { Button } from '@/components/ui/button';
 
@@ -22,6 +22,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import Loading from '@/components/loading';
 
 const ListGifts = () => {
 	const { confirm } = useConfirm();
@@ -31,7 +32,7 @@ const ListGifts = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/gifts', fetcher);
+	} = useSWR('/gifts');
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -60,7 +61,7 @@ const ListGifts = () => {
 			});
 	};
 
-	const empty = !error && result.data.length == 0;
+	const empty = !error && !loading && result.data.length == 0;
 
 	return (
 		<div className='grid gap-8'>
@@ -91,14 +92,6 @@ const ListGifts = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{loading && (
-							<TableRow>
-								<TableCell colSpan={5} className='py-10 text-center'>
-									<span className='text-zinc-500'>Loading data...</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={5} className='py-10 text-center'>
@@ -137,6 +130,7 @@ const ListGifts = () => {
 						)}
 					</TableBody>
 				</Table>
+				<Loading loading={loading} />
 			</div>
 		</div>
 	);

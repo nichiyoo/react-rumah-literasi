@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
-import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import axios, { isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
+import Loading from '@/components/loading';
 
 const ListDonations = () => {
 	const { confirm } = useConfirm();
@@ -33,9 +34,9 @@ const ListDonations = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/donations', fetcher);
+	} = useSWR('/donations');
 
-	const empty = !error && result.data.length == 0;
+	const empty = !error && !loading && result.data.length == 0;
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -94,14 +95,6 @@ const ListDonations = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{loading && (
-							<TableRow>
-								<TableCell colSpan={6} className='py-10 text-center'>
-									<span className='text-zinc-500'>Loading data...</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={6} className='py-10 text-center'>
@@ -161,6 +154,7 @@ const ListDonations = () => {
 						)}
 					</TableBody>
 				</Table>
+				<Loading loading={loading} />
 			</div>
 		</div>
 	);

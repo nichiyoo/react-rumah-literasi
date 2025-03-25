@@ -10,6 +10,7 @@ const cors = require('cors');
 const session = require('express-session');
 const sequelizeStore = require('connect-session-sequelize')(session.Store);
 const { sequelize } = require('../models');
+const ratelimit = require('express-rate-limit');
 
 dotenv.config();
 
@@ -43,6 +44,14 @@ app.use(
 	})
 );
 
+app.use(
+	ratelimit({
+		limit: 500,
+		windowMs: 15 * 60 * 1000,
+		standardHeaders: 'draft-8',
+	})
+);
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -54,6 +63,7 @@ const paymentRoutes = require('../routes/payment.routes');
 
 const { authenticate } = require('../middleware/authenticate');
 const { authorize } = require('../middleware/authorize');
+const { delay } = require('../middleware/delay');
 
 const userRoutes = require('../routes/user.routes');
 const bookRoutes = require('../routes/book.routes');
@@ -67,6 +77,7 @@ app.use('/_healthcheck', (req, res) => {
 	});
 });
 
+app.use(delay(1000));
 app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
 

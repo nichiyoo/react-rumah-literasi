@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
-import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import axios, { isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -22,6 +22,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import Loading from '@/components/loading';
 
 const ListEvents = () => {
 	const { confirm } = useConfirm();
@@ -31,18 +32,9 @@ const ListEvents = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/events', fetcher, {
-		onError: (error) => {
-			toast.error('Failed to load data', {
-				description: isAxiosError(error)
-					? error.response.data.message
-					: error.message,
-			});
-			console.log(error);
-		},
-	});
+	} = useSWR('/events');
 
-	const empty = !error && result.data.length == 0;
+	const empty = !error && !loading && result.data.length == 0;
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -99,14 +91,6 @@ const ListEvents = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{loading && (
-							<TableRow>
-								<TableCell colSpan={4} className='py-10 text-center'>
-									<span className='text-zinc-500'>Loading data...</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={4} className='py-10 text-center'>
@@ -146,6 +130,7 @@ const ListEvents = () => {
 						)}
 					</TableBody>
 				</Table>
+				<Loading loading={loading} />
 			</div>
 		</div>
 	);

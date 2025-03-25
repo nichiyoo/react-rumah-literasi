@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { useParams, useNavigate } from 'react-router';
 
-import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import axios, { isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/heading';
 
 import DonationForm from '@/components/donations/form-donation';
+import Loading from '@/components/loading';
+import Error from '@/components/error';
 
 const EditDonation = () => {
 	const { id } = useParams();
@@ -23,7 +25,7 @@ const EditDonation = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/donations/' + id, fetcher);
+	} = useSWR('/donations/' + id);
 
 	const onSubmit = async (data) => {
 		try {
@@ -56,17 +58,8 @@ const EditDonation = () => {
 				</HeadingDescription>
 			</Heading>
 
-			{loading && (
-				<div className='w-full h-96 rounded-xl bg-zinc-100'>
-					<span>Loading...</span>
-				</div>
-			)}
-
-			{error && (
-				<div className='w-full h-96 rounded-xl bg-zinc-100'>
-					<span>Error: {error.message}</span>
-				</div>
-			)}
+			<Loading loading={loading} />
+			<Error error={error} loading={loading} />
 
 			{result && (
 				<DonationForm

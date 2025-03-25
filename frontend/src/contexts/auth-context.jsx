@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import axios, { destroySession } from '@/libs/axios';
+import axios, { onUnautenticated } from '@/libs/axios';
 import useLocalStorage from '@/hooks/use-localstorage';
-import { toast } from 'sonner';
 
 const AuthContext = React.createContext({
 	user: null,
@@ -35,7 +34,7 @@ export function AuthProvider({ children }) {
 
 		if (!user) profile();
 
-		destroySession(() => {
+		onUnautenticated(() => {
 			setUser(null);
 		});
 	}, [user, setUser, setSession]);

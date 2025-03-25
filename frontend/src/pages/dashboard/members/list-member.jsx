@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
-import axios, { fetcher, isAxiosError } from '@/libs/axios';
+import axios, { isAxiosError } from '@/libs/axios';
 
 import {
 	Heading,
@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/table';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import Loading from '@/components/loading';
 
 const ListMembers = () => {
 	const { confirm } = useConfirm();
@@ -33,15 +34,9 @@ const ListMembers = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/members', fetcher, {
-		onError: (error) => {
-			toast.error(
-				isAxiosError(error) ? error.response.data.message : error.message
-			);
-		},
-	});
+	} = useSWR('/members');
 
-	const empty = !error && result.data.length == 0;
+	const empty = !error && !loading && result.data.length == 0;
 
 	const handleDelete = async (uuid) => {
 		confirm({
@@ -99,14 +94,6 @@ const ListMembers = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{loading && (
-							<TableRow>
-								<TableCell colSpan={5} className='py-10 text-center'>
-									<span className='text-zinc-500'>Loading data...</span>
-								</TableCell>
-							</TableRow>
-						)}
-
 						{empty && (
 							<TableRow>
 								<TableCell colSpan={5} className='py-10 text-center'>
@@ -154,6 +141,7 @@ const ListMembers = () => {
 						)}
 					</TableBody>
 				</Table>
+				<Loading loading={loading} />
 			</div>
 		</div>
 	);

@@ -1,7 +1,7 @@
-import { Link } from 'react-router';
+import * as React from 'react';
 import { toast } from 'sonner';
 import { LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { cn } from '@/libs/utils';
 import { useAuth } from '@/hooks/use-auth';
@@ -20,12 +20,16 @@ import { useLocation } from 'react-router';
 import { User2 } from 'lucide-react';
 
 const Sidebar = ({ className }) => {
-	const { user, signout } = useAuth();
+	const { user, loading, signout } = useAuth();
 
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const MENUS = user && user.role === 'admin' ? ADMIN_MENUS : MEMBER_MENUS;
+	const MENUS = React.useMemo(() => {
+		if (loading) return [];
+		if (user && user.role === 'admin') return ADMIN_MENUS;
+		return MEMBER_MENUS;
+	}, [loading, user]);
 
 	const handleLogout = async () => {
 		try {
