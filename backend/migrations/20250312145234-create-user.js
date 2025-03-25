@@ -32,6 +32,11 @@ module.exports = {
 				values: ['student', 'admin', 'librarian'],
 				defaultValue: 'student',
 			},
+			is_verified: {
+				allowNull: false,
+				type: DataTypes.BOOLEAN,
+				defaultValue: false,
+			},
 			created_at: {
 				allowNull: false,
 				type: DataTypes.DATE,
