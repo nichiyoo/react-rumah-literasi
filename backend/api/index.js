@@ -53,6 +53,8 @@ const authRoutes = require('../routes/auth.routes');
 const paymentRoutes = require('../routes/payment.routes');
 
 const { authenticate } = require('../middleware/authenticate');
+const { authorize } = require('../middleware/authorize');
+
 const userRoutes = require('../routes/user.routes');
 const bookRoutes = require('../routes/book.routes');
 const eventRoutes = require('../routes/event.routes');
@@ -69,13 +71,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
 
 app.use(authenticate);
-app.use('/api/members', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/gifts', giftRoutes);
 app.use('/api/donations', donationRoutes);
-app.use(errorHandler);
 
+app.use(authorize('admin'));
+app.use('/api/members', userRoutes);
+
+app.use(errorHandler);
 app.get('*', (req, res) => {
 	res.sendStatus(404);
 });

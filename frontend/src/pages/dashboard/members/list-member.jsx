@@ -32,7 +32,13 @@ const ListMembers = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/members', fetcher);
+	} = useSWR('/members', fetcher, {
+		onError: (error) => {
+			toast.error(
+				isAxiosError(error) ? error.response.data.message : error.message
+			);
+		},
+	});
 
 	const empty = !error && result.data.length == 0;
 
