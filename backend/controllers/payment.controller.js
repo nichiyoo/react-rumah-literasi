@@ -6,18 +6,29 @@ const { Donation } = require('../models');
 
 const IGNORE = 204;
 const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
+const ACTIVATE_PAYMENT = process.env.ACTIVATE_PAYMENT == 'true';
 
 const PaymentController = {
 	async midtrans(donation, user) {
 		try {
-			return await midtrans.post('/transactions', {
-				transaction_details: {
-					order_id: donation.uuid,
-					gross_amount: donation.amount,
-					customer_details: {
-						email: user.email,
+			if (ACTIVATE_PAYMENT) {
+				return await midtrans.post('/transactions', {
+					transaction_details: {
+						order_id: donation.uuid,
+						gross_amount: donation.amount,
+						customer_details: {
+							email: user.email,
+						},
 					},
-				},
+				});
+			}
+
+			return new Promise((resolve) => {
+				resolve({
+					data: {
+						redirect_url: 'http://example.com',
+					},
+				});
 			});
 		} catch (error) {
 			throw new ApiError(

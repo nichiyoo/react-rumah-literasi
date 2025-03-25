@@ -15,7 +15,7 @@ import {
 	Home,
 } from 'lucide-react';
 
-export const SIDEBAR_MENUS = [
+export const ADMIN_MENUS = [
 	{
 		id: 'general',
 		label: 'General',
@@ -36,14 +36,14 @@ export const SIDEBAR_MENUS = [
 				icon: Calendar,
 			},
 			{
-				href: '/dashboard/donations',
-				label: 'List Donations',
-				icon: HeartHandshake,
-			},
-			{
 				href: '/dashboard/gifts',
 				label: 'List Gifts',
 				icon: Gift,
+			},
+			{
+				href: '/dashboard/donations',
+				label: 'List Donations',
+				icon: HeartHandshake,
 			},
 			{
 				href: '/dashboard/transactions',
@@ -53,14 +53,54 @@ export const SIDEBAR_MENUS = [
 		],
 	},
 	{
-		id: 'administrator',
-		label: 'Administrator',
+		id: 'configuration',
+		label: 'Configuration',
 		submenus: [
 			{
 				href: '/dashboard/members',
 				label: 'List Members',
 				icon: UsersRound,
 			},
+			{
+				href: '/dashboard/settings',
+				label: 'Settings',
+				icon: Bolt,
+			},
+		],
+	},
+];
+
+export const MEMBER_MENUS = [
+	{
+		id: 'general',
+		label: 'General',
+		submenus: [
+			{
+				href: '/dashboard',
+				label: 'Dashboard',
+				icon: Home,
+			},
+			{
+				href: '/dashboard/gifts',
+				label: 'List Gifts',
+				icon: Gift,
+			},
+			{
+				href: '/dashboard/donations',
+				label: 'List Donations',
+				icon: HeartHandshake,
+			},
+			{
+				href: '/dashboard/transactions',
+				label: 'List Transactions',
+				icon: Library,
+			},
+		],
+	},
+	{
+		id: 'configuration',
+		label: 'Configuration',
+		submenus: [
 			{
 				href: '/dashboard/settings',
 				label: 'Settings',

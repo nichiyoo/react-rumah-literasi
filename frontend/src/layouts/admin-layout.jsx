@@ -1,23 +1,12 @@
 import * as React from 'react';
-import { Outlet } from 'react-router';
+
+import { Outlet, Navigate } from 'react-router';
+import { useAuth } from '@/hooks/use-auth';
 
 const AdminLayout = () => {
-	return (
-		<div className='relative flex'>
-			<aside className='h-screen text-white w-72 bg-primary-500'>
-				<div className='w-full h-16 bg-black'></div>
-				<div className='w-full h-16 bg-black'></div>
-				<div className='w-full h-16 bg-black'></div>
-				<div className='w-full h-16 bg-black'></div>
-				<div className='w-full h-16 bg-black'></div>
-				<div className='w-full h-16 bg-black'></div>
-			</aside>
-
-			<div className='h-screen overflow-y-auto'>
-				<Outlet />
-			</div>
-		</div>
-	);
+	const { user } = useAuth();
+	const admin = user && user.role === 'admin';
+	return admin ? <Outlet /> : <Navigate to={'/dashboard'} />;
 };
 
 export default AdminLayout;

@@ -1,4 +1,3 @@
-// import base from 'axios';
 const base = require('axios');
 
 const buffer = Buffer.from(process.env.MIDTRANS_SERVER_KEY + ':');

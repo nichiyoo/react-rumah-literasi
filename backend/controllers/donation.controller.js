@@ -1,7 +1,6 @@
 const { isAxiosError } = require('axios');
 
 const ApiError = require('../libs/error');
-const midtrans = require('../libs/midtrans');
 const ApiResponse = require('../libs/response');
 
 const { Donation } = require('../models');
@@ -74,7 +73,6 @@ const DonationController = {
 			donation.amount = req.body.amount;
 			donation.status = req.body.status;
 			donation.notes = req.body.notes;
-			donation.payment_url = req.body.payment_url;
 
 			await donation.save();
 			return res.json(

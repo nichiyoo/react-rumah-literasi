@@ -45,19 +45,19 @@ const Router = () => {
 				<Route path='dashboard' element={<DashboardLayout />}>
 					<Route index element={<Dashboard />} />
 
-					<Route path='books'>
+					<Route path='books' element={<AdminLayout />}>
 						<Route index element={<ListBooks />} />
 						<Route path='create' element={<CreateBook />} />
 						<Route path=':id' element={<EditBook />} />
 					</Route>
 
-					<Route path='events'>
+					<Route path='events' element={<AdminLayout />}>
 						<Route index element={<ListEvents />} />
 						<Route path='create' element={<CreateEvent />} />
 						<Route path=':id' element={<EditEvent />} />
 					</Route>
 
-					<Route path='members'>
+					<Route path='members' element={<AdminLayout />}>
 						<Route index element={<ListUsers />} />
 						<Route path='create' element={<CreateUser />} />
 						<Route path=':id' element={<EditUser />} />

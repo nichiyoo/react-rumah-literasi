@@ -5,7 +5,8 @@ const transporter = require('../libs/nodemailer');
 const OneTimePasswordEmail = require('../emails/otp-notification.jsx').default;
 const UserVerification = require('../emails/user-verification.jsx').default;
 
-const SEND_EMAIL = process.env.SEND_EMAIL == 'true';
+const NODEMAILER_FROM = process.env.NODEMAILER_FROM;
+const ACTIVATE_EMAIL = process.env.ACTIVATE_EMAIL == 'true';
 
 const EmailController = {
 	/**
@@ -14,16 +15,16 @@ const EmailController = {
 	 * @param {object} user - The user object
 	 */
 	otp: async (otp, user) => {
-		const rendered = await render(
+		const output = await render(
 			<OneTimePasswordEmail otp={otp} name={user.name} />
 		);
 
-		if (SEND_EMAIL) {
+		if (ACTIVATE_EMAIL) {
 			await transporter.sendMail({
-				from: '"Rumah Literasi" <noreply@rumahliterasi.com>',
+				from: NODEMAILER_FROM,
 				to: user.email,
 				subject: 'Your verification code for secure access',
-				html: rendered,
+				html: output,
 			});
 		}
 
@@ -36,16 +37,16 @@ const EmailController = {
 	 * @param {object} user - The user object
 	 */
 	verify: async (href, user) => {
-		const rendered = await render(
+		const output = await render(
 			<UserVerification href={href} name={user.name} />
 		);
 
-		if (SEND_EMAIL) {
+		if (ACTIVATE_EMAIL) {
 			await transporter.sendMail({
-				from: '"Rumah Literasi" <noreply@rumahliterasi.com>',
+				from: NODEMAILER_FROM,
 				to: user.email,
 				subject: 'One more step to complete your registration',
-				html: rendered,
+				html: output,
 			});
 		}
 

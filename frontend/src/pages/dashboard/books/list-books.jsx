@@ -32,7 +32,16 @@ const ListBooks = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/books', fetcher);
+	} = useSWR('/books', fetcher, {
+		onError: (error) => {
+			toast.error('Failed to load data', {
+				description: isAxiosError(error)
+					? error.response.data.message
+					: error.message,
+			});
+			console.log(error);
+		},
+	});
 
 	const empty = !error && result.data.length == 0;
 

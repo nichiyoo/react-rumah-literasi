@@ -31,7 +31,17 @@ const ListEvents = () => {
 		mutate,
 		data: result = { data: [] },
 		isLoading: loading,
-	} = useSWR('/events', fetcher);
+	} = useSWR('/events', fetcher, {
+		onError: (error) => {
+			toast.error('Failed to load data', {
+				description: isAxiosError(error)
+					? error.response.data.message
+					: error.message,
+			});
+			console.log(error);
+		},
+	});
+
 	const empty = !error && result.data.length == 0;
 
 	const handleDelete = async (id) => {

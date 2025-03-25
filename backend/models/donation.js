@@ -50,9 +50,6 @@ module.exports = (sequelize, DataTypes) => {
 			payment_url: {
 				allowNull: true,
 				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-				},
 			},
 			user_id: {
 				allowNull: false,

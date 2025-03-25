@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { cn } from '@/libs/utils';
 import { useAuth } from '@/hooks/use-auth';
 import { isAxiosError } from '@/libs/axios';
-import { SIDEBAR_MENUS } from '@/libs/constant';
+import { ADMIN_MENUS, MEMBER_MENUS } from '@/libs/constant';
 
 import {
 	Accordion,
@@ -20,9 +20,12 @@ import { useLocation } from 'react-router';
 import { User2 } from 'lucide-react';
 
 const Sidebar = ({ className }) => {
-	const { signout } = useAuth();
+	const { user, signout } = useAuth();
+
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	const MENUS = user && user.role === 'admin' ? ADMIN_MENUS : MEMBER_MENUS;
 
 	const handleLogout = async () => {
 		try {
@@ -44,7 +47,7 @@ const Sidebar = ({ className }) => {
 		<aside className={cn('bg-zinc-100', className)}>
 			<div className='flex flex-col justify-between h-full p-6 pt-10'>
 				<div className='flex flex-col gap-6'>
-					{SIDEBAR_MENUS.map((menu) => (
+					{MENUS.map((menu) => (
 						<Accordion type='multiple' defaultValue={[menu.id]} key={menu.id}>
 							<AccordionItem value={menu.id}>
 								<AccordionTrigger>{menu.label}</AccordionTrigger>

@@ -71,12 +71,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
 
 app.use(authenticate);
-app.use('/api/books', bookRoutes);
-app.use('/api/events', eventRoutes);
 app.use('/api/gifts', giftRoutes);
 app.use('/api/donations', donationRoutes);
 
 app.use(authorize('admin'));
+app.use('/api/books', bookRoutes);
+app.use('/api/events', eventRoutes);
 app.use('/api/members', userRoutes);
 
 app.use(errorHandler);

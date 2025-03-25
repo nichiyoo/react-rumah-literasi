@@ -1,6 +1,7 @@
 const errorHandler = (err, req, res, next) => {
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
+	process.env.NODE_ENV === 'development' && console.log(err);
 
 	switch (err.name) {
 		case 'SequelizeValidationError':

@@ -13,13 +13,19 @@ const DonationSchema = z.object({
 	notes: z.string().min(3),
 });
 
+const EditSchema = DonationSchema.merge(
+	z.object({
+		status: z.enum(['pending', 'success', 'failed']),
+	})
+);
+
 const DonationForm = ({ initial, action, label }) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(DonationSchema),
+		resolver: zodResolver(initial ? EditSchema : DonationSchema),
 		defaultValues: initial || {
 			amount: 0,
 			notes: '',
@@ -51,6 +57,24 @@ const DonationForm = ({ initial, action, label }) => {
 					<span className='text-red-500'>{errors.notes.message}</span>
 				)}
 			</div>
+
+			{initial && (
+				<div>
+					<Label htmlFor='status'>Status</Label>
+
+					<select
+						className='block w-full p-3 border shadow-sm border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
+						{...register('status')}>
+						<option value='pending'>Pending</option>
+						<option value='success'>Success</option>
+						<option value='failed'>Failed</option>
+					</select>
+
+					{errors.status && (
+						<span className='text-red-500'>{errors.status.message}</span>
+					)}
+				</div>
+			)}
 
 			<div className='col-span-full'>
 				<Button>{label}</Button>
