@@ -9,12 +9,22 @@ module.exports = {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			account: {
+			amount: {
 				allowNull: false,
+				type: DataTypes.INTEGER,
+			},
+			status: {
+				allowNull: false,
+				type: DataTypes.ENUM,
+				values: ['pending', 'success', 'failed'],
+				defaultValue: 'pending',
+			},
+			notes: {
+				allowNull: true,
 				type: DataTypes.STRING,
 			},
-			receipt: {
-				allowNull: false,
+			payment_url: {
+				allowNull: true,
 				type: DataTypes.STRING,
 			},
 			user_id: {

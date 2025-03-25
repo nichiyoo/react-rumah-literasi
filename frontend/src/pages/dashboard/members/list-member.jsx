@@ -23,7 +23,6 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import { Avatar } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 
 const ListMembers = () => {
 	const { confirm } = useConfirm();

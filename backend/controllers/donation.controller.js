@@ -19,7 +19,12 @@ const DonationController = {
 
 	async store(req, res, next) {
 		try {
-			const event = await Donation.create(req.body);
+			const event = await Donation.create({
+				...req.body,
+				payment_url: 'https://example.com',
+				user_id: req.user.id,
+			});
+
 			return res.json(new ApiResponse('Donation created successfully', event));
 		} catch (error) {
 			next(error);
@@ -56,8 +61,10 @@ const DonationController = {
 
 			if (!event) throw new ApiError(404, 'Donation not found');
 
-			event.account = req.body.account || event.account;
-			event.receipt = req.body.receipt || event.receipt;
+			event.amount = req.body.amount;
+			event.status = req.body.status;
+			event.notes = req.body.notes;
+			event.payment_url = req.body.payment_url;
 
 			await event.save();
 			return res.json(new ApiResponse('Donation updated successfully', event));

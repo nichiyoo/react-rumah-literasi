@@ -16,15 +16,31 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Donation.init(
 		{
-			account: {
+			amount: {
 				allowNull: false,
+				type: DataTypes.INTEGER,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			status: {
+				allowNull: false,
+				type: DataTypes.ENUM,
+				values: ['pending', 'success', 'failed'],
+				defaultValue: 'pending',
+				validate: {
+					notEmpty: true,
+				},
+			},
+			notes: {
+				allowNull: true,
 				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
-			receipt: {
-				allowNull: false,
+			payment_url: {
+				allowNull: true,
 				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,

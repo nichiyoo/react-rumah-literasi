@@ -24,6 +24,8 @@ import CreateUser from '@/pages/dashboard/members/create-member';
 import EditUser from '@/pages/dashboard/members/edit-member';
 import ProfileDetail from '@/pages/setting/profile';
 import OneTimePassword from '@/pages/auth/otp';
+import CreateDonation from '@/pages/dashboard/donations/create-donation';
+import EditDonation from '@/pages/dashboard/donations/edit-donation';
 
 const Router = () => {
 	return (
@@ -61,8 +63,13 @@ const Router = () => {
 						<Route path=':id' element={<EditUser />} />
 					</Route>
 
+					<Route path='donations'>
+						<Route index element={<ListDonations />} />
+						<Route path='create' element={<CreateDonation />} />
+						<Route path=':id' element={<EditDonation />} />
+					</Route>
+
 					<Route path='gifts' element={<ListGifts />} />
-					<Route path='donations' element={<ListDonations />} />
 					<Route path='profile' element={<ProfileDetail />} />
 				</Route>
 

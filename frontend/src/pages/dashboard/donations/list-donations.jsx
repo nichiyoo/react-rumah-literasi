@@ -22,6 +22,8 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Avatar } from '@/components/ui/avatar';
 
 const ListDonations = () => {
 	const { confirm } = useConfirm();
@@ -83,15 +85,18 @@ const ListDonations = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Account</TableHead>
-							<TableHead>Receipt</TableHead>
+							<TableHead>Member</TableHead>
+							<TableHead>Amount</TableHead>
+							<TableHead>Notes</TableHead>
+							<TableHead>Status</TableHead>
+							<TableHead>Payment Link</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{loading && (
 							<TableRow>
-								<TableCell colSpan={3} className='py-10 text-center'>
+								<TableCell colSpan={6} className='py-10 text-center'>
 									<span className='text-zinc-500'>Loading data...</span>
 								</TableCell>
 							</TableRow>
@@ -99,7 +104,7 @@ const ListDonations = () => {
 
 						{empty && (
 							<TableRow>
-								<TableCell colSpan={3} className='py-10 text-center'>
+								<TableCell colSpan={6} className='py-10 text-center'>
 									<span className='text-zinc-500'>No data found</span>
 								</TableCell>
 							</TableRow>
@@ -107,20 +112,43 @@ const ListDonations = () => {
 
 						{error ? (
 							<TableRow>
-								<TableCell colSpan={3} className='py-10 text-center'>
+								<TableCell colSpan={6} className='py-10 text-center'>
 									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
 						) : (
 							result.data.map((donation) => (
 								<TableRow key={donation.id}>
-									<TableCell>{donation.account}</TableCell>
-									<TableCell>{donation.receipt}</TableCell>
+									<TableCell>
+										<div className='flex items-center gap-4'>
+											<Avatar name={donation.user.name} className='flex-none' />
+											<span className='font-medium'>{donation.user.name}</span>
+										</div>
+									</TableCell>
+									<TableCell>{donation.amount}</TableCell>
+									<TableCell>{donation.notes}</TableCell>
+									<TableCell>
+										<Badge>{donation.status}</Badge>
+									</TableCell>
+									<TableCell>
+										{donation.status === 'pending' && (
+											<a
+												href={donation.payment_url}
+												target='_blank'
+												rel='noreferrer'>
+												<span className='text-primary-500'>
+													Complete Payment
+												</span>
+											</a>
+										)}
+									</TableCell>
 									<TableCell>
 										<div className='flex items-center gap-2'>
-											<button className='bg-transparent hover:text-amber-500'>
-												Edit
-											</button>
+											<Link to={'/dashboard/donations/' + donation.id}>
+												<button className='bg-transparent hover:text-amber-500'>
+													Edit
+												</button>
+											</Link>
 											<button
 												onClick={() => handleDelete(donation.id)}
 												className='bg-transparent hover:text-red-500'>
