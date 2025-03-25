@@ -9,7 +9,7 @@ const AuthContext = React.createContext({
 	loading: true,
 	signin: async () => {},
 	signup: async () => {},
-	verify: async () => {},
+	validate: async () => {},
 	signout: async () => {},
 });
 
@@ -48,16 +48,15 @@ export function AuthProvider({ children }) {
 	};
 
 	const signup = async ({ name, email, password }) => {
-		const { data } = await axios.post('/auth/signup', {
+		await axios.post('/auth/signup', {
 			name,
 			email,
 			password,
 		});
-		setSession(data.data);
 	};
 
-	const verify = async ({ otp }) => {
-		const { data } = await axios.post('/auth/verify', {
+	const validate = async ({ otp }) => {
+		const { data } = await axios.post('/auth/validate', {
 			otp,
 		});
 		setSession(null);
@@ -78,7 +77,7 @@ export function AuthProvider({ children }) {
 				loading,
 				signin,
 				signup,
-				verify,
+				validate,
 				signout,
 			}}>
 			{children}

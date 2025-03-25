@@ -19,7 +19,7 @@ const OneTimePasswordSchema = z.object({
 });
 
 const OneTimePassword = () => {
-	const { loading, session, verify, signout } = useAuth();
+	const { loading, session, validate, signout } = useAuth();
 	const navigate = useNavigate();
 
 	React.useEffect(() => {
@@ -40,7 +40,7 @@ const OneTimePassword = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
-			await verify(data);
+			await validate(data);
 			toast('One time password verified', {
 				description: 'You are now logged in',
 			});

@@ -23,6 +23,7 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import { Avatar } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 const ListMembers = () => {
 	const { confirm } = useConfirm();
@@ -131,6 +132,9 @@ const ListMembers = () => {
 									</TableCell>
 									<TableCell>{member.email}</TableCell>
 									<TableCell>{member.role}</TableCell>
+									<TableCell>
+										<Badge>{member.is_verified ? 'Yes' : 'No'}</Badge>
+									</TableCell>
 									<TableCell>
 										<div className='flex items-center gap-2'>
 											<Link to={'/dashboard/members/' + member.uuid}>
