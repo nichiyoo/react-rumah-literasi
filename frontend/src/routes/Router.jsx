@@ -26,6 +26,8 @@ import ProfileDetail from '@/pages/setting/profile';
 import OneTimePassword from '@/pages/auth/otp';
 import CreateDonation from '@/pages/dashboard/donations/create-donation';
 import EditDonation from '@/pages/dashboard/donations/edit-donation';
+import About from '@/pages/about';
+import Contact from '@/pages/contact';
 
 const Router = () => {
 	return (
@@ -33,6 +35,8 @@ const Router = () => {
 			<Routes>
 				<Route path='/' element={<LandingLayout />}>
 					<Route index element={<Home />} />
+					<Route path='about' element={<About />} />
+					<Route path='contact' element={<Contact />} />
 				</Route>
 
 				<Route path='auth' element={<AuthLayout />}>

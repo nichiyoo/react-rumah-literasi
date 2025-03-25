@@ -1,14 +1,34 @@
 import * as React from 'react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router';
 import { Link } from 'react-router';
 
 import { cn } from '@/libs/utils';
+import { isAxiosError } from '@/libs/axios';
 import { useAuth } from '@/hooks/use-auth';
 
 import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
 
 const Navbar = ({ className }) => {
-	const { user } = useAuth();
+	const { user, signout } = useAuth();
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+		try {
+			await signout();
+			toast('Logout successful', {
+				description: 'You are now logged out',
+			});
+			navigate('/auth/signin');
+		} catch (error) {
+			toast.error('Failed to logout', {
+				description: isAxiosError(error)
+					? error.response?.data?.message
+					: error.message,
+			});
+		}
+	};
 
 	return (
 		<nav className={cn('w-full', className)}>
@@ -37,9 +57,14 @@ const Navbar = ({ className }) => {
 
 				<div className='flex items-center gap-2'>
 					{user ? (
-						<Link to='/dashboard'>
-							<Button variant='outline'>Dashboard</Button>
-						</Link>
+						<React.Fragment>
+							<Button variant='outline' onClick={handleLogout}>
+								Logout
+							</Button>
+							<Link to='/dashboard'>
+								<Button>Dashboard</Button>
+							</Link>
+						</React.Fragment>
 					) : (
 						<Link to='/auth/signin'>
 							<Button>Login</Button>

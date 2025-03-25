@@ -17,7 +17,7 @@ export default {
 				sans: ['var(--font-sans)', ...fontFamily.sans],
 			},
 			colors: {
-				primary: colors.pink,
+				primary: colors.indigo,
 				temporary: {
 					50: '#eff6ff',
 					100: '#dbebfe',
@@ -34,6 +34,7 @@ export default {
 			},
 			aspectRatio: {
 				thumbnail: '4 / 3',
+				banner: '3 / 1',
 			},
 			keyframes: {
 				'accordion-down': {

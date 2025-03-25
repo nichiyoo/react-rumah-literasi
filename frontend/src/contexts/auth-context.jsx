@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import axios, { destroySession } from '@/libs/axios';
 import useLocalStorage from '@/hooks/use-localstorage';
+import { toast } from 'sonner';
 
 const AuthContext = React.createContext({
 	user: null,
@@ -64,9 +65,9 @@ export function AuthProvider({ children }) {
 	};
 
 	const signout = async () => {
-		setUser(null);
-		setSession(null);
 		await axios.post('/auth/signout');
+		setSession(null);
+		setUser(null);
 	};
 
 	return (

@@ -13,7 +13,7 @@ const Button = React.forwardRef(
 						'bg-primary-500 text-white hover:bg-primary-600 focus:bg-primary-600 border-transparent focus:ring-primary-500',
 					variant === 'outline' &&
 						'bg-transparent text-primary-500 hover:bg-primary-500 hover:text-white focus:bg-primary-500 focus:text-white border-zinc-200 focus:ring-primary-500',
-					variant === 'desctructive' &&
+					variant === 'destructive' &&
 						'bg-red-500 text-white hover:bg-red-600 focus:bg-red-600 border-transparent focus:ring-red-500',
 					className
 				)}
