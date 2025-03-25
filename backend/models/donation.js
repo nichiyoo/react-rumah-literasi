@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Donation.init(
 		{
+			uuid: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				defaultValue: DataTypes.UUIDV4,
+				validate: {
+					notEmpty: true,
+				},
+			},
 			amount: {
 				allowNull: false,
 				type: DataTypes.INTEGER,

@@ -1,16 +1,20 @@
+const { isAxiosError } = require('axios');
+
 const ApiError = require('../libs/error');
+const midtrans = require('../libs/midtrans');
 const ApiResponse = require('../libs/response');
 
 const { Donation } = require('../models');
+const PaymentController = require('./payment.controller');
 
 const DonationController = {
 	async index(req, res, next) {
 		try {
-			const events = await Donation.findAll({
+			const donations = await Donation.findAll({
 				include: 'user',
 			});
 			return res.json(
-				new ApiResponse('Donations retrieved successfully', events)
+				new ApiResponse('Donations retrieved successfully', donations)
 			);
 		} catch (error) {
 			next(error);
@@ -19,13 +23,19 @@ const DonationController = {
 
 	async store(req, res, next) {
 		try {
-			const event = await Donation.create({
+			const donation = await Donation.create({
 				...req.body,
-				payment_url: 'https://example.com',
 				user_id: req.user.id,
 			});
 
-			return res.json(new ApiResponse('Donation created successfully', event));
+			const { data } = await PaymentController.midtrans(donation, req.user);
+			donation.payment_url = data.redirect_url;
+			donation.status = 'pending';
+			await donation.save();
+
+			return res.json(
+				new ApiResponse('Donation created successfully', donation)
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -36,14 +46,14 @@ const DonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const event = await Donation.findOne({
+			const donation = await Donation.findOne({
 				where: { id },
 				include: 'user',
 			});
 
-			if (!event) throw new ApiError(404, 'Donation not found');
+			if (!donation) throw new ApiError(404, 'Donation not found');
 			return res.json(
-				new ApiResponse('Donation retrieved successfully', event)
+				new ApiResponse('Donation retrieved successfully', donation)
 			);
 		} catch (error) {
 			next(error);
@@ -55,19 +65,21 @@ const DonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const event = await Donation.findOne({
+			const donation = await Donation.findOne({
 				where: { id },
 			});
 
-			if (!event) throw new ApiError(404, 'Donation not found');
+			if (!donation) throw new ApiError(404, 'Donation not found');
 
-			event.amount = req.body.amount;
-			event.status = req.body.status;
-			event.notes = req.body.notes;
-			event.payment_url = req.body.payment_url;
+			donation.amount = req.body.amount;
+			donation.status = req.body.status;
+			donation.notes = req.body.notes;
+			donation.payment_url = req.body.payment_url;
 
-			await event.save();
-			return res.json(new ApiResponse('Donation updated successfully', event));
+			await donation.save();
+			return res.json(
+				new ApiResponse('Donation updated successfully', donation)
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -78,14 +90,16 @@ const DonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const event = await Donation.findOne({
+			const donation = await Donation.findOne({
 				where: { id },
 			});
 
-			if (!event) throw new ApiError(404, 'Donation not found');
+			if (!donation) throw new ApiError(404, 'Donation not found');
 
-			await event.destroy();
-			return res.json(new ApiResponse('Donation deleted successfully', event));
+			await donation.destroy();
+			return res.json(
+				new ApiResponse('Donation deleted successfully', donation)
+			);
 		} catch (error) {
 			next(error);
 		}

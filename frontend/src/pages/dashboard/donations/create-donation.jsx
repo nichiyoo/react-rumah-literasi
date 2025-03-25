@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
-import { useNavigate } from 'react-router';
 
 import axios, { isAxiosError } from '@/libs/axios';
 
@@ -14,19 +13,16 @@ import {
 import DonationForm from '@/components/donations/form-donation';
 
 const CreateDonation = () => {
-	const navigate = useNavigate();
 	const { mutate } = useSWRConfig();
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.post('/donations', data);
-
+			const { data: result } = await axios.post('/donations', data);
 			toast('Donation created', {
 				description: 'Successfully created donation',
 			});
-
 			mutate('/donations');
-			navigate('/dashboard/donations');
+			window.location.href = result.data.payment_url;
 		} catch (error) {
 			toast.error('Failed to create donation', {
 				description: isAxiosError(error)

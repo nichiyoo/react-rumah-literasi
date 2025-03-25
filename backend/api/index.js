@@ -49,16 +49,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 const errorHandler = require('../middleware/errors');
-const { authenticate } = require('../middleware/authenticate');
-
 const authRoutes = require('../routes/auth.routes');
+const paymentRoutes = require('../routes/payment.routes');
+
+const { authenticate } = require('../middleware/authenticate');
 const userRoutes = require('../routes/user.routes');
 const bookRoutes = require('../routes/book.routes');
 const eventRoutes = require('../routes/event.routes');
 const giftRoutes = require('../routes/gift.routes');
 const donationRoutes = require('../routes/donation.routes');
 
+app.use('/_healthcheck', (req, res) => {
+	res.status(200).json({
+		message: 'Server is running correctly',
+	});
+});
+
 app.use('/api/auth', authRoutes);
+app.use('/api/payment', paymentRoutes);
 
 app.use(authenticate);
 app.use('/api/members', userRoutes);

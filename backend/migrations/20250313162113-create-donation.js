@@ -9,6 +9,11 @@ module.exports = {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
+			uuid: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				defaultValue: DataTypes.UUIDV4,
+			},
 			amount: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
