@@ -1,9 +1,8 @@
+import useSWR from 'swr';
 import * as React from 'react';
 
 import axios, { onUnautenticated } from '@/libs/axios';
 import useLocalStorage from '@/hooks/use-localstorage';
-import useSWR, { useSWRConfig } from 'swr';
-import { useMemo } from 'react';
 
 const AuthContext = React.createContext({
 	user: null,
@@ -25,7 +24,7 @@ export function AuthProvider({ children }) {
 		});
 	});
 
-	const user = useMemo(() => {
+	const user = React.useMemo(() => {
 		if (result) return result.data;
 		return null;
 	}, [result]);
@@ -51,13 +50,17 @@ export function AuthProvider({ children }) {
 			otp,
 		});
 		setSession(null);
-		mutate(data.data);
+		mutate(data, {
+			revalidate: false,
+		});
 	};
 
 	const signout = async () => {
 		await axios.post('/auth/signout');
 		setSession(null);
-		mutate(null);
+		mutate(null, {
+			revalidate: false,
+		});
 	};
 
 	return (

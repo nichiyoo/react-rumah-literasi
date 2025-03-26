@@ -17,29 +17,38 @@ module.exports = (sequelize, DataTypes) => {
 	Gift.init(
 		{
 			title: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
 			genre: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
 			amount: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
 			address: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			status: {
+				allowNull: false,
+				type: DataTypes.ENUM,
+				values: ['pending', 'success', 'failed'],
+				defaultValue: 'pending',
 				validate: {
 					notEmpty: true,
 				},

@@ -10,20 +10,26 @@ module.exports = {
 				type: DataTypes.INTEGER,
 			},
 			title: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
 			},
 			genre: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
 			},
 			amount: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
 			},
 			address: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			status: {
+				allowNull: false,
+				type: DataTypes.ENUM,
+				values: ['pending', 'success', 'failed'],
+				defaultValue: 'pending',
 			},
 			user_id: {
 				allowNull: false,

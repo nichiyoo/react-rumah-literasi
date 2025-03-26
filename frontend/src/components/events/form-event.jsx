@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-const BookSchema = z.object({
+const EventSchema = z.object({
 	title: z.string().min(3),
 	description: z.string().min(3),
 	date: z.coerce.date(),
@@ -20,7 +20,7 @@ const EventForm = ({ initial, action, label }) => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(BookSchema),
+		resolver: zodResolver(EventSchema),
 		defaultValues: initial || {
 			title: '',
 			description: '',

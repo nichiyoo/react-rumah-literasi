@@ -23,6 +23,7 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import Loading from '@/components/loading';
+import { Badge } from '@/components/ui/badge';
 
 const ListGifts = () => {
 	const { confirm } = useConfirm();
@@ -86,13 +87,14 @@ const ListGifts = () => {
 							<TableHead>Genre</TableHead>
 							<TableHead>Amount</TableHead>
 							<TableHead>Address</TableHead>
+							<TableHead>Status</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{empty && (
 							<TableRow>
-								<TableCell colSpan={5} className='py-10 text-center'>
+								<TableCell colSpan={6} className='py-10 text-center'>
 									<span className='text-zinc-500'>No data found</span>
 								</TableCell>
 							</TableRow>
@@ -100,7 +102,7 @@ const ListGifts = () => {
 
 						{error ? (
 							<TableRow>
-								<TableCell colSpan={5} className='py-10 text-center'>
+								<TableCell colSpan={6} className='py-10 text-center'>
 									<span className='text-zinc-500'>Failed to load data</span>
 								</TableCell>
 							</TableRow>
@@ -112,10 +114,15 @@ const ListGifts = () => {
 									<TableCell>{gift.amount}</TableCell>
 									<TableCell>{gift.address}</TableCell>
 									<TableCell>
+										<Badge>{gift.status}</Badge>
+									</TableCell>
+									<TableCell>
 										<div className='flex items-center gap-2'>
-											<button className='bg-transparent hover:text-amber-500'>
-												Edit
-											</button>
+											<Link to={'/dashboard/gifts/' + gift.id}>
+												<button className='bg-transparent hover:text-amber-500'>
+													Edit
+												</button>
+											</Link>
 											<button
 												onClick={() => handleDelete(gift.id)}
 												className='bg-transparent hover:text-red-500'>

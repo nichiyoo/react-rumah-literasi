@@ -17,7 +17,11 @@ const GiftController = {
 
 	async store(req, res, next) {
 		try {
-			const gift = await Gift.create(req.body);
+			const gift = await Gift.create({
+				...req.body,
+				user_id: req.user.id,
+			});
+
 			return res.json(new ApiResponse('Gift created successfully', gift));
 		} catch (error) {
 			next(error);
@@ -56,6 +60,7 @@ const GiftController = {
 			gift.genre = req.body.genre || gift.genre;
 			gift.amount = req.body.amount || gift.amount;
 			gift.address = req.body.address || gift.address;
+			gift.status = req.body.status || gift.status;
 
 			await gift.save();
 			return res.json(new ApiResponse('Gift updated successfully', gift));

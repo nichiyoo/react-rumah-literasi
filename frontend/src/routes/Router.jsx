@@ -6,6 +6,8 @@ import LandingLayout from '@/layouts/landing-layout.jsx';
 import DashboardLayout from '@/layouts/dashboard-layout.jsx';
 
 import Home from '@/pages/home.jsx';
+import About from '@/pages/about';
+import Contact from '@/pages/contact';
 import NotFound from '@/pages/not-found.jsx';
 import SignIn from '@/pages/auth/sign-in.jsx';
 import SignUp from '@/pages/auth/sign-up.jsx';
@@ -26,8 +28,8 @@ import ProfileDetail from '@/pages/setting/profile';
 import OneTimePassword from '@/pages/auth/otp';
 import CreateDonation from '@/pages/dashboard/donations/create-donation';
 import EditDonation from '@/pages/dashboard/donations/edit-donation';
-import About from '@/pages/about';
-import Contact from '@/pages/contact';
+import CreateGift from '@/pages/dashboard/gifts/create-gift';
+import EditGift from '@/pages/dashboard/gifts/edit-gift';
 
 const Router = () => {
 	return (
@@ -73,7 +75,12 @@ const Router = () => {
 						<Route path=':id' element={<EditDonation />} />
 					</Route>
 
-					<Route path='gifts' element={<ListGifts />} />
+					<Route path='gifts'>
+						<Route index element={<ListGifts />} />
+						<Route path='create' element={<CreateGift />} />
+						<Route path=':id' element={<EditGift />} />
+					</Route>
+
 					<Route path='profile' element={<ProfileDetail />} />
 				</Route>
 
