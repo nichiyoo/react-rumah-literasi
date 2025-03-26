@@ -7,8 +7,6 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { isAxiosError } from '@/libs/axios';
-
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -55,9 +53,7 @@ const SignUp = () => {
 			navigate('/auth/signin');
 		} catch (error) {
 			toast.error('Failed to register', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 			console.error(error);
 		}

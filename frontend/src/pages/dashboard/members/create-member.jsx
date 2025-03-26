@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
 import { useNavigate } from 'react-router';
 
-import axios, { isAxiosError } from '@/libs/axios';
+import axios from '@/libs/axios';
 
 import {
 	Heading,
@@ -31,9 +31,7 @@ const CreateMember = () => {
 			navigate('/dashboard/members');
 		} catch (error) {
 			toast.error('Failed to create member', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 			console.error(error);
 		}

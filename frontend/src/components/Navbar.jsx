@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router';
 
 import { cn } from '@/libs/utils';
-import { isAxiosError } from '@/libs/axios';
 import { useAuth } from '@/hooks/use-auth';
 
 import { Logo } from '@/components/ui/logo';
@@ -23,9 +22,7 @@ const Navbar = ({ className }) => {
 			navigate('/auth/signin');
 		} catch (error) {
 			toast.error('Failed to logout', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 		}
 	};

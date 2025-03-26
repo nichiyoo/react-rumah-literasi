@@ -19,23 +19,17 @@ export const fetcher = async (args) => {
 };
 
 let handleSignout = () => {};
-let handleRateLimit = () => {};
 
 axios.interceptors.response.use(
 	(response) => response,
 	(error) => {
 		if (error.response?.status === 401) handleSignout();
-		if (error.response?.status === 429) handleRateLimit();
 		return Promise.reject(error);
 	}
 );
 
 export const onUnautenticated = (callback) => {
 	handleSignout = callback;
-};
-
-export const onRateLimited = (callback) => {
-	handleRateLimit = callback;
 };
 
 export default axios;

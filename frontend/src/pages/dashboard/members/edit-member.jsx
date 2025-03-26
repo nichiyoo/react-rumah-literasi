@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { useParams, useNavigate } from 'react-router';
 
-import axios, { isAxiosError } from '@/libs/axios';
+import axios from '@/libs/axios';
 
 import {
 	Heading,
@@ -24,7 +24,7 @@ const EditMember = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/membersa/' + id);
+	} = useSWR('/members/' + id);
 
 	const onSubmit = async (data) => {
 		try {
@@ -40,9 +40,7 @@ const EditMember = () => {
 			navigate('/dashboard/members');
 		} catch (error) {
 			toast.error('Failed to update member', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 			console.error(error);
 		}

@@ -2,7 +2,6 @@ require('@babel/register')({
 	extensions: ['.js', '.jsx'],
 });
 
-const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
@@ -46,8 +45,8 @@ app.use(
 
 app.use(
 	ratelimit({
-		limit: 500,
-		windowMs: 15 * 60 * 1000,
+		limit: 200,
+		windowMs: 5 * 60 * 1000,
 		standardHeaders: 'draft-8',
 	})
 );

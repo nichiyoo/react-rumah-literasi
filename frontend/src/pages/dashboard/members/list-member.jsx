@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
-import axios, { isAxiosError } from '@/libs/axios';
+import axios from '@/libs/axios';
 
 import {
 	Heading,
@@ -53,9 +53,7 @@ const ListMembers = () => {
 					});
 				} catch (error) {
 					toast.error('Failed to delete member', {
-						description: isAxiosError(error)
-							? error.response.data.message
-							: error.message,
+						description: error.response.data.message || error.message,
 					});
 					console.log(error);
 				}

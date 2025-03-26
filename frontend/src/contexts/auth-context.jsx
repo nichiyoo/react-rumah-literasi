@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import axios, { onUnautenticated } from '@/libs/axios';
 import useLocalStorage from '@/hooks/use-localstorage';
+import useSWR, { useSWRConfig } from 'swr';
+import { useMemo } from 'react';
 
 const AuthContext = React.createContext({
 	user: null,
@@ -14,30 +16,19 @@ const AuthContext = React.createContext({
 });
 
 export function AuthProvider({ children }) {
-	const [user, setUser] = React.useState(null);
-	const [loading, setLoading] = React.useState(true);
 	const [session, setSession] = useLocalStorage('session', null);
+	const { data: result, isLoading: loading, mutate } = useSWR('/auth/profile');
 
-	React.useEffect(() => {
-		const profile = async () => {
-			try {
-				setLoading(true);
-				const { data } = await axios.get('/auth/profile');
-				setUser(data.data);
-			} catch (error) {
-				setUser(null);
-				console.error(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		if (!user) profile();
-
-		onUnautenticated(() => {
-			setUser(null);
+	onUnautenticated(() => {
+		mutate(null, {
+			revalidate: false,
 		});
-	}, [user, setUser, setSession]);
+	});
+
+	const user = useMemo(() => {
+		if (result) return result.data;
+		return null;
+	}, [result]);
 
 	const signin = async ({ email, password }) => {
 		const { data } = await axios.post('/auth/signin', {
@@ -60,13 +51,13 @@ export function AuthProvider({ children }) {
 			otp,
 		});
 		setSession(null);
-		setUser(data.data);
+		mutate(data.data);
 	};
 
 	const signout = async () => {
 		await axios.post('/auth/signout');
 		setSession(null);
-		setUser(null);
+		mutate(null);
 	};
 
 	return (

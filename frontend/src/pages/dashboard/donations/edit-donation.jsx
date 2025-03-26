@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { useParams, useNavigate } from 'react-router';
 
-import axios, { isAxiosError } from '@/libs/axios';
+import axios from '@/libs/axios';
 
 import {
 	Heading,
@@ -39,9 +39,7 @@ const EditDonation = () => {
 			navigate('/dashboard/donations');
 		} catch (error) {
 			toast.error('Failed to update donation', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 			console.error(error);
 		}

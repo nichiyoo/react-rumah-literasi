@@ -168,3 +168,11 @@ export const WIDGET_SOCIAL = [
 		icon: Facebook,
 	},
 ];
+
+export const ERROR_MESSAGES = {
+	401: 'You are not authenticated, please login to access this resource',
+	403: 'You are not authorized to access this resource',
+	404: 'Resource not found, please try again later',
+	429: 'You have exceeded the rate limit, try again later',
+	500: 'Internal server error, try again later',
+};

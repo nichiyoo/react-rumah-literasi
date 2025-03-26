@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router';
 
 import { cn } from '@/libs/utils';
 import { useAuth } from '@/hooks/use-auth';
-import { isAxiosError } from '@/libs/axios';
 import { ADMIN_MENUS, MEMBER_MENUS } from '@/libs/constant';
 
 import {
@@ -40,9 +39,7 @@ const Sidebar = ({ className }) => {
 			navigate('/auth/signin');
 		} catch (error) {
 			toast.error('Failed to logout', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 		}
 	};

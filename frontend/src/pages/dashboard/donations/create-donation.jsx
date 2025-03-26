@@ -2,7 +2,7 @@ import * as React from 'react';
 import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
 
-import axios, { isAxiosError } from '@/libs/axios';
+import axios from '@/libs/axios';
 
 import {
 	Heading,
@@ -25,9 +25,7 @@ const CreateDonation = () => {
 			window.location.href = result.data.payment_url;
 		} catch (error) {
 			toast.error('Failed to create donation', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 			console.error(error);
 		}

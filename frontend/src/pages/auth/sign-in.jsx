@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useAuth } from '@/hooks/use-auth';
-import { isAxiosError } from '@/libs/axios';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -58,9 +57,7 @@ const SignIn = () => {
 			navigate('/dashboard');
 		} catch (error) {
 			toast.error('Failed to login', {
-				description: isAxiosError(error)
-					? error.response?.data?.message
-					: error.message,
+				description: error.response.data.message || error.message,
 			});
 			console.error(error);
 		}
