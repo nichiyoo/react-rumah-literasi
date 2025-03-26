@@ -176,3 +176,8 @@ export const ERROR_MESSAGES = {
 	429: 'You have exceeded the rate limit, try again later',
 	500: 'Internal server error, try again later',
 };
+
+export const DEFAULT_LOCATION = {
+	latitude: -6.1741855,
+	longitude: 106.8283465,
+};
