@@ -61,6 +61,8 @@ const GiftController = {
 			gift.amount = req.body.amount || gift.amount;
 			gift.address = req.body.address || gift.address;
 			gift.status = req.body.status || gift.status;
+			gift.latitude = req.body.latitude || gift.latitude;
+			gift.longitude = req.body.longitude || gift.longitude;
 
 			await gift.save();
 			return res.json(new ApiResponse('Gift updated successfully', gift));

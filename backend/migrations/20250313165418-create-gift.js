@@ -31,6 +31,14 @@ module.exports = {
 				values: ['pending', 'success', 'failed'],
 				defaultValue: 'pending',
 			},
+			latitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+			},
+			longitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+			},
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
