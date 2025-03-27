@@ -14,10 +14,6 @@ module.exports = {
 				type: DataTypes.STRING,
 				defaultValue: DataTypes.UUIDV4,
 			},
-			receipient: {
-				allowNull: false,
-				type: DataTypes.STRING,
-			},
 			phone: {
 				allowNull: false,
 				type: DataTypes.STRING,

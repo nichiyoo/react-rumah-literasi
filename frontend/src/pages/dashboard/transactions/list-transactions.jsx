@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 import { Link } from 'react-router';
 
 import axios from '@/libs/axios';
-import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
 import { useResultState } from '@/hooks/use-result-state';
 
@@ -23,16 +22,17 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Avatar } from '@/components/ui/avatar';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 
-const ListDonations = () => {
+const ListTransactions = () => {
 	const { confirm } = useConfirm();
 
-	const { error, mutate, data, isLoading: loading } = useSWR('/donations');
+	const { error, mutate, data, isLoading: loading } = useSWR('/transactions');
 	const { result, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
@@ -43,13 +43,13 @@ const ListDonations = () => {
 		})
 			.then(async () => {
 				try {
-					await axios.delete('/donations/' + id);
+					await axios.delete('/transactions/' + id);
 					mutate();
-					toast('Donation deleted', {
-						description: 'Successfully deleted donation',
+					toast('Transaction deleted', {
+						description: 'Successfully deleted transaction',
 					});
 				} catch (error) {
-					toast.error('Failed to delete donation', {
+					toast.error('Failed to delete transaction', {
 						description: error.response.data.message || error.message,
 					});
 					console.log(error);
@@ -63,7 +63,7 @@ const ListDonations = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Donations List</HeadingTitle>
+				<HeadingTitle>Transaction List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -71,8 +71,8 @@ const ListDonations = () => {
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/donations/create'>
-						<Button>Create Donation</Button>
+					<Link to='/dashboard/transactions/create'>
+						<Button>Create Transaction</Button>
 					</Link>
 				</div>
 			</Heading>
@@ -81,47 +81,44 @@ const ListDonations = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Member</TableHead>
+							<TableHead>Title</TableHead>
+							<TableHead>Author</TableHead>
+							<TableHead>Publisher</TableHead>
+							<TableHead>Year</TableHead>
+							<TableHead>Language</TableHead>
 							<TableHead>Amount</TableHead>
-							<TableHead>Notes</TableHead>
-							<TableHead>Status</TableHead>
-							<TableHead>Payment Link</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{result.map((donation) => (
-							<TableRow key={donation.id}>
+						{result.map((transaction) => (
+							<TableRow key={transaction.id}>
 								<TableCell>
 									<div className='flex items-center gap-4'>
-										<Avatar name={donation.user.name} className='flex-none' />
-										<span className='font-medium'>{donation.user.name}</span>
+										<img
+											src={transaction.cover}
+											alt={transaction.title}
+											className='flex-none object-cover rounded-full size-10'
+										/>
+										<span className='font-medium'>{transaction.title}</span>
 									</div>
 								</TableCell>
-								<TableCell>{donation.amount}</TableCell>
-								<TableCell>{donation.notes}</TableCell>
+								<TableCell>{transaction.author}</TableCell>
+								<TableCell>{transaction.publisher}</TableCell>
+								<TableCell>{transaction.year}</TableCell>
 								<TableCell>
-									<Badge>{donation.status}</Badge>
+									<Badge>{transaction.language}</Badge>
 								</TableCell>
-								<TableCell>
-									{donation.status === 'pending' && (
-										<a
-											href={donation.payment_url}
-											target='_blank'
-											rel='noreferrer'>
-											<span className='text-primary-500'>Complete Payment</span>
-										</a>
-									)}
-								</TableCell>
+								<TableCell>{transaction.amount}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={'/dashboard/donations/' + donation.id}>
+										<Link to={'/dashboard/transactions/' + transaction.id}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Edit
 											</button>
 										</Link>
 										<button
-											onClick={() => handleDelete(donation.id)}
+											onClick={() => handleDelete(transaction.id)}
 											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>
@@ -140,4 +137,4 @@ const ListDonations = () => {
 	);
 };
 
-export default ListDonations;
+export default ListTransactions;

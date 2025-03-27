@@ -12,11 +12,10 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import DonationForm from '@/components/donations/form-donation';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
 
-const EditDonation = () => {
+const EditTransaction = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
@@ -25,20 +24,22 @@ const EditDonation = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/donations/' + id);
+	} = useSWR('/transactions/' + id);
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.put('/donations/' + result.data.id, data);
+			await axios.put('/transactions/' + result.data.id, data, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+			});
 
-			toast('Donation updated', {
-				description: 'Successfully updated donation',
+			toast('Transaction updated', {
+				description: 'Successfully updated transaction',
 			});
 
 			mutate();
-			navigate('/dashboard/donations');
+			navigate('/dashboard/transactions');
 		} catch (error) {
-			toast.error('Failed to update donation', {
+			toast.error('Failed to update transaction', {
 				description: error.response.data.message || error.message,
 			});
 			console.error(error);
@@ -48,7 +49,7 @@ const EditDonation = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Edit Donation</HeadingTitle>
+				<HeadingTitle>Edit Transaction</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -58,16 +59,8 @@ const EditDonation = () => {
 
 			<Loading loading={loading} />
 			<Error error={error} loading={loading} />
-
-			{result && (
-				<DonationForm
-					initial={result.data}
-					action={onSubmit}
-					label='Update Donation'
-				/>
-			)}
 		</div>
 	);
 };
 
-export default EditDonation;
+export default EditTransaction;

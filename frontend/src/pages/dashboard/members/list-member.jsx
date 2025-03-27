@@ -4,9 +4,9 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/button';
-import { useConfirm } from '@/hooks/use-confirm';
 import axios from '@/libs/axios';
+import { useConfirm } from '@/hooks/use-confirm';
+import { useResultState } from '@/hooks/use-result-state';
 
 import {
 	Heading,
@@ -22,21 +22,18 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+
+import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import Loading from '@/components/loading';
+import { Loading } from '@/components/loading';
+import { Empty } from '@/components/empty';
+import { Error } from '@/components/error';
 
 const ListMembers = () => {
 	const { confirm } = useConfirm();
-
-	const {
-		error,
-		mutate,
-		data: result = { data: [] },
-		isLoading: loading,
-	} = useSWR('/members');
-
-	const empty = !error && !loading && result.data.length == 0;
+	const { error, mutate, data, isLoading: loading } = useSWR('/members');
+	const { result, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (uuid) => {
 		confirm({
@@ -92,53 +89,40 @@ const ListMembers = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{empty && (
-							<TableRow>
-								<TableCell colSpan={5} className='py-10 text-center'>
-									<span className='text-zinc-500'>No data found</span>
+						{result.map((member) => (
+							<TableRow key={member.uuid}>
+								<TableCell>
+									<div className='flex items-center gap-4'>
+										<Avatar name={member.name} className='flex-none' />
+										<span className='font-medium'>{member.name}</span>
+									</div>
 								</TableCell>
-							</TableRow>
-						)}
-
-						{error ? (
-							<TableRow>
-								<TableCell colSpan={5} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
+								<TableCell>{member.email}</TableCell>
+								<TableCell>{member.role}</TableCell>
+								<TableCell>
+									<Badge>{member.is_verified ? 'Yes' : 'No'}</Badge>
 								</TableCell>
-							</TableRow>
-						) : (
-							result.data.map((member) => (
-								<TableRow key={member.uuid}>
-									<TableCell>
-										<div className='flex items-center gap-4'>
-											<Avatar name={member.name} className='flex-none' />
-											<span className='font-medium'>{member.name}</span>
-										</div>
-									</TableCell>
-									<TableCell>{member.email}</TableCell>
-									<TableCell>{member.role}</TableCell>
-									<TableCell>
-										<Badge>{member.is_verified ? 'Yes' : 'No'}</Badge>
-									</TableCell>
-									<TableCell>
-										<div className='flex items-center gap-2'>
-											<Link to={'/dashboard/members/' + member.uuid}>
-												<button className='bg-transparent hover:text-amber-500'>
-													Edit
-												</button>
-											</Link>
-											<button
-												onClick={() => handleDelete(member.uuid)}
-												className='bg-transparent hover:text-red-500'>
-												Delete
+								<TableCell>
+									<div className='flex items-center gap-2'>
+										<Link to={'/dashboard/members/' + member.uuid}>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
 											</button>
-										</div>
-									</TableCell>
-								</TableRow>
-							))
-						)}
+										</Link>
+										<button
+											onClick={() => handleDelete(member.uuid)}
+											className='bg-transparent hover:text-red-500'>
+											Delete
+										</button>
+									</div>
+								</TableCell>
+							</TableRow>
+						))}
 					</TableBody>
 				</Table>
+
+				<Error error={!loading && error} />
+				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
 		</div>

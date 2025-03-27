@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import axios from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
-import { Button } from '@/components/ui/button';
+import { useResultState } from '@/hooks/use-result-state';
 
 import {
 	Heading,
@@ -22,18 +22,17 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import Loading from '@/components/loading';
+
+import { Button } from '@/components/ui/button';
+import { Loading } from '@/components/loading';
 import { Badge } from '@/components/ui/badge';
+import { Empty } from '@/components/empty';
+import { Error } from '@/components/error';
 
 const ListGifts = () => {
 	const { confirm } = useConfirm();
-
-	const {
-		error,
-		mutate,
-		data: result = { data: [] },
-		isLoading: loading,
-	} = useSWR('/gifts');
+	const { error, mutate, data, isLoading: loading } = useSWR('/gifts');
+	const { result, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -59,8 +58,6 @@ const ListGifts = () => {
 				// pass
 			});
 	};
-
-	const empty = !error && !loading && result.data.length == 0;
 
 	return (
 		<div className='grid gap-8'>
@@ -92,49 +89,36 @@ const ListGifts = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{empty && (
-							<TableRow>
-								<TableCell colSpan={6} className='py-10 text-center'>
-									<span className='text-zinc-500'>No data found</span>
+						{result.map((gift) => (
+							<TableRow key={gift.id}>
+								<TableCell>{gift.title}</TableCell>
+								<TableCell>{gift.genre}</TableCell>
+								<TableCell>{gift.amount}</TableCell>
+								<TableCell>{gift.address}</TableCell>
+								<TableCell>
+									<Badge>{gift.status}</Badge>
 								</TableCell>
-							</TableRow>
-						)}
-
-						{error ? (
-							<TableRow>
-								<TableCell colSpan={6} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
-								</TableCell>
-							</TableRow>
-						) : (
-							result.data.map((gift) => (
-								<TableRow key={gift.id}>
-									<TableCell>{gift.title}</TableCell>
-									<TableCell>{gift.genre}</TableCell>
-									<TableCell>{gift.amount}</TableCell>
-									<TableCell>{gift.address}</TableCell>
-									<TableCell>
-										<Badge>{gift.status}</Badge>
-									</TableCell>
-									<TableCell>
-										<div className='flex items-center gap-2'>
-											<Link to={'/dashboard/gifts/' + gift.id}>
-												<button className='bg-transparent hover:text-amber-500'>
-													Edit
-												</button>
-											</Link>
-											<button
-												onClick={() => handleDelete(gift.id)}
-												className='bg-transparent hover:text-red-500'>
-												Delete
+								<TableCell>
+									<div className='flex items-center gap-2'>
+										<Link to={'/dashboard/gifts/' + gift.id}>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
 											</button>
-										</div>
-									</TableCell>
-								</TableRow>
-							))
-						)}
+										</Link>
+										<button
+											onClick={() => handleDelete(gift.id)}
+											className='bg-transparent hover:text-red-500'>
+											Delete
+										</button>
+									</div>
+								</TableCell>
+							</TableRow>
+						))}
 					</TableBody>
 				</Table>
+
+				<Error error={!loading && error} />
+				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
 		</div>

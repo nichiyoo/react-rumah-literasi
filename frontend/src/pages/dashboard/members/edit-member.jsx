@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/heading';
 
 import MemberForm from '@/components/members/form-member';
-import Loading from '@/components/loading';
-import Error from '@/components/error';
+import { Loading } from '@/components/loading';
+import { Error } from '@/components/error';
 
 const EditMember = () => {
 	const { id } = useParams();

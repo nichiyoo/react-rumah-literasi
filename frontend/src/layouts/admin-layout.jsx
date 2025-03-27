@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Outlet, Navigate } from 'react-router';
 import { useAuth } from '@/hooks/use-auth';
-import Loading from '@/components/loading';
+import { Loading } from '@/components/loading';
 
 const AdminLayout = () => {
 	const { user, loading } = useAuth();
@@ -18,7 +18,7 @@ const AdminLayout = () => {
 						<div className='w-1/2 h-4 bg-zinc-100 animate-pulse rounded-xl' />
 					</div>
 				</div>
-				<Loading />
+				<Loading loading={loading} />
 			</div>
 		);
 	}

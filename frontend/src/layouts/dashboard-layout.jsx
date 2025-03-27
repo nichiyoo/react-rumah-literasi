@@ -19,8 +19,8 @@ const DashboardLayout = () => {
 
 	return (
 		<div className='relative flex'>
-			<div className='absolute w-full bg-white border-b'>
-				<div className='flex h-16'>
+			<div className='absolute z-50 w-full bg-white border-b'>
+				<div className='flex h-16 '>
 					<div className='items-center justify-center flex-none hidden border-r lg:flex w-72'>
 						<Link to='/'>
 							<Logo />

@@ -13,8 +13,8 @@ import {
 } from '@/components/ui/heading';
 
 import BookForm from '@/components/books/form-book';
-import Loading from '@/components/loading';
-import Error from '@/components/error';
+import { Loading } from '@/components/loading';
+import { Error } from '@/components/error';
 
 const EditBook = () => {
 	const { id } = useParams();

@@ -35,6 +35,7 @@ export default {
 			aspectRatio: {
 				thumbnail: '4 / 3',
 				banner: '3 / 1',
+				book: '2 / 3',
 			},
 			keyframes: {
 				'accordion-down': {

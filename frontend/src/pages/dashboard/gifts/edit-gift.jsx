@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/heading';
 
 import GiftForm from '@/components/gifts/form-gift';
-import Loading from '@/components/loading';
-import Error from '@/components/error';
+import { Loading } from '@/components/loading';
+import { Error } from '@/components/error';
 
 const EditGift = () => {
 	const { id } = useParams();

@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/heading';
 
 import EventForm from '@/components/events/form-event';
-import Loading from '@/components/loading';
-import Error from '@/components/error';
+import { Loading } from '@/components/loading';
+import { Error } from '@/components/error';
 
 const EditEvent = () => {
 	const { id } = useParams();

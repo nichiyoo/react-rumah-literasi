@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Loader2 } from 'lucide-react';
 import { cn } from '@/libs/utils';
+import { CircleAlert } from 'lucide-react';
 
-const Loading = React.forwardRef(({ loading, className, ...props }, ref) => {
-	if (!loading) return null;
+const Empty = React.forwardRef(({ empty, className, ...props }, ref) => {
+	if (!empty) return null;
 
 	return (
 		<div
@@ -14,13 +14,13 @@ const Loading = React.forwardRef(({ loading, className, ...props }, ref) => {
 			)}
 			{...props}>
 			<div className='flex items-center gap-2'>
-				<Loader2 className='text-primary-500 size-6 animate-spin' />
-				<span className='font-medium'>Loading...</span>
+				<CircleAlert className='text-amber-500 size-6 animate-pulse' />
+				<span className='font-medium'>No records found</span>
 			</div>
 		</div>
 	);
 });
 
-Loading.displayName = 'Loading';
+Empty.displayName = 'Empty';
 
-export { Loading };
+export { Empty };

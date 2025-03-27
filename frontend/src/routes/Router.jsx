@@ -30,6 +30,9 @@ import CreateDonation from '@/pages/dashboard/donations/create-donation';
 import EditDonation from '@/pages/dashboard/donations/edit-donation';
 import CreateGift from '@/pages/dashboard/gifts/create-gift';
 import EditGift from '@/pages/dashboard/gifts/edit-gift';
+import ListTransactions from '@/pages/dashboard/transactions/list-transactions';
+import CreateTransaction from '@/pages/dashboard/transactions/create-transaction';
+import EditTransaction from '@/pages/dashboard/transactions/edit-transaction';
 
 const Router = () => {
 	return (
@@ -79,6 +82,12 @@ const Router = () => {
 						<Route index element={<ListGifts />} />
 						<Route path='create' element={<CreateGift />} />
 						<Route path=':id' element={<EditGift />} />
+					</Route>
+
+					<Route path='transactions'>
+						<Route index element={<ListTransactions />} />
+						<Route path='create' element={<CreateTransaction />} />
+						<Route path=':id' element={<EditTransaction />} />
 					</Route>
 
 					<Route path='profile' element={<ProfileDetail />} />

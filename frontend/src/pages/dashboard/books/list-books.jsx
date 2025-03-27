@@ -4,9 +4,9 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/button';
-import { useConfirm } from '@/hooks/use-confirm';
 import axios from '@/libs/axios';
+import { useConfirm } from '@/hooks/use-confirm';
+import { useResultState } from '@/hooks/use-result-state';
 
 import {
 	Heading,
@@ -22,20 +22,17 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+
+import { Button } from '@/components/ui/button';
+import { Loading } from '@/components/loading';
+import { Empty } from '@/components/empty';
+import { Error } from '@/components/error';
 import { Badge } from '@/components/ui/badge';
-import Loading from '@/components/loading';
 
 const ListBooks = () => {
 	const { confirm } = useConfirm();
-
-	const {
-		error,
-		mutate,
-		data: result = { data: [] },
-		isLoading: loading,
-	} = useSWR('/books');
-
-	const empty = !error && !loading && result.data.length == 0;
+	const { error, mutate, data, isLoading: loading } = useSWR('/books');
+	const { result, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -93,59 +90,46 @@ const ListBooks = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{empty && (
-							<TableRow>
-								<TableCell colSpan={7} className='py-10 text-center'>
-									<span className='text-zinc-500'>No data found</span>
+						{result.map((book) => (
+							<TableRow key={book.id}>
+								<TableCell>
+									<div className='flex items-center gap-4'>
+										<img
+											src={book.cover}
+											alt={book.title}
+											className='flex-none object-cover rounded-full size-10'
+										/>
+										<span className='font-medium'>{book.title}</span>
+									</div>
 								</TableCell>
-							</TableRow>
-						)}
-
-						{error ? (
-							<TableRow>
-								<TableCell colSpan={7} className='py-10 text-center'>
-									<span className='text-zinc-500'>Failed to load data</span>
+								<TableCell>{book.author}</TableCell>
+								<TableCell>{book.publisher}</TableCell>
+								<TableCell>{book.year}</TableCell>
+								<TableCell>
+									<Badge>{book.language}</Badge>
 								</TableCell>
-							</TableRow>
-						) : (
-							result.data.map((book) => (
-								<TableRow key={book.id}>
-									<TableCell>
-										<div className='flex items-center gap-4'>
-											<img
-												src={book.cover}
-												alt={book.title}
-												className='flex-none object-cover rounded-full size-10'
-											/>
-											<span className='font-medium'>{book.title}</span>
-										</div>
-									</TableCell>
-									<TableCell>{book.author}</TableCell>
-									<TableCell>{book.publisher}</TableCell>
-									<TableCell>{book.year}</TableCell>
-									<TableCell>
-										<Badge>{book.language}</Badge>
-									</TableCell>
-									<TableCell>{book.amount}</TableCell>
-									<TableCell>
-										<div className='flex items-center gap-2'>
-											<Link to={'/dashboard/books/' + book.id}>
-												<button className='bg-transparent hover:text-amber-500'>
-													Edit
-												</button>
-											</Link>
-											<button
-												onClick={() => handleDelete(book.id)}
-												className='bg-transparent hover:text-red-500'>
-												Delete
+								<TableCell>{book.amount}</TableCell>
+								<TableCell>
+									<div className='flex items-center gap-2'>
+										<Link to={'/dashboard/books/' + book.id}>
+											<button className='bg-transparent hover:text-amber-500'>
+												Edit
 											</button>
-										</div>
-									</TableCell>
-								</TableRow>
-							))
-						)}
+										</Link>
+										<button
+											onClick={() => handleDelete(book.id)}
+											className='bg-transparent hover:text-red-500'>
+											Delete
+										</button>
+									</div>
+								</TableCell>
+							</TableRow>
+						))}
 					</TableBody>
 				</Table>
+
+				<Error error={!loading && error} />
+				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
 		</div>
