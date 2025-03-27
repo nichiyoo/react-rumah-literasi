@@ -32,7 +32,13 @@ const Home = () => {
 				</div>
 
 				<div className='relative order-first p-6 border rounded-full bg-zinc-50 size-full aspect-square border-zinc-200 lg:order-last'>
-					<div className='absolute xl:-right-20 xl:top-16'>
+					<img
+						alt='home'
+						src='/hero.jpg'
+						className='object-cover rounded-full size-full aspect-square'
+					/>
+
+					<div className='absolute top-0 xl:-right-20 xl:top-16'>
 						<div className='relative p-6 text-sm origin-center bg-white border w-72 animate-slow-hover border-zinc-200 rounded-2xl'>
 							<div className='absolute top-0 left-0 -m-1'>
 								<div className='relative'>
@@ -47,12 +53,6 @@ const Home = () => {
 							</p>
 						</div>
 					</div>
-
-					<img
-						alt='home'
-						src='/hero.jpg'
-						className='object-cover rounded-full size-full aspect-square'
-					/>
 				</div>
 			</div>
 

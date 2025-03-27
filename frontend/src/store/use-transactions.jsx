@@ -1,5 +1,7 @@
+import { toast } from 'sonner';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { DEFAULT_LOCATION } from '@/libs/constant';
 
 export const STEPS = {
 	BOOKS: 0,
@@ -10,7 +12,8 @@ export const STEPS = {
 const initialRecipient = {
 	phone: '',
 	address: '',
-	zipcode: '',
+	zipcode: 0,
+	...DEFAULT_LOCATION,
 	borrowed_date: new Date().toISOString().split('T')[0],
 };
 
@@ -55,6 +58,16 @@ export const useTransactionStore = create(
 					const found = state.books.find((item) => item.book.id === book.id);
 
 					if (found) {
+						if (book.amount <= found.amount) {
+							toast('Book already added', {
+								description: 'All stock is already added to your cart',
+							});
+
+							return {
+								books: state.books,
+							};
+						}
+
 						return {
 							books: state.books.map((item) => {
 								if (item.book.id === book.id) {

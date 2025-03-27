@@ -26,6 +26,14 @@ module.exports = {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},
+			latitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+			},
+			longitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+			},
 			borrowed_date: {
 				allowNull: false,
 				type: DataTypes.DATEONLY,

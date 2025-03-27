@@ -58,7 +58,7 @@ export const ConfirmProvider = ({ children }) => {
 						<DialogTitle className='text-start'>
 							{options && options.title}
 						</DialogTitle>
-						<DialogDescription>
+						<DialogDescription className='text-zinc-500'>
 							{options && options.description}
 						</DialogDescription>
 					</DialogHeader>

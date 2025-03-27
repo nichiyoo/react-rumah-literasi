@@ -18,7 +18,7 @@ const BookGrid = ({ className }) => {
 	return (
 		<div
 			className={cn(
-				'grid grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4',
+				'grid grid-cols-3 md:grid-cols-4 gap-6 lg:grid-cols-4',
 				className
 			)}>
 			{result.map((book) => (

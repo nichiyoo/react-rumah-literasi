@@ -50,6 +50,20 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
+			latitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			longitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+				validate: {
+					notEmpty: true,
+				},
+			},
 			borrowed_date: {
 				allowNull: false,
 				type: DataTypes.DATEONLY,

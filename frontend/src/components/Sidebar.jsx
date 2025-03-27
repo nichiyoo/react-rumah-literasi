@@ -57,13 +57,14 @@ const Sidebar = ({ className }) => {
 										{menu.submenus.map((menu) => {
 											const Icon = menu.icon;
 											const active = location.pathname === menu.href;
+
 											return (
 												<li key={menu.href}>
 													<Link
 														to={menu.href}
 														className={cn(
 															'flex items-center gap-4 font-medium rounded-md hover:text-primary-500',
-															active && 'text-primary-500'
+															{ 'text-primary-500': active }
 														)}>
 														<Icon className='size-5' />
 														<span>{menu.label}</span>
