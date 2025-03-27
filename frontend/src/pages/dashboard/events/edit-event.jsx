@@ -58,7 +58,7 @@ const EditEvent = () => {
 			</Heading>
 
 			<Loading loading={loading} />
-			<Error error={error} loading={loading} />
+			<Error error={!loading && error} />
 
 			{result && (
 				<EventForm

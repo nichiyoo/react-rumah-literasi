@@ -58,8 +58,8 @@ const EditBook = () => {
 				</HeadingDescription>
 			</Heading>
 
+			<Error error={!loading && error} />
 			<Loading loading={loading} />
-			<Error error={error} loading={loading} />
 
 			{result && (
 				<BookForm initial={result.data} action={onSubmit} label='Update Book' />

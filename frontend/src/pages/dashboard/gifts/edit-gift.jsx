@@ -57,8 +57,8 @@ const EditGift = () => {
 				</HeadingDescription>
 			</Heading>
 
+			<Error error={!loading && error} />
 			<Loading loading={loading} />
-			<Error error={error} loading={loading} />
 
 			{result && (
 				<GiftForm initial={result.data} action={onSubmit} label='Update Gift' />

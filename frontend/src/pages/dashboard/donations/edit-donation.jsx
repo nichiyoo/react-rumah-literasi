@@ -56,8 +56,8 @@ const EditDonation = () => {
 				</HeadingDescription>
 			</Heading>
 
+			<Error error={!loading && error} />
 			<Loading loading={loading} />
-			<Error error={error} loading={loading} />
 
 			{result && (
 				<DonationForm
