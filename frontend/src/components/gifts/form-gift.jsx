@@ -22,7 +22,7 @@ const GiftSchema = z.object({
 
 const EditSchema = GiftSchema.merge(
 	z.object({
-		status: z.enum(['pending', 'success', 'failed']),
+		status: z.enum(['pending', 'ongoing', 'accepted', 'rejected']),
 	})
 );
 
@@ -142,8 +142,9 @@ const GiftForm = ({ initial, action, label }) => {
 						className='block w-full p-3 border shadow-sm border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 						{...register('status')}>
 						<option value='pending'>Pending</option>
-						<option value='success'>Success</option>
-						<option value='failed'>Failed</option>
+						<option value='ongoing'>Ongoing</option>
+						<option value='accepted'>Accepted</option>
+						<option value='rejected'>Rejected</option>
 					</select>
 					{errors.status && (
 						<span className='text-red-500'>{errors.status.message}</span>

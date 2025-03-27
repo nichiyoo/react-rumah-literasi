@@ -11,9 +11,11 @@ import {
 } from '@/components/ui/heading';
 
 import DonationForm from '@/components/donations/form-donation';
+import { useNavigate } from 'react-router';
 
 const CreateDonation = () => {
 	const { mutate } = useSWRConfig();
+	const navigate = useNavigate();
 
 	const onSubmit = async (data) => {
 		try {
@@ -22,7 +24,8 @@ const CreateDonation = () => {
 				description: 'Successfully created donation',
 			});
 			mutate('/donations');
-			window.location.href = result.data.payment_url;
+			window.open(result.data.payment_url, '_blank');
+			navigate('/dashboard/donations');
 		} catch (error) {
 			toast.error('Failed to create donation', {
 				description: error.response.data.message || error.message,

@@ -6,6 +6,18 @@
 	--font-sans: 'Bricolage Grotesque Variable', sans-serif;
 }
 
+@layer base {
+	@keyframes slow-hover {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-20px);
+		}
+	}
+}
+
 @layer utilities {
 	.absolute-center {
 		@apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;

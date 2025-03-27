@@ -16,8 +16,7 @@ const Home = () => {
 					<p className='text-zinc-600'>
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia quidem
 						ullam cupiditate laboriosam animi quae, aliquid quo, repellendus
-						iste voluptas aspernatur hic provident ipsam architecto rem eum aut
-						doloremque consequatur.
+						iste voluptas.
 					</p>
 					<div className='flex items-center gap-2'>
 						<Button
@@ -31,7 +30,30 @@ const Home = () => {
 						</Link>
 					</div>
 				</div>
-				<img src='/hero.png' alt='home' className='w-full max-w-lg mx-auto' />
+
+				<div className='relative order-first p-6 border rounded-full bg-zinc-50 size-full aspect-square border-zinc-200 lg:order-last'>
+					<div className='absolute xl:-right-20 xl:top-16'>
+						<div className='relative p-6 text-sm origin-center bg-white border w-72 animate-slow-hover border-zinc-200 rounded-2xl'>
+							<div className='absolute top-0 left-0 -m-1'>
+								<div className='relative'>
+									<div className='absolute inset-0 rounded-full size-3 bg-primary-500'></div>
+									<div className='absolute inset-0 rounded-full size-3 bg-primary-500 animate-ping'></div>
+								</div>
+							</div>
+
+							<h2 className='font-semibold'>Donate your books</h2>
+							<p className='text-zinc-600'>
+								Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+							</p>
+						</div>
+					</div>
+
+					<img
+						alt='home'
+						src='/hero.jpg'
+						className='object-cover rounded-full size-full aspect-square'
+					/>
+				</div>
 			</div>
 
 			<div

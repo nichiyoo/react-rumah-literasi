@@ -28,7 +28,7 @@ module.exports = {
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: ['pending', 'success', 'failed'],
+				values: ['pending', 'ongoing', 'accepted', 'rejected'],
 				defaultValue: 'pending',
 			},
 			latitude: {

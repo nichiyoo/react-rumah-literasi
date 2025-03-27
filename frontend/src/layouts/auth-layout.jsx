@@ -19,11 +19,13 @@ const AuthLayout = () => {
 				<Logo />
 			</Link>
 
-			<img
-				src='/backdrop.jpg'
-				alt='logo'
-				className='hidden object-cover w-full h-full lg:block'
-			/>
+			<div className='w-full h-screen'>
+				<img
+					src='/backdrop.jpg'
+					alt='logo'
+					className='hidden object-cover size-full lg:block'
+				/>
+			</div>
 
 			<div className='flex flex-col items-center justify-center p-10 lg:p-20'>
 				<div className='w-full max-w-lg mx-auto'>

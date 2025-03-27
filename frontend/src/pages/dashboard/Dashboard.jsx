@@ -45,7 +45,7 @@ const Dashboard = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<div className='grid gap-6 lg:grid-cols-2 xl:grid-cols-3'>
+			<div className='grid gap-6 lg:grid-cols-2 2xl:grid-cols-3'>
 				{menus.map((menu) => {
 					const Icon = menu.icon;
 					return (

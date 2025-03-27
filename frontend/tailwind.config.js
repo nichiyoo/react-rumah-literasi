@@ -17,7 +17,7 @@ export default {
 				sans: ['var(--font-sans)', ...fontFamily.sans],
 			},
 			colors: {
-				primary: colors.indigo,
+				primary: colors.teal,
 				temporary: {
 					50: '#eff6ff',
 					100: '#dbebfe',
@@ -49,6 +49,7 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				'slow-hover': 'slow-hover 2s ease-out infinite',
 			},
 		},
 	},
