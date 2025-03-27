@@ -55,16 +55,9 @@ const GiftController = {
 			});
 
 			if (!gift) throw new ApiError(404, 'Gift not found');
-
-			gift.title = req.body.title || gift.title;
-			gift.genre = req.body.genre || gift.genre;
-			gift.amount = req.body.amount || gift.amount;
-			gift.address = req.body.address || gift.address;
-			gift.status = req.body.status || gift.status;
-			gift.latitude = req.body.latitude || gift.latitude;
-			gift.longitude = req.body.longitude || gift.longitude;
-
+			await gift.update(req.body);
 			await gift.save();
+
 			return res.json(new ApiResponse('Gift updated successfully', gift));
 		} catch (error) {
 			next(error);

@@ -7,10 +7,7 @@ const { User } = require('../models');
 const UserController = {
 	async index(req, res, next) {
 		try {
-			const users = await User.findAll({
-				include: ['donations', 'gifts'],
-			});
-
+			const users = await User.findAll();
 			return res.json(new ApiResponse('Users retrieved successfully', users));
 		} catch (error) {
 			next(error);
@@ -56,18 +53,19 @@ const UserController = {
 			const uuid = req.params.uuid;
 			if (!uuid) throw new ApiError(400, 'UUID is required');
 
-			const user = await User.findOne({
+			const user = await User.scope('authentication').findOne({
 				where: { uuid },
 			});
 
 			if (!user) throw new ApiError(404, 'User not found');
-
-			user.name = req.body.name;
-			user.email = req.body.email;
-			user.password = await argon2.hash(req.body.password);
-			user.role = req.body.role;
-
+			await user.update({
+				...req.body,
+				password: req.body.password
+					? await argon2.hash(req.body.password)
+					: user.password,
+			});
 			await user.save();
+
 			return res.json(new ApiResponse('User updated successfully', user));
 		} catch (error) {
 			next(error);

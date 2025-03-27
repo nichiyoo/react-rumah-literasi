@@ -10,12 +10,14 @@ import { Input } from '@/components/ui/input';
 const MemberSchema = z.object({
 	name: z.string().min(3),
 	email: z.string().min(3),
-	password: z.string().min(3),
+	password: z.string().optional(),
 	role: z.enum(['student', 'admin', 'librarian']),
+	is_verified: z.coerce.boolean(),
 });
 
 const MemberForm = ({ initial, action, label }) => {
 	const {
+		watch,
 		register,
 		handleSubmit,
 		formState: { errors },
@@ -26,11 +28,13 @@ const MemberForm = ({ initial, action, label }) => {
 			email: '',
 			password: '',
 			role: 'student',
+			is_verified: 'true',
 		},
 	});
 
 	return (
 		<form onSubmit={handleSubmit(action)} className='grid grid-cols-2 gap-6'>
+			<pre>{JSON.stringify(watch(), null, 2)}</pre>
 			<div className='col-span-full'>
 				<Label htmlFor='name'>Name</Label>
 				<Input
@@ -55,7 +59,7 @@ const MemberForm = ({ initial, action, label }) => {
 				)}
 			</div>
 
-			<div>
+			<div className='col-span-full'>
 				<Label htmlFor='password'>Password</Label>
 				<Input
 					type='password'
@@ -80,6 +84,21 @@ const MemberForm = ({ initial, action, label }) => {
 
 				{errors.role && (
 					<span className='text-red-500'>{errors.role.message}</span>
+				)}
+			</div>
+
+			<div>
+				<Label htmlFor='is_verified'>Verified</Label>
+
+				<select
+					className='block w-full p-3 border shadow-sm border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
+					{...register('is_verified')}>
+					<option value='true'>Yes</option>
+					<option value='false'>No</option>
+				</select>
+
+				{errors.is_verified && (
+					<span className='text-red-500'>{errors.is_verified.message}</span>
 				)}
 			</div>
 

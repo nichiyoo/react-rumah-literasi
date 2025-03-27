@@ -52,16 +52,12 @@ const BookController = {
 			});
 
 			if (!book) throw new ApiError(404, 'Book not found');
-
-			book.title = req.body.title;
-			book.author = req.body.author;
-			book.publisher = req.body.publisher;
-			book.year = req.body.year;
-			book.language = req.body.language;
-			book.amount = req.body.amount;
-			if (req.file) book.cover = req.file.path;
-
+			await book.update({
+				...req.body,
+				cover: req.file ? req.file.path : book.cover,
+			});
 			await book.save();
+
 			return res.json(new ApiResponse('Book updated successfully', book));
 		} catch (error) {
 			next(error);

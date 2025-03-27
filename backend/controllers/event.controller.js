@@ -48,12 +48,9 @@ const EventController = {
 			});
 
 			if (!event) throw new ApiError(404, 'Event not found');
-
-			event.title = req.body.title;
-			event.description = req.body.description;
-			event.date = req.body.date;
-
+			await event.update(req.body);
 			await event.save();
+
 			return res.json(new ApiResponse('Event updated successfully', event));
 		} catch (error) {
 			next(error);

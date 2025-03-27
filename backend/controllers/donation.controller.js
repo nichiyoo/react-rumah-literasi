@@ -1,5 +1,3 @@
-const { isAxiosError } = require('axios');
-
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
@@ -69,12 +67,9 @@ const DonationController = {
 			});
 
 			if (!donation) throw new ApiError(404, 'Donation not found');
-
-			donation.amount = req.body.amount;
-			donation.status = req.body.status;
-			donation.notes = req.body.notes;
-
+			await donation.update(req.body);
 			await donation.save();
+
 			return res.json(
 				new ApiResponse('Donation updated successfully', donation)
 			);
