@@ -43,6 +43,11 @@ app.use(
 	})
 );
 
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
+
 app.use(
 	ratelimit({
 		limit: 30,
@@ -50,11 +55,6 @@ app.use(
 		standardHeaders: 'draft-8',
 	})
 );
-
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads'));
 
 const errorHandler = require('../middleware/errors');
 const authRoutes = require('../routes/auth.routes');

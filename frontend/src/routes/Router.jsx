@@ -1,38 +1,51 @@
+import * as React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
-import AuthLayout from '@/layouts/auth-layout.jsx';
-import AdminLayout from '@/layouts/admin-layout.jsx';
-import LandingLayout from '@/layouts/landing-layout.jsx';
-import DashboardLayout from '@/layouts/dashboard-layout.jsx';
+import LazyRoute from '@/routes/lazy';
+import AuthLayout from '@/layouts/auth-layout';
+import AdminLayout from '@/layouts/admin-layout';
+import LandingLayout from '@/layouts/landing-layout';
+import DashboardLayout from '@/layouts/dashboard-layout';
 
-import Home from '@/pages/home.jsx';
+import Home from '@/pages/home';
 import About from '@/pages/about';
 import Contact from '@/pages/contact';
-import NotFound from '@/pages/not-found.jsx';
-import SignIn from '@/pages/auth/sign-in.jsx';
-import SignUp from '@/pages/auth/sign-up.jsx';
-import Dashboard from '@/pages/dashboard/dashboard.jsx';
-
-import ListBooks from '@/pages/dashboard/books/list-books';
-import ListUsers from '@/pages/dashboard/members/list-member';
-import ListEvents from '@/pages/dashboard/events/list-events';
-import ListGifts from '@/pages/dashboard/gifts/list-gifts';
-import ListDonations from '@/pages/dashboard/donations/list-donations';
-import CreateBook from '@/pages/dashboard/books/create-book';
-import EditBook from '@/pages/dashboard/books/edit-book';
-import CreateEvent from '@/pages/dashboard/events/create-event';
-import EditEvent from '@/pages/dashboard/events/edit-event';
-import CreateUser from '@/pages/dashboard/members/create-member';
-import EditUser from '@/pages/dashboard/members/edit-member';
-import ProfileDetail from '@/pages/setting/profile';
+import NotFound from '@/pages/not-found';
+import SignIn from '@/pages/auth/sign-in';
+import SignUp from '@/pages/auth/sign-up';
 import OneTimePassword from '@/pages/auth/otp';
-import CreateDonation from '@/pages/dashboard/donations/create-donation';
-import EditDonation from '@/pages/dashboard/donations/edit-donation';
-import CreateGift from '@/pages/dashboard/gifts/create-gift';
-import EditGift from '@/pages/dashboard/gifts/edit-gift';
-import ListTransactions from '@/pages/dashboard/transactions/list-transactions';
-import CreateTransaction from '@/pages/dashboard/transactions/create-transaction';
-import EditTransaction from '@/pages/dashboard/transactions/edit-transaction';
+import ProfileDetail from '@/pages/setting/profile';
+
+const load = (callback) => {
+	const Component = React.lazy(callback);
+	return (props) => <LazyRoute component={Component} {...props} />;
+};
+
+const Dashboard = load(() => import('~/dashboard'));
+
+const ListBooks = load(() => import('~/books/list-books'));
+const AddBook = load(() => import('~/books/create-book'));
+const EditBook = load(() => import('~/books/edit-book'));
+
+const ListGifts = load(() => import('~/gifts/list-gifts'));
+const AddGift = load(() => import('~/gifts/create-gift'));
+const EditGift = load(() => import('~/gifts/edit-gift'));
+
+const ListEvents = load(() => import('~/events/list-events'));
+const AddEvent = load(() => import('~/events/create-event'));
+const EditEvent = load(() => import('~/events/edit-event'));
+
+const ListDonations = load(() => import('~/donations/list-donations'));
+const AddDonation = load(() => import('~/donations/create-donation'));
+const EditDonation = load(() => import('~/donations/edit-donation'));
+
+const ListUsers = load(() => import('~/members/list-member'));
+const AddUser = load(() => import('~/members/create-member'));
+const EditUser = load(() => import('~/members/edit-member'));
+
+const ListTransactions = load(() => import('~/transactions/list-transactions'));
+const AddTransaction = load(() => import('~/transactions/create-transaction'));
+const EditTransaction = load(() => import('~/transactions/edit-transaction'));
 
 const Router = () => {
 	return (
@@ -56,45 +69,44 @@ const Router = () => {
 
 					<Route path='books' element={<AdminLayout />}>
 						<Route index element={<ListBooks />} />
-						<Route path='create' element={<CreateBook />} />
+						<Route path='create' element={<AddBook />} />
 						<Route path=':id' element={<EditBook />} />
 					</Route>
 
 					<Route path='events' element={<AdminLayout />}>
 						<Route index element={<ListEvents />} />
-						<Route path='create' element={<CreateEvent />} />
+						<Route path='create' element={<AddEvent />} />
 						<Route path=':id' element={<EditEvent />} />
 					</Route>
 
 					<Route path='members' element={<AdminLayout />}>
 						<Route index element={<ListUsers />} />
-						<Route path='create' element={<CreateUser />} />
+						<Route path='create' element={<AddUser />} />
 						<Route path=':id' element={<EditUser />} />
 					</Route>
 
 					<Route path='donations'>
 						<Route index element={<ListDonations />} />
-						<Route path='create' element={<CreateDonation />} />
+						<Route path='create' element={<AddDonation />} />
 						<Route path=':id' element={<EditDonation />} />
 					</Route>
 
 					<Route path='gifts'>
 						<Route index element={<ListGifts />} />
-						<Route path='create' element={<CreateGift />} />
+						<Route path='create' element={<AddGift />} />
 						<Route path=':id' element={<EditGift />} />
 					</Route>
 
 					<Route path='transactions'>
 						<Route index element={<ListTransactions />} />
-						<Route path='create' element={<CreateTransaction />} />
+						<Route path='create' element={<AddTransaction />} />
 						<Route path=':id' element={<EditTransaction />} />
 					</Route>
 
-					<Route path='profile' element={<ProfileDetail />} />
+					<Route path='setting' element={<ProfileDetail />} />
 				</Route>
 
 				<Route path='admin' element={<AdminLayout />}></Route>
-
 				<Route path='*' element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
