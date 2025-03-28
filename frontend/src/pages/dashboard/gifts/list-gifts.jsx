@@ -43,13 +43,13 @@ const ListGifts = () => {
 		})
 			.then(async () => {
 				try {
-					await axios.delete('/donations/' + id);
+					await axios.delete('/gifts/' + id);
 					mutate();
-					toast('Donation deleted', {
-						description: 'Successfully deleted donation',
+					toast('Gift deleted', {
+						description: 'Successfully deleted gift',
 					});
 				} catch (error) {
-					toast.error('Failed to delete donation', {
+					toast.error('Failed to delete gift', {
 						description: error.response.data.message || error.message,
 					});
 					console.log(error);
