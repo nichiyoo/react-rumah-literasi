@@ -103,7 +103,7 @@ const Router = () => {
 						<Route path=':id' element={<EditTransaction />} />
 					</Route>
 
-					<Route path='setting' element={<ProfileDetail />} />
+					<Route path='profile' element={<ProfileDetail />} />
 				</Route>
 
 				<Route path='admin' element={<AdminLayout />}></Route>

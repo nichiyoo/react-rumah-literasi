@@ -17,8 +17,10 @@ import {
 import SidebarCard from '@/components/sidebar-card';
 import { useLocation } from 'react-router';
 import { User2 } from 'lucide-react';
+import { useConfirm } from '@/hooks/use-confirm';
 
 const Sidebar = ({ className }) => {
+	const { confirm } = useConfirm();
 	const { user, loading, signout } = useAuth();
 
 	const navigate = useNavigate();
@@ -31,17 +33,27 @@ const Sidebar = ({ className }) => {
 	}, [loading, user]);
 
 	const handleLogout = async () => {
-		try {
-			await signout();
-			toast('Logout successful', {
-				description: 'You are now logged out',
+		confirm({
+			title: 'Confirm Action',
+			variant: 'destructive',
+			description: 'Are you sure you want to logout?',
+		})
+			.then(async () => {
+				try {
+					await signout();
+					toast('Logout successful', {
+						description: 'You are now logged out',
+					});
+					navigate('/auth/signin');
+				} catch (error) {
+					toast.error('Failed to logout', {
+						description: error.response.data.message || error.message,
+					});
+				}
+			})
+			.catch(() => {
+				// pass
 			});
-			navigate('/auth/signin');
-		} catch (error) {
-			toast.error('Failed to logout', {
-				description: error.response.data.message || error.message,
-			});
-		}
 	};
 
 	return (
@@ -85,7 +97,7 @@ const Sidebar = ({ className }) => {
 								<ul className='flex flex-col gap-6 text-sm'>
 									<Link
 										to='/dashboard/profile'
-										className='flex items-center gap-4 font-medium rounded-md hover:text-red-500'>
+										className='flex items-center gap-4 font-medium rounded-md hover:text-primary-500'>
 										<User2 className='size-5' />
 										<span>Profile</span>
 									</Link>
