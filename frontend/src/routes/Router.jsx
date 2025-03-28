@@ -70,40 +70,43 @@ const Router = () => {
 					<Route path='books' element={<AdminLayout />}>
 						<Route index element={<ListBooks />} />
 						<Route path='create' element={<AddBook />} />
-						<Route path=':id' element={<EditBook />} />
+						<Route path=':id/edit' element={<EditBook />} />
 					</Route>
 
 					<Route path='events' element={<AdminLayout />}>
 						<Route index element={<ListEvents />} />
 						<Route path='create' element={<AddEvent />} />
-						<Route path=':id' element={<EditEvent />} />
+						<Route path=':id/edit' element={<EditEvent />} />
 					</Route>
 
 					<Route path='members' element={<AdminLayout />}>
 						<Route index element={<ListUsers />} />
 						<Route path='create' element={<AddUser />} />
-						<Route path=':id' element={<EditUser />} />
+						<Route path=':id/edit' element={<EditUser />} />
 					</Route>
 
 					<Route path='donations'>
 						<Route index element={<ListDonations />} />
 						<Route path='create' element={<AddDonation />} />
-						<Route path=':id' element={<EditDonation />} />
+						<Route path=':id/edit' element={<EditDonation />} />
 					</Route>
 
 					<Route path='gifts'>
 						<Route index element={<ListGifts />} />
 						<Route path='create' element={<AddGift />} />
-						<Route path=':id' element={<EditGift />} />
+						<Route path=':id/edit' element={<EditGift />} />
 					</Route>
 
 					<Route path='transactions'>
 						<Route index element={<ListTransactions />} />
 						<Route path='create' element={<AddTransaction />} />
-						<Route path=':id' element={<EditTransaction />} />
+						<Route path=':id/detail' element={<h1>Detail</h1>} />
+						<Route path=':id/edit' element={<EditTransaction />} />
+						<Route path=':id/tracking' element={<h1>Tracking</h1>} />
 					</Route>
 
 					<Route path='profile' element={<ProfileDetail />} />
+					<Route path='settings' element={<h1>Settings</h1>} />
 				</Route>
 
 				<Route path='admin' element={<AdminLayout />}></Route>

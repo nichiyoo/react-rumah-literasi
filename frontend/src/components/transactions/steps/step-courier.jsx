@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 import { STEPS, useTransactionStore } from '@/store/use-transactions';
+import CustomerDetail from '@/components/transactions/customer-detail';
 
 import axios from '@/libs/axios';
 import { cn, currency } from '@/libs/utils';
 
 import { Loading } from '@/components/loading';
 import { Button } from '@/components/ui/button';
-import CustomerDetail from '@/components/transactions/customer-detail';
 import { useAsync } from '@/hooks/use-async';
 import { Error } from '@/components/error';
 
 const StepCourier = ({ onSubmit }) => {
 	const { recipient, books, route, setCourier } = useTransactionStore();
+
 	const { data, error, loading, mutate } = useAsync(
 		() => {
 			return axios.post('/deliveries/couriers', {
@@ -55,6 +56,20 @@ const StepCourier = ({ onSubmit }) => {
 		});
 	};
 
+	const handleBack = () => {
+		setCourier({
+			zipcode: '',
+			courier_company: '',
+			courier_type: '',
+		});
+
+		route(STEPS.RECIPIENT);
+	};
+
+	const disabled = React.useMemo(() => {
+		return !data.some((item) => item.selected);
+	}, [data]);
+
 	return (
 		<div>
 			<div className='relative grid items-start gap-6 xl:grid-cols-3'>
@@ -62,17 +77,18 @@ const StepCourier = ({ onSubmit }) => {
 					<CustomerDetail />
 
 					<div className='flex items-center gap-2'>
-						<Button variant='outline' onClick={() => route(STEPS.RECIPIENT)}>
+						<Button variant='outline' onClick={handleBack}>
 							Back
 						</Button>
-						<Button onClick={onSubmit}>Finish</Button>
+						<Button disabled={disabled} onClick={onSubmit}>
+							Finish
+						</Button>
 					</div>
 				</div>
 
 				<div className='grid gap-6 md:grid-cols-2 xl:col-span-2'>
 					<Error error={!loading && error} />
 					<Loading loading={loading} />
-					{/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
 
 					{data.map((courier) => (
 						<div

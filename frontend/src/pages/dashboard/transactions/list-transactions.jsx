@@ -122,13 +122,13 @@ const ListTransactions = () => {
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={'/dashboard/tracking/' + transaction.uuid}>
+										<Link to={transaction.uuid + '/detail'} relative='path'>
 											<button className='bg-transparent hover:text-primary-500'>
 												Detail
 											</button>
 										</Link>
 
-										<Link to={'/dashboard/transactions/' + transaction.uuid}>
+										<Link to={transaction.uuid + '/edit'} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
 												Edit
 											</button>
