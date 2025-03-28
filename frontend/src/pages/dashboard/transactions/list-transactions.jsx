@@ -94,7 +94,7 @@ const ListTransactions = () => {
 					</TableHeader>
 					<TableBody>
 						{result.map((transaction) => (
-							<TableRow key={transaction.id}>
+							<TableRow key={transaction.uuid}>
 								<TableCell>
 									<div className='flex items-center gap-4'>
 										<Avatar
@@ -122,13 +122,13 @@ const ListTransactions = () => {
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={'/dashboard/tracking/' + transaction.id}>
+										<Link to={'/dashboard/tracking/' + transaction.uuid}>
 											<button className='bg-transparent hover:text-primary-500'>
 												Detail
 											</button>
 										</Link>
 
-										<Link to={'/dashboard/transactions/' + transaction.id}>
+										<Link to={'/dashboard/transactions/' + transaction.uuid}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Edit
 											</button>

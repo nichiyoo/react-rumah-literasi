@@ -23,6 +23,7 @@ const CreateTransaction = () => {
 	const onSubmit = async () => {
 		try {
 			const result = await validate();
+
 			if (!result.success) {
 				toast.error('Failed to create transaction', {
 					description: result.error.message,
@@ -41,8 +42,8 @@ const CreateTransaction = () => {
 			});
 
 			mutate('/transactions');
-			// navigate('/dashboard/transactions');
-			// reset();
+			navigate('/dashboard/transactions');
+			reset();
 		} catch (error) {
 			toast.error('Failed to create transaction', {
 				description: error.response.data.message || error.message,

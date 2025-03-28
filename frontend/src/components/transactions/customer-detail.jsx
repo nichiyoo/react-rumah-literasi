@@ -42,15 +42,15 @@ const CustomerDetail = ({ className }) => {
 
 			<div className='flex flex-col gap-4 p-4 border border-t-0 text-zinc-600 rounded-b-2xl border-zinc-200'>
 				{details.map((detail) => (
-					<dd key={detail.label} className='text-sm font-medium'>
+					<dl key={detail.label} className='text-sm font-medium'>
 						<dt className='text-black'>{detail.label}</dt>
-						<dt
+						<dd
 							className={cn('text-primary-500', {
 								'text-zinc-500': detail.muted,
 							})}>
 							{detail.value}
-						</dt>
-					</dd>
+						</dd>
+					</dl>
 				))}
 			</div>
 		</div>

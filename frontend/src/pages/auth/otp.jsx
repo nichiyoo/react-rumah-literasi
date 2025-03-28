@@ -83,6 +83,7 @@ const OneTimePassword = () => {
 				<div className='text-sm text-center text-zinc-500 '>
 					Didn&apos;t receive the code?{' '}
 					<button
+						type='button'
 						onClick={handleLogout}
 						className='font-medium text-primary-600 hover:text-primary-500'>
 						Change Account

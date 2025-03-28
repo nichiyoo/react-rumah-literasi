@@ -45,8 +45,8 @@ app.use(
 
 app.use(
 	ratelimit({
-		limit: 200,
-		windowMs: 5 * 60 * 1000,
+		limit: 30,
+		windowMs: 1 * 60 * 1000,
 		standardHeaders: 'draft-8',
 	})
 );
@@ -72,7 +72,7 @@ const donationRoutes = require('../routes/donation.routes');
 const transactionRoutes = require('../routes/transaction.routes');
 const deliveryRoutes = require('../routes/delivery.routes');
 
-app.use('/_healthcheck', (req, res) => {
+app.use('/api/_healthcheck', (req, res) => {
 	res.status(200).json({
 		message: 'Server is running correctly',
 	});
