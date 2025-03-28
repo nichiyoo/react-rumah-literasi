@@ -1,4 +1,4 @@
-import * as React from 'react';
+'use client';
 
 import useSWR from 'swr';
 import { toast } from 'sonner';
@@ -28,6 +28,8 @@ import { Badge } from '@/components/ui/badge';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
+import { currency } from '@/libs/utils';
+import { Avatar } from '@/components/ui/avatar';
 
 const ListTransactions = () => {
 	const { confirm } = useConfirm();
@@ -37,7 +39,7 @@ const ListTransactions = () => {
 
 	const handleDelete = async (id) => {
 		confirm({
-			title: 'Confirm Order',
+			title: 'Confirm Action',
 			variant: 'destructive',
 			description: 'Are you sure you want to delete this record?',
 		})
@@ -65,9 +67,8 @@ const ListTransactions = () => {
 			<Heading>
 				<HeadingTitle>Transaction List</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Manage all borrowing transactions in the system. View customer
+					details, track delivery status, and manage return dates.
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
@@ -81,12 +82,13 @@ const ListTransactions = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Title</TableHead>
-							<TableHead>Author</TableHead>
-							<TableHead>Publisher</TableHead>
-							<TableHead>Year</TableHead>
-							<TableHead>Language</TableHead>
-							<TableHead>Amount</TableHead>
+							<TableHead>Member</TableHead>
+							<TableHead>Name</TableHead>
+							<TableHead>Borrowed Date</TableHead>
+							<TableHead>Deadline</TableHead>
+							<TableHead>Status</TableHead>
+							<TableHead>Courier</TableHead>
+							<TableHead>Delivery Fee</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -95,28 +97,43 @@ const ListTransactions = () => {
 							<TableRow key={transaction.id}>
 								<TableCell>
 									<div className='flex items-center gap-4'>
-										<img
-											src={transaction.cover}
-											alt={transaction.title}
-											className='flex-none object-cover rounded-full size-10'
+										<Avatar
+											name={transaction.user.name}
+											className='flex-none'
 										/>
-										<span className='font-medium'>{transaction.title}</span>
+										<span className='font-medium'>{transaction.user.name}</span>
 									</div>
 								</TableCell>
-								<TableCell>{transaction.author}</TableCell>
-								<TableCell>{transaction.publisher}</TableCell>
-								<TableCell>{transaction.year}</TableCell>
+								<TableCell>{transaction.name}</TableCell>
+								<TableCell>{transaction.borrowed_date}</TableCell>
+								<TableCell>{transaction.deadline_date}</TableCell>
 								<TableCell>
-									<Badge>{transaction.language}</Badge>
+									<Badge>{transaction.status}</Badge>
 								</TableCell>
-								<TableCell>{transaction.amount}</TableCell>
+								<TableCell className='uppercase'>
+									{transaction.courier_company} - {transaction.courier_type}
+								</TableCell>
+								<TableCell>
+									{transaction.delivery_fee ? (
+										<span>{currency(transaction.delivery_fee)}</span>
+									) : (
+										<span>-</span>
+									)}
+								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
+										<Link to={'/dashboard/tracking/' + transaction.id}>
+											<button className='bg-transparent hover:text-primary-500'>
+												Detail
+											</button>
+										</Link>
+
 										<Link to={'/dashboard/transactions/' + transaction.id}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Edit
 											</button>
 										</Link>
+
 										<button
 											onClick={() => handleDelete(transaction.id)}
 											className='bg-transparent hover:text-red-500'>

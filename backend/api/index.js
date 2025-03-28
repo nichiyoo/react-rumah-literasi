@@ -70,6 +70,7 @@ const eventRoutes = require('../routes/event.routes');
 const giftRoutes = require('../routes/gift.routes');
 const donationRoutes = require('../routes/donation.routes');
 const transactionRoutes = require('../routes/transaction.routes');
+const deliveryRoutes = require('../routes/delivery.routes');
 
 app.use('/_healthcheck', (req, res) => {
 	res.status(200).json({
@@ -85,8 +86,11 @@ app.use(authenticate);
 app.use('/api/gifts', giftRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/deliveries', deliveryRoutes);
 
-app.use(authorize('admin'));
+const admin = authorize('admin');
+
+app.use(admin);
 app.use('/api/books', bookRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/members', userRoutes);

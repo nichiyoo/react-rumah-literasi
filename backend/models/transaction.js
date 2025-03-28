@@ -29,6 +29,13 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
+			name: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+				},
+			},
 			phone: {
 				allowNull: false,
 				type: DataTypes.STRING,
@@ -43,12 +50,9 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
-			zipcode: {
-				allowNull: false,
+			note: {
+				allowNull: true,
 				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-				},
 			},
 			latitude: {
 				allowNull: false,
@@ -82,16 +86,23 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: true,
 				type: DataTypes.DATEONLY,
 			},
+			zipcode: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
 			tracking_id: {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},
-			waybill_id: {
+			courier_company: {
 				allowNull: true,
 				type: DataTypes.STRING,
-				defaultValue: DataTypes.UUIDV4,
 			},
-			courier: {
+			courier_type: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			devlivery_eta: {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},

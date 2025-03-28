@@ -33,7 +33,7 @@ const MemberForm = ({ initial, action, label }) => {
 	});
 
 	return (
-		<form onSubmit={handleSubmit(action)} className='grid grid-cols-2 gap-6'>
+		<form onSubmit={handleSubmit(action)} className='grid lg:grid-cols-2 gap-6'>
 			<div className='col-span-full'>
 				<Label htmlFor='name'>Name</Label>
 				<Input

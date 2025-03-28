@@ -12,17 +12,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { useConfirm } from '@/hooks/use-confirm';
 
 const TransactionSchema = z.object({
+	name: z.string().min(3),
 	phone: z.string().min(11),
 	address: z.string().min(3),
-	zipcode: z.string().min(6).max(6),
+	note: z.string().optional(),
+	borrowed_date: z.coerce.date(),
 	latitude: z.coerce.number(),
 	longitude: z.coerce.number(),
-	borrowed_date: z.coerce.date(),
 });
 
 const StepRecipient = () => {
 	const { confirm } = useConfirm();
-	const { recipient, setRecipient, advance } = useTransactionStore();
+	const { recipient, setRecipient, route } = useTransactionStore();
 
 	const {
 		watch,
@@ -36,19 +37,33 @@ const StepRecipient = () => {
 	});
 
 	const onSubmit = async (data) => {
+		setRecipient({
+			...data,
+			borrowed_date: new Date(data.borrowed_date).toISOString().split('T')[0],
+		});
+		route(STEPS.COURIER);
+	};
+
+	const handleUseMyLocation = async () => {
 		confirm({
-			title: 'Make sure you the information is correct',
-			description: `This data will be used to deliver the book, 
-      make sure you have the right information`,
+			title: 'Use my location',
+			description: 'Are you sure you want to use your location?',
 		})
 			.then(async () => {
-				setRecipient({
-					...data,
-					borrowed_date: new Date(data.borrowed_date)
-						.toISOString()
-						.split('T')[0],
-				});
-				advance(STEPS.DELIVERY);
+				if ('geolocation' in navigator) {
+					navigator.geolocation.getCurrentPosition(
+						(position) => {
+							const { latitude, longitude } = position.coords;
+							setValue('latitude', latitude);
+							setValue('longitude', longitude);
+						},
+						(error) => {
+							console.error('Error getting location:', error);
+							alert('Unable to retrieve your location.');
+						},
+						{ enableHighAccuracy: true }
+					);
+				}
 			})
 			.catch(() => {
 				// pass
@@ -56,12 +71,18 @@ const StepRecipient = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-6'>
-			<div className='col-span-full'>
-				<Label htmlFor='address'>Address</Label>
-				<Textarea placeholder='Enter your address' {...register('address')} />
-				{errors.address && (
-					<span className='text-red-500'>{errors.address.message}</span>
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className='grid lg:grid-cols-2 gap-6'>
+			<div>
+				<Label htmlFor='name'>name</Label>
+				<Input
+					type='text'
+					placeholder='Enter your name'
+					{...register('name')}
+				/>
+				{errors.name && (
+					<span className='text-red-500'>{errors.name.message}</span>
 				)}
 			</div>
 
@@ -78,14 +99,18 @@ const StepRecipient = () => {
 			</div>
 
 			<div>
-				<Label htmlFor='zipcode'>Zipcode</Label>
-				<Input
-					type='text'
-					placeholder='Enter your zipcode'
-					{...register('zipcode')}
-				/>
-				{errors.zipcode && (
-					<span className='text-red-500'>{errors.zipcode.message}</span>
+				<Label htmlFor='address'>Address</Label>
+				<Textarea placeholder='Enter your address' {...register('address')} />
+				{errors.address && (
+					<span className='text-red-500'>{errors.address.message}</span>
+				)}
+			</div>
+
+			<div>
+				<Label htmlFor='note'>Notes</Label>
+				<Textarea placeholder='Enter your notes' {...register('note')} />
+				{errors.note && (
+					<span className='text-red-500'>{errors.note.message}</span>
 				)}
 			</div>
 
@@ -117,8 +142,11 @@ const StepRecipient = () => {
 			</div>
 
 			<div className='flex items-center justify-end gap-2 col-span-full'>
-				<Button variant='outline' onClick={() => advance(STEPS.BOOKS)}>
+				<Button variant='outline' onClick={() => route(STEPS.BOOKS)}>
 					Back
+				</Button>
+				<Button variant='outline' type='button' onClick={handleUseMyLocation}>
+					Use my location
 				</Button>
 				<Button>Next</Button>
 			</div>

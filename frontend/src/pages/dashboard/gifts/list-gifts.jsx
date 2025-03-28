@@ -28,6 +28,7 @@ import { Loading } from '@/components/loading';
 import { Badge } from '@/components/ui/badge';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
+import { Avatar } from '@/components/ui/avatar';
 
 const ListGifts = () => {
 	const { confirm } = useConfirm();
@@ -36,7 +37,7 @@ const ListGifts = () => {
 
 	const handleDelete = async (id) => {
 		confirm({
-			title: 'Confirm Order',
+			title: 'Confirm Action',
 			variant: 'destructive',
 			description: 'Are you sure you want to delete this record?',
 		})
@@ -80,6 +81,7 @@ const ListGifts = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
+							<TableHead>Member</TableHead>
 							<TableHead>Title</TableHead>
 							<TableHead>Genre</TableHead>
 							<TableHead>Amount</TableHead>
@@ -91,6 +93,12 @@ const ListGifts = () => {
 					<TableBody>
 						{result.map((gift) => (
 							<TableRow key={gift.id}>
+								<TableCell>
+									<div className='flex items-center gap-4'>
+										<Avatar name={gift.user.name} className='flex-none' />
+										<span className='font-medium'>{gift.user.name}</span>
+									</div>
+								</TableCell>
 								<TableCell>{gift.title}</TableCell>
 								<TableCell>{gift.genre}</TableCell>
 								<TableCell>{gift.amount}</TableCell>

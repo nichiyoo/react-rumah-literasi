@@ -31,7 +31,7 @@ const ProfileDetail = () => {
 			)}
 
 			{user && (
-				<div className='grid grid-cols-2 gap-6'>
+				<div className='grid lg:grid-cols-2 gap-6'>
 					<div className='col-span-full'>
 						<Label htmlFor='name'>Name</Label>
 						<Input type='text' value={user.name} disabled />

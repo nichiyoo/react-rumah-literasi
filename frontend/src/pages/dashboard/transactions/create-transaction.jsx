@@ -9,10 +9,47 @@ import {
 
 import StepBook from '@/components/transactions/steps/step-book';
 import StepRecipient from '@/components/transactions/steps/step-recipient';
-import StepDelivery from '@/components/transactions/steps/step-delivery';
+import StepCourier from '@/components/transactions/steps/step-courier';
+import axios from '@/libs/axios';
+import { toast } from 'sonner';
+import { useSWRConfig } from 'swr';
+import { useNavigate } from 'react-router';
 
 const CreateTransaction = () => {
-	const { step } = useTransactionStore();
+	const navigate = useNavigate();
+	const { mutate } = useSWRConfig();
+	const { step, validate, reset } = useTransactionStore();
+
+	const onSubmit = async () => {
+		try {
+			const result = await validate();
+			if (!result.success) {
+				toast.error('Failed to create transaction', {
+					description: result.error.message,
+				});
+				return;
+			}
+
+			toast('Creating transaction', {
+				description: 'Creating transaction...',
+			});
+
+			await axios.post('/transactions', result.data);
+
+			toast('Transaction created', {
+				description: 'Successfully created transaction',
+			});
+
+			mutate('/transactions');
+			// navigate('/dashboard/transactions');
+			// reset();
+		} catch (error) {
+			toast.error('Failed to create transaction', {
+				description: error.response.data.message || error.message,
+			});
+			console.error(error);
+		}
+	};
 
 	return (
 		<div className='grid gap-8'>
@@ -27,7 +64,7 @@ const CreateTransaction = () => {
 
 			{step === STEPS.BOOKS && <StepBook />}
 			{step === STEPS.RECIPIENT && <StepRecipient />}
-			{step === STEPS.DELIVERY && <StepDelivery />}
+			{step === STEPS.COURIER && <StepCourier onSubmit={onSubmit} />}
 		</div>
 	);
 };

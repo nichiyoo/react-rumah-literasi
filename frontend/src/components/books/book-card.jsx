@@ -4,6 +4,8 @@ import { cn } from '@/libs/utils';
 import { Badge } from '@/components/ui/badge';
 
 const BookCard = React.forwardRef(({ book, className, ...props }, ref) => {
+	if (book.amount <= 0) return null;
+
 	return (
 		<article
 			ref={ref}

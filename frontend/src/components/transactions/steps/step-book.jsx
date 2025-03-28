@@ -20,8 +20,7 @@ import { useConfirm } from '@/hooks/use-confirm';
 
 const StepBook = () => {
 	const { confirm } = useConfirm();
-	const { books, append, reduce, purge, reset, advance } =
-		useTransactionStore();
+	const { books, append, reduce, purge, reset, route } = useTransactionStore();
 
 	const handleSubmit = () => {
 		if (books.length === 0) {
@@ -31,12 +30,12 @@ const StepBook = () => {
 			return;
 		}
 
-		advance(STEPS.RECIPIENT);
+		route(STEPS.RECIPIENT);
 	};
 
 	const handleReset = () => {
 		confirm({
-			title: 'Confirm Order',
+			title: 'Confirm Action',
 			variant: 'destructive',
 			description: 'Are you sure you want to reset data?',
 		})
@@ -61,7 +60,9 @@ const StepBook = () => {
 						<TableBody>
 							{books.map((item) => (
 								<TableRow key={item.book.id}>
-									<TableCell>{item.book.title}</TableCell>
+									<TableCell>
+										<p className='w-48 truncate'>{item.book.title}</p>
+									</TableCell>
 									<TableCell>
 										<div className='flex justify-end gap-4'>
 											<Minus
@@ -87,7 +88,7 @@ const StepBook = () => {
 						Reset Data
 					</Button>
 					<Button variant='outline' onClick={() => purge()}>
-						Remove All Books
+						Remove All
 					</Button>
 					<Button onClick={handleSubmit}>Next</Button>
 				</div>

@@ -14,6 +14,10 @@ module.exports = {
 				type: DataTypes.STRING,
 				defaultValue: DataTypes.UUIDV4,
 			},
+			name: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
 			phone: {
 				allowNull: false,
 				type: DataTypes.STRING,
@@ -22,8 +26,8 @@ module.exports = {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},
-			zipcode: {
-				allowNull: false,
+			note: {
+				allowNull: true,
 				type: DataTypes.STRING,
 			},
 			latitude: {
@@ -46,15 +50,23 @@ module.exports = {
 				allowNull: true,
 				type: DataTypes.DATEONLY,
 			},
+			zipcode: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
 			tracking_id: {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},
-			waybill_id: {
+			courier_company: {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},
-			courier: {
+			courier_type: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			devlivery_eta: {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},

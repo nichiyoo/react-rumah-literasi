@@ -36,7 +36,7 @@ const ListBooks = () => {
 
 	const handleDelete = async (id) => {
 		confirm({
-			title: 'Confirm Order',
+			title: 'Confirm Action',
 			variant: 'destructive',
 			description: 'Are you sure you want to delete this record?',
 		})

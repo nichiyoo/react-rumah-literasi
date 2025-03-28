@@ -36,7 +36,7 @@ const BookForm = ({ initial, action, label }) => {
 	});
 
 	return (
-		<form onSubmit={handleSubmit(action)} className='grid grid-cols-2 gap-6'>
+		<form onSubmit={handleSubmit(action)} className='grid gap-6 lg:grid-cols-2'>
 			<div className='col-span-full'>
 				<Label htmlFor='title'>Title</Label>
 				<Input

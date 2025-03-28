@@ -37,7 +37,7 @@ const ListMembers = () => {
 
 	const handleDelete = async (uuid) => {
 		confirm({
-			title: 'Confirm Order',
+			title: 'Confirm Action',
 			variant: 'destructive',
 			description: 'Are you sure you want to delete this record?',
 		})
@@ -81,7 +81,7 @@ const ListMembers = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Nama</TableHead>
+							<TableHead>Name</TableHead>
 							<TableHead>Email</TableHead>
 							<TableHead>Role</TableHead>
 							<TableHead>Verified</TableHead>
