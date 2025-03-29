@@ -16,7 +16,7 @@ import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
 
 const EditMember = () => {
-	const { id } = useParams();
+	const { uuid } = useParams();
 	const navigate = useNavigate();
 
 	const {
@@ -24,7 +24,7 @@ const EditMember = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/members/' + id);
+	} = useSWR('/members/' + uuid);
 
 	const onSubmit = async (data) => {
 		try {

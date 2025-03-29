@@ -73,7 +73,7 @@ const StepRecipient = () => {
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className='grid lg:grid-cols-2 gap-6'>
+			className='grid gap-6 lg:grid-cols-2'>
 			<div>
 				<Label htmlFor='name'>name</Label>
 				<Input

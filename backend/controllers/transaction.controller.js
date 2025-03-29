@@ -21,24 +21,27 @@ const TransactionController = {
 
 	async store(req, res, next) {
 		try {
-			const { books = [], ...rest } = req.body;
-			if (books.length === 0) throw new ApiError(400, 'Books are required');
+			const { books: borrows = [], ...rest } = req.body;
+			if (borrows.length === 0) throw new ApiError(400, 'Books are required');
 
-			const total = books.reduce((acc, book) => acc + book.amount, 0);
+			const total = borrows.reduce((acc, book) => acc + book.amount, 0);
 			if (total > 10) throw new ApiError(400, 'Maximum 10 books are allowed');
 
 			const result = await sequelize.transaction(async (tx) => {
-				const founds = await Book.findAll(
-					{ where: { id: books.map((book) => book.id) } },
+				const books = await Book.findAll(
+					{
+						where: {
+							id: borrows.map((book) => book.id),
+						},
+					},
 					{ transaction: tx }
 				);
 
-				if (founds.length !== books.length) {
-					throw new ApiError(400, 'Some books are not found');
-				}
+				const available = books.length === borrows.length;
+				if (!available) throw new ApiError(400, 'Some books are not found');
 
-				const valid = founds.every((book) => {
-					const requested = books.find((item) => Number(item.id) === book.id);
+				const valid = books.every((book) => {
+					const requested = borrows.find((item) => Number(item.id) === book.id);
 					return requested.amount <= book.amount;
 				});
 
@@ -56,36 +59,26 @@ const TransactionController = {
 						borrowed_date,
 						deadline_date,
 						user_id: req.user.id,
+						transaction_items: borrows.map((book) => ({
+							book_id: book.id,
+							amount: book.amount,
+						})),
 					},
-					{ transaction: tx }
+					{
+						transaction: tx,
+						include: ['transaction_items'],
+					}
 				);
 
-				await TransactionItem.bulkCreate(
-					books.map((book) => ({
-						transaction_id: created.id,
-						book_id: book.id,
-						amount: book.amount,
-					})),
-					{ transaction: tx }
-				);
-
-				founds.forEach((book) => {
-					const requested = books.find((item) => Number(item.id) === book.id);
+				books.forEach((book) => {
+					const requested = borrows.find((item) => Number(item.id) === book.id);
 					book.update({
 						amount: book.amount - requested.amount,
 					});
 					book.save();
 				});
 
-				const transaction = await Transaction.findOne(
-					{
-						where: { id: created.id },
-						include: ['user', 'transaction_items'],
-					},
-					{ transaction: tx }
-				);
-
-				return transaction;
+				return created;
 			});
 
 			return res.json(new ApiResponse('Books added successfully', result));
@@ -94,13 +87,59 @@ const TransactionController = {
 		}
 	},
 
+	async status(req, res, next) {
+		try {
+			const uuid = req.params.uuid;
+			if (!uuid) throw new ApiError(400, 'UUID is required');
+
+			const status = req.body.status;
+			if (!status) throw new ApiError(400, 'Status is required');
+
+			const result = await sequelize.transaction(async (tx) => {
+				const transaction = await Transaction.findOne({
+					where: { uuid },
+					include: [
+						'user',
+						{
+							model: TransactionItem,
+							as: 'transaction_items',
+							include: ['book'],
+						},
+					],
+					transaction: tx,
+				});
+
+				if (!transaction) throw new ApiError(404, 'Transaction not found');
+
+				await transaction.update({ status }, { transaction: tx });
+				await transaction.save();
+
+				if (['rejected', 'completed'].includes(status)) {
+					transaction.transaction_items.forEach(async ({ book, amount }) => {
+						book.update({
+							amount: book.amount + amount,
+						});
+						book.save();
+					});
+				}
+
+				return transaction;
+			});
+
+			const message = 'Transaction ' + status + ' successfully';
+			return res.json(new ApiResponse(message, result));
+		} catch (error) {
+			next(error);
+		}
+	},
+
 	async show(req, res, next) {
 		try {
-			const id = req.params.id;
-			if (!id) throw new ApiError(400, 'ID is required');
+			const uuid = req.params.uuid;
+			if (!uuid) throw new ApiError(400, 'UUID is required');
 
 			const transaction = await Transaction.findOne({
-				where: { id },
+				where: { uuid },
 				include: [
 					'user',
 					{
@@ -122,11 +161,11 @@ const TransactionController = {
 
 	async update(req, res, next) {
 		try {
-			const id = req.params.id;
-			if (!id) throw new ApiError(400, 'ID is required');
+			const uuid = req.params.uuid;
+			if (!uuid) throw new ApiError(400, 'UUID is required');
 
 			const transaction = await Transaction.findOne({
-				where: { id },
+				where: { uuid },
 			});
 
 			if (!transaction) throw new ApiError(404, 'Transaction not found');
@@ -143,11 +182,11 @@ const TransactionController = {
 
 	async destroy(req, res, next) {
 		try {
-			const id = req.params.id;
-			if (!id) throw new ApiError(400, 'ID is required');
+			const uuid = req.params.uuid;
+			if (!uuid) throw new ApiError(400, 'UUID is required');
 
 			const transaction = await Transaction.findOne({
-				where: { id },
+				where: { uuid },
 			});
 
 			if (!transaction) throw new ApiError(404, 'Transaction not found');

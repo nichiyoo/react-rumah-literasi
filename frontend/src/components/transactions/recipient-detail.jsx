@@ -1,10 +1,14 @@
 import * as React from 'react';
 
 import { cn } from '@/libs/utils';
-import { useTransactionStore } from '@/store/use-transactions';
+import { parse, addDays, format } from 'date-fns';
 
-const CustomerDetail = ({ className }) => {
-	const { recipient } = useTransactionStore();
+const RecipientDetail = ({ recipient, className }) => {
+	const deadline = React.useMemo(() => {
+		const formatted = parse(recipient.borrowed_date, 'yyyy-MM-dd', new Date());
+		const date = addDays(formatted, 14);
+		return format(date, 'yyyy-MM-dd');
+	}, [recipient.borrowed_date]);
 
 	const details = [
 		{
@@ -22,6 +26,10 @@ const CustomerDetail = ({ className }) => {
 		{
 			label: 'Borrowed Date',
 			value: recipient.borrowed_date,
+		},
+		{
+			label: 'Deadline Date',
+			value: recipient.deadline_date || deadline,
 		},
 		{
 			muted: true,
@@ -57,4 +65,4 @@ const CustomerDetail = ({ className }) => {
 	);
 };
 
-export default CustomerDetail;
+export default RecipientDetail;

@@ -15,6 +15,7 @@ import SignIn from '@/pages/auth/sign-in';
 import SignUp from '@/pages/auth/sign-up';
 import OneTimePassword from '@/pages/auth/otp';
 import ProfileDetail from '@/pages/setting/profile';
+import Setting from '@/pages/setting/setting';
 
 const load = (callback) => {
 	const Component = React.lazy(callback);
@@ -46,6 +47,7 @@ const EditUser = load(() => import('~/members/edit-member'));
 const ListTransactions = load(() => import('~/transactions/list-transactions'));
 const AddTransaction = load(() => import('~/transactions/create-transaction'));
 const EditTransaction = load(() => import('~/transactions/edit-transaction'));
+const ShowTransaction = load(() => import('~/transactions/show-transaction'));
 
 const Router = () => {
 	return (
@@ -100,13 +102,13 @@ const Router = () => {
 					<Route path='transactions'>
 						<Route index element={<ListTransactions />} />
 						<Route path='create' element={<AddTransaction />} />
-						<Route path=':id/detail' element={<h1>Detail</h1>} />
-						<Route path=':id/edit' element={<EditTransaction />} />
-						<Route path=':id/tracking' element={<h1>Tracking</h1>} />
+						<Route path=':uuid/detail' element={<ShowTransaction />} />
+						<Route path=':uuid/edit' element={<EditTransaction />} />
+						<Route path=':uuid/tracking' element={<h1>Tracking</h1>} />
 					</Route>
 
 					<Route path='profile' element={<ProfileDetail />} />
-					<Route path='settings' element={<h1>Settings</h1>} />
+					<Route path='settings' element={<Setting />} />
 				</Route>
 
 				<Route path='admin' element={<AdminLayout />}></Route>

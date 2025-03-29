@@ -10,7 +10,7 @@ export const STEPS = {
 	COURIER: 2,
 };
 
-const initialRecipient = {
+export const INITIAL_RECIPIENT = {
 	name: '',
 	phone: '',
 	address: '',
@@ -19,7 +19,7 @@ const initialRecipient = {
 	borrowed_date: new Date().toISOString().split('T')[0],
 };
 
-const initialCourier = {
+export const INITIAL_COURIER = {
 	zipcode: '',
 	courier_company: '',
 	courier_type: '',
@@ -34,12 +34,12 @@ const schemas = z.object({
 	latitude: z.coerce.number(),
 	longitude: z.coerce.number(),
 	zipcode: z.coerce.number(),
-	courier_company: z.string().min(3),
-	courier_type: z.string().min(3),
+	courier_company: z.string().nonempty(),
+	courier_type: z.string().nonempty(),
 	books: z.array(
 		z.object({
 			id: z.coerce.string(),
-			name: z.string().min(3),
+			name: z.string().nonempty(),
 			amount: z.coerce.number().min(1),
 		})
 	),
@@ -50,8 +50,8 @@ export const useTransactionStore = create(
 		(set, get) => ({
 			step: STEPS.BOOKS,
 			books: [],
-			recipient: initialRecipient,
-			courier: initialCourier,
+			recipient: INITIAL_RECIPIENT,
+			courier: INITIAL_COURIER,
 
 			route: (step) => {
 				return set({
@@ -166,8 +166,8 @@ export const useTransactionStore = create(
 				return set({
 					step: STEPS.BOOKS,
 					books: [],
-					recipient: initialRecipient,
-					courier: initialCourier,
+					recipient: INITIAL_RECIPIENT,
+					courier: INITIAL_COURIER,
 				});
 			},
 

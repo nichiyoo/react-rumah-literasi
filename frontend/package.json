@@ -19,6 +19,7 @@
     "axios": "^1.8.3",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "lucide-react": "^0.479.0",

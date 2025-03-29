@@ -14,8 +14,8 @@ const DeliveryController = {
 			items: books.map((book) => ({
 				name: book.book.title,
 				quantity: book.amount,
-				weight: book.amount * 200,
-				value: book.amount * 50000,
+				weight: 200,
+				value: 50000,
 			})),
 		});
 

@@ -37,7 +37,7 @@ const ListTransactions = () => {
 	const { error, mutate, data, isLoading: loading } = useSWR('/transactions');
 	const { result, empty } = useResultState(error, loading, data);
 
-	const handleDelete = async (id) => {
+	const handleDelete = async (uuid) => {
 		confirm({
 			title: 'Confirm Action',
 			variant: 'destructive',
@@ -45,7 +45,7 @@ const ListTransactions = () => {
 		})
 			.then(async () => {
 				try {
-					await axios.delete('/transactions/' + id);
+					await axios.delete('/transactions/' + uuid);
 					mutate();
 					toast('Transaction deleted', {
 						description: 'Successfully deleted transaction',
@@ -135,7 +135,7 @@ const ListTransactions = () => {
 										</Link>
 
 										<button
-											onClick={() => handleDelete(transaction.id)}
+											onClick={() => handleDelete(transaction.uuid)}
 											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>

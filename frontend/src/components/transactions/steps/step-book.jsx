@@ -1,9 +1,13 @@
 import * as React from 'react';
+import useSWR from 'swr';
+
 import { Plus, Minus } from 'lucide-react';
 import { STEPS, useTransactionStore } from '@/store/use-transactions';
 
-import { Empty } from '@/components/empty';
 import { Button } from '@/components/ui/button';
+import { Empty } from '@/components/empty';
+import { Error } from '@/components/error';
+import { Loading } from '@/components/loading';
 
 import {
 	Table,
@@ -14,13 +18,17 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-import BookGrid from '@/components/books/book-grid';
 import { toast } from 'sonner';
 import { useConfirm } from '@/hooks/use-confirm';
+import { useResultState } from '@/hooks/use-result-state';
+import { BookCard } from '@/components/books/book-card';
 
 const StepBook = () => {
 	const { confirm } = useConfirm();
 	const { books, append, reduce, purge, reset, route } = useTransactionStore();
+
+	const { error, data, isLoading: loading } = useSWR('/books');
+	const { result, empty } = useResultState(error, loading, data);
 
 	const handleSubmit = () => {
 		if (books.length === 0) {
@@ -47,7 +55,15 @@ const StepBook = () => {
 
 	return (
 		<div className='relative grid gap-6 xl:grid-cols-3'>
-			<BookGrid className='xl:col-span-2' />
+			<div className='grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-4 xl:col-span-2'>
+				{result.map((book) => (
+					<BookCard book={book} key={book.id} onClick={() => append(book)} />
+				))}
+
+				<Error error={!loading && error} />
+				<Empty empty={!loading && empty} />
+				<Loading loading={loading} />
+			</div>
 			<div className='flex flex-col gap-6'>
 				<div className='w-full overflow-x-auto border rounded-lg border-zinc-200'>
 					<Table>
