@@ -17,7 +17,7 @@ import { Map } from '@/components/map';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 
-const EditGift = () => {
+const ShowGift = () => {
 	const { id } = useParams();
 	const { user, loading: userLoading } = useAuth();
 	const { error, data: result, isLoading: loading } = useSWR('/gifts/' + id);
@@ -73,7 +73,7 @@ const EditGift = () => {
 
 					<div>
 						<Label htmlFor='status'>Status</Label>
-						<Input type='text' defaultValue={result.data.status} />
+						<Input disabled type='text' defaultValue={result.data.status} />
 					</div>
 
 					<div className='col-span-full'>
@@ -95,4 +95,4 @@ const EditGift = () => {
 	);
 };
 
-export default EditGift;
+export default ShowGift;

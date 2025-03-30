@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 
-const EditDonation = () => {
+const ShowDonation = () => {
 	const { id } = useParams();
 	const { user, loading: userLoading } = useAuth();
 
@@ -88,4 +88,4 @@ const EditDonation = () => {
 	);
 };
 
-export default EditDonation;
+export default ShowDonation;
