@@ -87,8 +87,10 @@ const GiftController = {
 			const pending = gift.status === 'pending';
 
 			if (!pending && !admin) {
-				const message = 'Cannot delete gift unless the status is pending';
-				throw new ApiError(400, message);
+				throw new ApiError(
+					400,
+					'Cannot delete gift unless the status is pending'
+				);
 			}
 
 			await gift.destroy();

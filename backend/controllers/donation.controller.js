@@ -102,8 +102,10 @@ const DonationController = {
 			const pending = donation.status === 'pending';
 
 			if (!pending && !admin) {
-				const message = 'Cannot delete donation unless the status is pending';
-				throw new ApiError(400, message);
+				throw new ApiError(
+					400,
+					'Cannot delete donation unless the status is pending'
+				);
 			}
 
 			await donation.destroy();

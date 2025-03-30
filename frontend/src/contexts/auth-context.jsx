@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import axios, { onUnautenticated } from '@/libs/axios';
 import useLocalStorage from '@/hooks/use-localstorage';
+import { useTransactionStore } from '@/store/use-transactions';
 
 const AuthContext = React.createContext({
 	user: null,
@@ -15,6 +16,7 @@ const AuthContext = React.createContext({
 });
 
 export function AuthProvider({ children }) {
+	const { reset } = useTransactionStore();
 	const [session, setSession] = useLocalStorage('session', null);
 	const { data: result, isLoading: loading, mutate } = useSWR('/auth/profile');
 
@@ -61,6 +63,7 @@ export function AuthProvider({ children }) {
 		mutate(null, {
 			revalidate: false,
 		});
+		reset();
 	};
 
 	return (

@@ -2,7 +2,9 @@ const moment = require('moment');
 
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
-const { Transaction, TransactionItem } = require('../models');
+const { Transaction, TransactionItem, sequelize } = require('../models');
+const DeliveryController = require('./delivery.controller');
+const { Op } = require('sequelize');
 
 const TransactionController = {
 	async index(req, res, next) {
@@ -75,11 +77,26 @@ const TransactionController = {
 			});
 
 			if (!transaction) throw new ApiError(404, 'Transaction not found');
-			await transaction.update({ status });
-			await transaction.save();
+
+			const result = await sequelize.transaction(async (tx) => {
+				switch (status) {
+					case 'approved':
+						const result = await DeliveryController.order(transaction);
+						await transaction.update(
+							{ status, ...result },
+							{ transaction: tx }
+						);
+						break;
+					default:
+						await transaction.update({ status }, { transaction: tx });
+				}
+
+				await transaction.save();
+				return transaction;
+			});
 
 			const message = 'Transaction ' + status + ' successfully';
-			return res.json(new ApiResponse(message, transaction));
+			return res.json(new ApiResponse(message, result));
 		} catch (error) {
 			next(error);
 		}
@@ -107,6 +124,33 @@ const TransactionController = {
 			if (!transaction) throw new ApiError(404, 'Transaction not found');
 			return res.json(
 				new ApiResponse('Transaction retrieved successfully', transaction)
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	async track(req, res, next) {
+		try {
+			const uuid = req.params.uuid;
+			if (!uuid) throw new ApiError(400, 'UUID is required');
+
+			const transaction = await Transaction.scope({
+				method: ['authorize', req.user],
+			}).findOne({
+				where: {
+					uuid,
+					status: {
+						[Op.in]: ['approved', 'completed'],
+					},
+				},
+			});
+
+			if (!transaction) throw new ApiError(404, 'Transaction not found');
+			const result = await DeliveryController.track(transaction.tracking_id);
+
+			return res.json(
+				new ApiResponse('Transaction tracking successfully', result)
 			);
 		} catch (error) {
 			next(error);
@@ -144,6 +188,17 @@ const TransactionController = {
 			});
 
 			if (!transaction) throw new ApiError(404, 'Transaction not found');
+
+			const admin = req.user.role === 'admin';
+			const pending = transaction.status === 'pending';
+
+			if (!pending && !admin) {
+				throw new ApiError(
+					400,
+					'Cannot delete transaction unless the status is pending'
+				);
+			}
+
 			await transaction.destroy();
 
 			return res.json(

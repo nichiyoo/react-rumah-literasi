@@ -10,7 +10,8 @@ router.get('/', TransactionController.index);
 router.post('/', TransactionController.store);
 router.get('/:uuid', TransactionController.show);
 router.put('/:uuid', admin, TransactionController.update);
-router.delete('/:uuid', admin, TransactionController.destroy);
+router.delete('/:uuid', TransactionController.destroy);
 router.post('/:uuid/status', admin, TransactionController.status);
+router.get('/:uuid/track', TransactionController.track);
 
 module.exports = router;

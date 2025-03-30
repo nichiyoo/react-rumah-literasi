@@ -2,30 +2,42 @@ import * as React from 'react';
 
 import { cn } from '@/libs/utils';
 
-const CourierDetail = ({ courier, className }) => {
+const DeliveryDetail = ({ delivery, className }) => {
 	const details = [
 		{
 			label: 'Company code',
-			value: courier.courier_company.toUpperCase(),
+			value: delivery.courier.company,
 		},
 		{
-			label: 'Type code',
-			value: courier.courier_type.toUpperCase(),
+			label: 'Delivery ID',
+			value: delivery.waybill_id,
 		},
 		{
-			label: 'Delivery Fee',
-			value: courier.delivery_fee,
+			label: 'Recipient',
+			value: delivery.destination.contact_name,
 		},
 		{
-			label: 'Delivery Estimated Time',
-			value: courier.delivery_eta,
+			label: 'Recipient Address',
+			value: delivery.destination.address,
+		},
+		{
+			label: 'Origin',
+			value: delivery.origin.contact_name,
+		},
+		{
+			label: 'Origin Address',
+			value: delivery.origin.address,
+		},
+		{
+			label: 'Status',
+			value: delivery.status,
 		},
 	];
 
 	return (
 		<div className='border border-zinc-200 rounded-2xl'>
 			<div className='p-4 text-lg font-semibold '>
-				<h3>Courier Detail</h3>
+				<h3>Delivery Detail</h3>
 			</div>
 
 			<div
@@ -49,4 +61,4 @@ const CourierDetail = ({ courier, className }) => {
 	);
 };
 
-export default CourierDetail;
+export default DeliveryDetail;

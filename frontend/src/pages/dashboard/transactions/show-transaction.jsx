@@ -143,6 +143,12 @@ const ShowTransaction = () => {
 								</React.Fragment>
 							)}
 
+							{status === 'approved' && (
+								<Link to='../track' relative='path'>
+									<Button variant='primary'>Track</Button>
+								</Link>
+							)}
+
 							{admin && status === 'approved' && (
 								<Button onClick={() => handleApproval('completed')}>
 									Complete

@@ -39,16 +39,16 @@ const RecipientDetail = ({ recipient, className }) => {
 	];
 
 	return (
-		<div>
-			<div
-				className={cn(
-					'flex items-center justify-between p-4 font-semibold border rounded-t-2xl border-zinc-200',
-					className
-				)}>
-				<h3 className='text-lg font-semibold'>Recipient</h3>
+		<div className='border border-zinc-200 rounded-2xl'>
+			<div className='p-4 text-lg font-semibold '>
+				<h3>Recipient Detail</h3>
 			</div>
 
-			<div className='flex flex-col gap-4 p-4 border border-t-0 text-zinc-600 rounded-b-2xl border-zinc-200'>
+			<div
+				className={cn(
+					'grid gap-2 p-4 border-t text-zinc-600 border-zinc-200',
+					className
+				)}>
 				{details.map((detail) => (
 					<dl key={detail.label} className='text-sm font-medium'>
 						<dt className='text-black'>{detail.label}</dt>
