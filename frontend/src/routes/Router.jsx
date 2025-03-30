@@ -31,6 +31,7 @@ const EditBook = load(() => import('~/books/edit-book'));
 const ListGifts = load(() => import('~/gifts/list-gifts'));
 const AddGift = load(() => import('~/gifts/create-gift'));
 const EditGift = load(() => import('~/gifts/edit-gift'));
+const ShowGift = load(() => import('~/gifts/show-gift'));
 
 const ListEvents = load(() => import('~/events/list-events'));
 const AddEvent = load(() => import('~/events/create-event'));
@@ -39,6 +40,7 @@ const EditEvent = load(() => import('~/events/edit-event'));
 const ListDonations = load(() => import('~/donations/list-donations'));
 const AddDonation = load(() => import('~/donations/create-donation'));
 const EditDonation = load(() => import('~/donations/edit-donation'));
+const ShowDonation = load(() => import('~/donations/show-donation'));
 
 const ListUsers = load(() => import('~/members/list-member'));
 const AddUser = load(() => import('~/members/create-member'));
@@ -89,13 +91,19 @@ const Router = () => {
 					<Route path='donations'>
 						<Route index element={<ListDonations />} />
 						<Route path='create' element={<AddDonation />} />
-						<Route path=':id/edit' element={<EditDonation />} />
+						<Route path=':id/detail' element={<ShowDonation />} />
+						<Route path=':id/edit' element={<AdminLayout />}>
+							<Route index element={<EditDonation />} />
+						</Route>
 					</Route>
 
 					<Route path='gifts'>
 						<Route index element={<ListGifts />} />
 						<Route path='create' element={<AddGift />} />
-						<Route path=':id/edit' element={<EditGift />} />
+						<Route path=':id/detail' element={<ShowGift />} />
+						<Route path=':id/edit' element={<AdminLayout />}>
+							<Route index element={<EditGift />} />
+						</Route>
 					</Route>
 
 					<Route path='transactions'>

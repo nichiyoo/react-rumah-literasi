@@ -24,9 +24,9 @@ import RecipientDetail from '@/components/transactions/recipient-detail';
 import { INITIAL_COURIER, INITIAL_RECIPIENT } from '@/store/use-transactions';
 
 const ShowTransaction = () => {
-	const { user, loading: userLoading } = useAuth();
 	const { uuid } = useParams();
 	const { confirm } = useConfirm();
+	const { user, loading: userLoading } = useAuth();
 
 	const {
 		data,

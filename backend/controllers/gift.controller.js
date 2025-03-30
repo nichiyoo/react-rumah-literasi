@@ -83,6 +83,14 @@ const GiftController = {
 
 			if (!gift) throw new ApiError(404, 'Gift not found');
 
+			const admin = req.user.role === 'admin';
+			const pending = gift.status === 'pending';
+
+			if (!pending && !admin) {
+				const message = 'Cannot delete gift unless the status is pending';
+				throw new ApiError(400, message);
+			}
+
 			await gift.destroy();
 			return res.json(new ApiResponse('Gift deleted successfully', gift));
 		} catch (error) {

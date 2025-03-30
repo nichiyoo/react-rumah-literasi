@@ -23,7 +23,7 @@ const AdminLayout = () => {
 		);
 	}
 
-	return admin ? <Outlet /> : <Navigate to={'/dashboard'} />;
+	return admin ? <Outlet /> : <Navigate to='/dashboard' />;
 };
 
 export default AdminLayout;

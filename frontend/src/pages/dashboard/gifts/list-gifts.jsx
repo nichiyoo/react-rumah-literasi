@@ -108,9 +108,9 @@ const ListGifts = () => {
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={gift.id + '/edit'} relative='path'>
+										<Link to={gift.id + '/detail'} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
-												Edit
+												Detail
 											</button>
 										</Link>
 										<button

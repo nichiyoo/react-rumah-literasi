@@ -98,6 +98,14 @@ const DonationController = {
 
 			if (!donation) throw new ApiError(404, 'Donation not found');
 
+			const admin = req.user.role === 'admin';
+			const pending = donation.status === 'pending';
+
+			if (!pending && !admin) {
+				const message = 'Cannot delete donation unless the status is pending';
+				throw new ApiError(400, message);
+			}
+
 			await donation.destroy();
 			return res.json(
 				new ApiResponse('Donation deleted successfully', donation)
