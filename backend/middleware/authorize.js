@@ -18,6 +18,19 @@ const authorize = (role) => async (req, res, next) => {
 	}
 };
 
+const scope = {
+	authorize(user) {
+		if (user.role === 'admin') return {};
+
+		return {
+			where: {
+				user_id: user.id,
+			},
+		};
+	},
+};
+
 module.exports = {
+	scope,
 	authorize,
 };

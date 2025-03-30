@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router';
 
 import axios from '@/libs/axios';
 import { currency } from '@/libs/utils';
+import { useAuth } from '@/hooks/use-auth';
 import { useConfirm } from '@/hooks/use-confirm';
 
 import {
@@ -23,8 +24,10 @@ import RecipientDetail from '@/components/transactions/recipient-detail';
 import { INITIAL_COURIER, INITIAL_RECIPIENT } from '@/store/use-transactions';
 
 const ShowTransaction = () => {
+	const { user, loading: userLoading } = useAuth();
 	const { uuid } = useParams();
 	const { confirm } = useConfirm();
+
 	const {
 		data,
 		error,
@@ -67,6 +70,8 @@ const ShowTransaction = () => {
 			status: data.data.status,
 		};
 	}, [error, loading, data]);
+
+	const admin = !userLoading && user.role === 'admin';
 
 	const handleApproval = (status, variant = 'primary') => {
 		confirm({
@@ -112,48 +117,50 @@ const ShowTransaction = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<div className='relative grid items-start gap-6 xl:grid-cols-3'>
-				<div className='grid gap-6'>
-					<RecipientDetail recipient={recipient} />
-					<CourierDetail courier={courier} />
+			{!loading && (
+				<div className='relative grid items-start gap-6 xl:grid-cols-3'>
+					<div className='grid gap-6'>
+						<RecipientDetail recipient={recipient} />
+						<CourierDetail courier={courier} />
 
-					<div className='flex items-center gap-2'>
-						<Link to='/dashboard/transactions'>
-							<Button variant='outline'>Back</Button>
-						</Link>
+						<div className='flex items-center gap-2'>
+							<Link to='/dashboard/transactions'>
+								<Button variant='outline'>Back</Button>
+							</Link>
 
-						{status && status === 'pending' && (
-							<React.Fragment>
-								<Button
-									variant='destructive'
-									onClick={() => handleApproval('rejected', 'destructive')}>
-									Reject
+							{admin && status === 'pending' && (
+								<React.Fragment>
+									<Button
+										variant='destructive'
+										onClick={() => handleApproval('rejected', 'destructive')}>
+										Reject
+									</Button>
+									<Button
+										variant='primary'
+										onClick={() => handleApproval('approved')}>
+										Approve
+									</Button>
+								</React.Fragment>
+							)}
+
+							{admin && status === 'approved' && (
+								<Button onClick={() => handleApproval('completed')}>
+									Complete
 								</Button>
-								<Button
-									variant='primary'
-									onClick={() => handleApproval('approved')}>
-									Approve
-								</Button>
-							</React.Fragment>
-						)}
+							)}
+						</div>
+					</div>
 
-						{status && status === 'approved' && (
-							<Button onClick={() => handleApproval('completed')}>
-								Complete
-							</Button>
-						)}
+					<div className='grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-4 xl:col-span-2'>
+						{books.map((book) => (
+							<BookCard book={book} key={book.id} />
+						))}
 					</div>
 				</div>
+			)}
 
-				<div className='grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-4 xl:col-span-2'>
-					{books.map((book) => (
-						<BookCard book={book} key={book.id} />
-					))}
-
-					<Error error={!loading && error} />
-					<Loading loading={loading} />
-				</div>
-			</div>
+			<Error error={!loading && error} />
+			<Loading loading={loading} />
 		</div>
 	);
 };

@@ -7,9 +7,12 @@ const PaymentController = require('./payment.controller');
 const DonationController = {
 	async index(req, res, next) {
 		try {
-			const donations = await Donation.findAll({
+			const donations = await Donation.scope({
+				method: ['authorize', req.user],
+			}).findAll({
 				include: 'user',
 			});
+
 			return res.json(
 				new ApiResponse('Donations retrieved successfully', donations)
 			);
@@ -43,7 +46,9 @@ const DonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const donation = await Donation.findOne({
+			const donation = await Donation.scope({
+				method: ['authorize', req.user],
+			}).findOne({
 				where: { id },
 				include: 'user',
 			});
@@ -62,7 +67,9 @@ const DonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const donation = await Donation.findOne({
+			const donation = await Donation.scope({
+				method: ['authorize', req.user],
+			}).findOne({
 				where: { id },
 			});
 
@@ -83,7 +90,9 @@ const DonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const donation = await Donation.findOne({
+			const donation = await Donation.scope({
+				method: ['authorize', req.user],
+			}).findOne({
 				where: { id },
 			});
 

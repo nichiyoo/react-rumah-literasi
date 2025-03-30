@@ -5,7 +5,7 @@ const Badge = React.forwardRef(
 	({ variant = 'primary', children, className, ...props }, ref) => {
 		const vraiants = {
 			'border-transparent bg-primary-500 text-white': variant === 'primary',
-			'border-transparent text-primary-500': variant === 'outline',
+			'border-zinc-200 text-primary-500': variant === 'outline',
 			'border-transparent bg-red-500 text-white': variant === 'destructive',
 			'border-transparent bg-amber-500 text-white': variant === 'warning',
 			'border-transparent bg-green-500 text-white': variant === 'success',

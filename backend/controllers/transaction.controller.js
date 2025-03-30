@@ -2,12 +2,14 @@ const moment = require('moment');
 
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
-const { Transaction, TransactionItem, Book, sequelize } = require('../models');
+const { Transaction, TransactionItem } = require('../models');
 
 const TransactionController = {
 	async index(req, res, next) {
 		try {
-			const transactions = await Transaction.findAll({
+			const transactions = await Transaction.scope({
+				method: ['authorize', req.user],
+			}).findAll({
 				include: ['user', 'transaction_items'],
 			});
 
@@ -88,7 +90,9 @@ const TransactionController = {
 			const uuid = req.params.uuid;
 			if (!uuid) throw new ApiError(400, 'UUID is required');
 
-			const transaction = await Transaction.findOne({
+			const transaction = await Transaction.scope({
+				method: ['authorize', req.user],
+			}).findOne({
 				where: { uuid },
 				include: [
 					'user',
@@ -140,8 +144,8 @@ const TransactionController = {
 			});
 
 			if (!transaction) throw new ApiError(404, 'Transaction not found');
-
 			await transaction.destroy();
+
 			return res.json(
 				new ApiResponse('Transaction deleted successfully', transaction)
 			);

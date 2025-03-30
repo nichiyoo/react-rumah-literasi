@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import * as React from 'react';
 
 import axios, { onUnautenticated } from '@/libs/axios';
@@ -15,6 +15,7 @@ const AuthContext = React.createContext({
 });
 
 export function AuthProvider({ children }) {
+	const { mutate: globalMutate } = useSWRConfig();
 	const [session, setSession] = useLocalStorage('session', null);
 	const { data: result, isLoading: loading, mutate } = useSWR('/auth/profile');
 

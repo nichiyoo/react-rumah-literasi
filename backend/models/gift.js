@@ -1,5 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
+const { scope } = require('../middleware/authorize');
+
 module.exports = (sequelize, DataTypes) => {
 	class Gift extends Model {
 		/**
@@ -80,6 +82,7 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: 'Gift',
 			tableName: 'gifts',
 			underscored: true,
+			scopes: scope,
 		}
 	);
 	return Gift;

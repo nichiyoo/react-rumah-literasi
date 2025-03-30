@@ -151,12 +151,6 @@ const ListTransactions = () => {
 												</button>
 											</Link>
 
-											<Link to={transaction.uuid + '/edit'} relative='path'>
-												<button className='bg-transparent hover:text-amber-500'>
-													Edit
-												</button>
-											</Link>
-
 											<button
 												onClick={() => handleDelete(transaction.uuid)}
 												className='bg-transparent hover:text-red-500'>

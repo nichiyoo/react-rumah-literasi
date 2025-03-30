@@ -87,6 +87,7 @@ app.use('/api/gifts', giftRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/deliveries', deliveryRoutes);
+app.use('/api/books', bookRoutes);
 
 const admin = authorize('admin');
 

@@ -46,7 +46,6 @@ const EditUser = load(() => import('~/members/edit-member'));
 
 const ListTransactions = load(() => import('~/transactions/list-transactions'));
 const AddTransaction = load(() => import('~/transactions/create-transaction'));
-const EditTransaction = load(() => import('~/transactions/edit-transaction'));
 const ShowTransaction = load(() => import('~/transactions/show-transaction'));
 
 const Router = () => {
@@ -103,7 +102,6 @@ const Router = () => {
 						<Route index element={<ListTransactions />} />
 						<Route path='create' element={<AddTransaction />} />
 						<Route path=':uuid/detail' element={<ShowTransaction />} />
-						<Route path=':uuid/edit' element={<EditTransaction />} />
 						<Route path=':uuid/tracking' element={<h1>Tracking</h1>} />
 					</Route>
 

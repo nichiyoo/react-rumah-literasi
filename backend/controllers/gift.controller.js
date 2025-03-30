@@ -6,7 +6,9 @@ const { Gift } = require('../models');
 const GiftController = {
 	async index(req, res, next) {
 		try {
-			const gifts = await Gift.findAll({
+			const gifts = await Gift.scope({
+				method: ['authorize', req.user],
+			}).findAll({
 				include: 'user',
 			});
 			return res.json(new ApiResponse('Gifts retrieved successfully', gifts));
@@ -33,7 +35,9 @@ const GiftController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const gift = await Gift.findOne({
+			const gift = await Gift.scope({
+				method: ['authorize', req.user],
+			}).findOne({
 				where: { id },
 				include: 'user',
 			});
@@ -50,7 +54,9 @@ const GiftController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const gift = await Gift.findOne({
+			const gift = await Gift.scope({
+				method: ['authorize', req.user],
+			}).findOne({
 				where: { id },
 			});
 
@@ -69,7 +75,9 @@ const GiftController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const gift = await Gift.findOne({
+			const gift = await Gift.scope({
+				method: ['authorize', req.user],
+			}).findOne({
 				where: { id },
 			});
 
