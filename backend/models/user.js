@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const argon2 = require('argon2');
 
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
@@ -86,6 +87,16 @@ module.exports = (sequelize, DataTypes) => {
 			scopes: {
 				authentication: {
 					attributes: {},
+				},
+			},
+			hooks: {
+				beforeCreate: async (user) => {
+					user.password = await argon2.hash(user.password);
+				},
+				beforeUpdate: async (user) => {
+					if (user.changed('password')) {
+						user.password = await argon2.hash(user.password);
+					}
 				},
 			},
 		}

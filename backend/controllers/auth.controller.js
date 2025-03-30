@@ -1,5 +1,4 @@
 const argon2 = require('argon2');
-const crypto = require('crypto');
 
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
@@ -59,12 +58,7 @@ const AuthController = {
 			});
 			if (found) throw new ApiError(400, 'Email already exists');
 
-			const hashed = await argon2.hash(password);
-			const user = await User.create({
-				...req.body,
-				password: hashed,
-			});
-
+			const user = await User.create(req.body);
 			const token = Encoder.encode(user.uuid);
 			const url = new URL(process.env.APP_URL);
 			url.pathname = '/api/auth/verify';

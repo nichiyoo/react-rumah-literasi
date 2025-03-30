@@ -138,10 +138,8 @@ const ShowTransaction = () => {
 						)}
 
 						{status && status === 'approved' && (
-							<Button
-								variant='destructive'
-								onClick={() => handleApproval('rejected', 'destructive')}>
-								Reject
+							<Button onClick={() => handleApproval('completed')}>
+								Complete
 							</Button>
 						)}
 					</div>

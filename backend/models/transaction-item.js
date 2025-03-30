@@ -1,5 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
+const ApiError = require('../libs/error');
+
 module.exports = (sequelize, DataTypes) => {
 	class TransactionItem extends Model {
 		/**
@@ -48,7 +50,49 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: 'TransactionItem',
 			tableName: 'transaction_items',
 			underscored: true,
+			hooks: {
+				afterValidate: async (item) => {
+					const book = await sequelize.models.Book.findOne({
+						where: { id: item.book_id },
+					});
+
+					if (!book) throw new ApiError(400, 'Book not found');
+					if (book.amount < item.amount) {
+						throw new ApiError(400, 'Book' + book.title + ' is out of stock');
+					}
+				},
+				afterCreate: async (item) => {
+					const book = await sequelize.models.Book.findOne({
+						where: { id: item.book_id },
+					});
+
+					await book.update({
+						amount: book.amount - item.amount,
+					});
+
+					await book.save();
+				},
+				beforeDestroy: async (item) => {
+					const transaction = await sequelize.models.Transaction.findOne({
+						where: { id: item.transaction_id },
+					});
+
+					const RETURNED = ['completed', 'rejected'];
+					if (RETURNED.includes(transaction.status)) return;
+
+					const book = await sequelize.models.Book.findOne({
+						where: { id: item.book_id },
+					});
+
+					await book.update({
+						amount: book.amount + item.amount,
+					});
+
+					await book.save();
+				},
+			},
 		}
 	);
+
 	return TransactionItem;
 };

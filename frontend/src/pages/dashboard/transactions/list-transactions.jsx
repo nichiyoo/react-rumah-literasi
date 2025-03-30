@@ -93,56 +93,80 @@ const ListTransactions = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{result.map((transaction) => (
-							<TableRow key={transaction.uuid}>
-								<TableCell>
-									<div className='flex items-center gap-4'>
-										<Avatar
-											name={transaction.user.name}
-											className='flex-none'
-										/>
-										<span className='font-medium'>{transaction.user.name}</span>
-									</div>
-								</TableCell>
-								<TableCell>{transaction.name}</TableCell>
-								<TableCell>{transaction.borrowed_date}</TableCell>
-								<TableCell>{transaction.deadline_date}</TableCell>
-								<TableCell>
-									<Badge>{transaction.status}</Badge>
-								</TableCell>
-								<TableCell className='uppercase'>
-									{transaction.courier_company} - {transaction.courier_type}
-								</TableCell>
-								<TableCell>
-									{transaction.delivery_fee ? (
-										<span>{currency(transaction.delivery_fee)}</span>
-									) : (
-										<span>-</span>
-									)}
-								</TableCell>
-								<TableCell>
-									<div className='flex items-center gap-2'>
-										<Link to={transaction.uuid + '/detail'} relative='path'>
-											<button className='bg-transparent hover:text-primary-500'>
-												Detail
-											</button>
-										</Link>
+						{result.map((transaction) => {
+							let variant = null;
 
-										<Link to={transaction.uuid + '/edit'} relative='path'>
-											<button className='bg-transparent hover:text-amber-500'>
-												Edit
-											</button>
-										</Link>
+							switch (transaction.status) {
+								case 'pending':
+									variant = 'outline';
+									break;
+								case 'approved':
+									variant = 'success';
+									break;
+								case 'rejected':
+									variant = 'destructive';
+									break;
+								case 'completed':
+									variant = 'primary';
+									break;
+								default:
+									variant = 'outline';
+									break;
+							}
 
-										<button
-											onClick={() => handleDelete(transaction.uuid)}
-											className='bg-transparent hover:text-red-500'>
-											Delete
-										</button>
-									</div>
-								</TableCell>
-							</TableRow>
-						))}
+							return (
+								<TableRow key={transaction.uuid}>
+									<TableCell>
+										<div className='flex items-center gap-4'>
+											<Avatar
+												name={transaction.user.name}
+												className='flex-none'
+											/>
+											<span className='font-medium'>
+												{transaction.user.name}
+											</span>
+										</div>
+									</TableCell>
+									<TableCell>{transaction.name}</TableCell>
+									<TableCell>{transaction.borrowed_date}</TableCell>
+									<TableCell>{transaction.deadline_date}</TableCell>
+									<TableCell>
+										<Badge variant={variant}>{transaction.status}</Badge>
+									</TableCell>
+									<TableCell className='uppercase'>
+										{transaction.courier_company} - {transaction.courier_type}
+									</TableCell>
+									<TableCell>
+										{transaction.delivery_fee ? (
+											<span>{currency(transaction.delivery_fee)}</span>
+										) : (
+											<span>-</span>
+										)}
+									</TableCell>
+									<TableCell>
+										<div className='flex items-center gap-2'>
+											<Link to={transaction.uuid + '/detail'} relative='path'>
+												<button className='bg-transparent hover:text-primary-500'>
+													Detail
+												</button>
+											</Link>
+
+											<Link to={transaction.uuid + '/edit'} relative='path'>
+												<button className='bg-transparent hover:text-amber-500'>
+													Edit
+												</button>
+											</Link>
+
+											<button
+												onClick={() => handleDelete(transaction.uuid)}
+												className='bg-transparent hover:text-red-500'>
+												Delete
+											</button>
+										</div>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 

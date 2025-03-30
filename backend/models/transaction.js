@@ -132,7 +132,47 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: 'Transaction',
 			tableName: 'transactions',
 			underscored: true,
+			hooks: {
+				afterUpdate: async (transaction) => {
+					const status = transaction.status;
+					const items = await sequelize.models.TransactionItem.findAll({
+						where: {
+							transaction_id: transaction.id,
+						},
+						include: ['book'],
+					});
+
+					const TO_BE_RETURNED = ['completed', 'rejected'];
+					if (!TO_BE_RETURNED.includes(status)) return;
+
+					items.forEach(async ({ book, amount }) => {
+						await book.update({
+							amount: book.amount + amount,
+						});
+						await book.save();
+					});
+				},
+				beforeDestroy: async (transaction) => {
+					const RETURNED = ['completed', 'rejected'];
+					if (RETURNED.includes(transaction.status)) return;
+
+					const items = await sequelize.models.TransactionItem.findAll({
+						where: {
+							transaction_id: transaction.id,
+						},
+						include: ['book'],
+					});
+
+					items.forEach(async ({ book, amount }) => {
+						await book.update({
+							amount: book.amount + amount,
+						});
+						await book.save();
+					});
+				},
+			},
 		}
 	);
+
 	return Transaction;
 };

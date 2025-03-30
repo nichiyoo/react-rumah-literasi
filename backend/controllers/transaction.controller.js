@@ -21,67 +21,32 @@ const TransactionController = {
 
 	async store(req, res, next) {
 		try {
-			const { books: borrows = [], ...rest } = req.body;
-			if (borrows.length === 0) throw new ApiError(400, 'Books are required');
+			const { books, ...rest } = req.body;
+			if (books.length === 0) throw new ApiError(400, 'Books are required');
 
-			const total = borrows.reduce((acc, book) => acc + book.amount, 0);
-			if (total > 10) throw new ApiError(400, 'Maximum 10 books are allowed');
+			const duration = 14;
+			const borrowed_date = moment(rest.borrowed_date).format('YYYY-MM-DD');
+			const deadline_date = moment(borrowed_date)
+				.add(duration, 'days')
+				.format('YYYY-MM-DD');
 
-			const result = await sequelize.transaction(async (tx) => {
-				const books = await Book.findAll(
-					{
-						where: {
-							id: borrows.map((book) => book.id),
-						},
-					},
-					{ transaction: tx }
-				);
+			const transaction = await Transaction.create(
+				{
+					...rest,
+					borrowed_date,
+					deadline_date,
+					user_id: req.user.id,
+					transaction_items: books.map((book) => ({
+						book_id: book.id,
+						amount: book.amount,
+					})),
+				},
+				{
+					include: ['transaction_items'],
+				}
+			);
 
-				const available = books.length === borrows.length;
-				if (!available) throw new ApiError(400, 'Some books are not found');
-
-				const valid = books.every((book) => {
-					const requested = borrows.find((item) => Number(item.id) === book.id);
-					return requested.amount <= book.amount;
-				});
-
-				if (!valid) throw new ApiError(400, 'Some books are not available');
-
-				const duration = 14;
-				const borrowed_date = moment(rest.borrowed_date).format('YYYY-MM-DD');
-				const deadline_date = moment(borrowed_date)
-					.add(duration, 'days')
-					.format('YYYY-MM-DD');
-
-				const created = await Transaction.create(
-					{
-						...rest,
-						borrowed_date,
-						deadline_date,
-						user_id: req.user.id,
-						transaction_items: borrows.map((book) => ({
-							book_id: book.id,
-							amount: book.amount,
-						})),
-					},
-					{
-						transaction: tx,
-						include: ['transaction_items'],
-					}
-				);
-
-				books.forEach((book) => {
-					const requested = borrows.find((item) => Number(item.id) === book.id);
-					book.update({
-						amount: book.amount - requested.amount,
-					});
-					book.save();
-				});
-
-				return created;
-			});
-
-			return res.json(new ApiResponse('Books added successfully', result));
+			return res.json(new ApiResponse('Books added successfully', transaction));
 		} catch (error) {
 			next(error);
 		}
@@ -95,39 +60,24 @@ const TransactionController = {
 			const status = req.body.status;
 			if (!status) throw new ApiError(400, 'Status is required');
 
-			const result = await sequelize.transaction(async (tx) => {
-				const transaction = await Transaction.findOne({
-					where: { uuid },
-					include: [
-						'user',
-						{
-							model: TransactionItem,
-							as: 'transaction_items',
-							include: ['book'],
-						},
-					],
-					transaction: tx,
-				});
-
-				if (!transaction) throw new ApiError(404, 'Transaction not found');
-
-				await transaction.update({ status }, { transaction: tx });
-				await transaction.save();
-
-				if (['rejected', 'completed'].includes(status)) {
-					transaction.transaction_items.forEach(async ({ book, amount }) => {
-						book.update({
-							amount: book.amount + amount,
-						});
-						book.save();
-					});
-				}
-
-				return transaction;
+			const transaction = await Transaction.findOne({
+				where: { uuid },
+				include: [
+					'user',
+					{
+						model: TransactionItem,
+						as: 'transaction_items',
+						include: ['book'],
+					},
+				],
 			});
 
+			if (!transaction) throw new ApiError(404, 'Transaction not found');
+			await transaction.update({ status });
+			await transaction.save();
+
 			const message = 'Transaction ' + status + ' successfully';
-			return res.json(new ApiResponse(message, result));
+			return res.json(new ApiResponse(message, transaction));
 		} catch (error) {
 			next(error);
 		}

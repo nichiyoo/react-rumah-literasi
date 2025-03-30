@@ -3,14 +3,21 @@ import * as React from 'react';
 
 const Badge = React.forwardRef(
 	({ variant = 'primary', children, className, ...props }, ref) => {
+		const vraiants = {
+			'border-transparent bg-primary-500 text-white': variant === 'primary',
+			'border-transparent text-primary-500': variant === 'outline',
+			'border-transparent bg-red-500 text-white': variant === 'destructive',
+			'border-transparent bg-amber-500 text-white': variant === 'warning',
+			'border-transparent bg-green-500 text-white': variant === 'success',
+			'border-transparent bg-blue-500 text-white': variant === 'info',
+		};
+
 		return (
 			<span
 				ref={ref}
 				className={cn(
-					'flex-none whitespace-nowrap items-center rounded-full px-3 py-1 text-xs font-medium ',
-					variant == 'primary' && 'bg-primary-500 text-white',
-					variant == 'outline' && 'text-primary-500 border-zinc-200',
-					variant == 'destructive' && 'bg-red-500 text-white',
+					'border flex-none whitespace-nowrap items-center rounded-full px-3 py-1 text-xs font-medium ',
+					vraiants,
 					className
 				)}
 				{...props}>

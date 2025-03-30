@@ -1,4 +1,3 @@
-const argon2 = require('argon2');
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
@@ -19,11 +18,7 @@ const UserController = {
 			const password = req.body.password;
 			if (!password) throw new ApiError(400, 'Password is required');
 
-			const hashed = await argon2.hash(req.body.password);
-			const user = await User.create({
-				...req.body,
-				password: hashed,
-			});
+			const user = await User.create(req.body);
 
 			return res.json(new ApiResponse('User created successfully', user));
 		} catch (error) {
@@ -58,12 +53,7 @@ const UserController = {
 			});
 
 			if (!user) throw new ApiError(404, 'User not found');
-			await user.update({
-				...req.body,
-				password: req.body.password
-					? await argon2.hash(req.body.password)
-					: user.password,
-			});
+			await user.update(req.body);
 			await user.save();
 
 			return res.json(new ApiResponse('User updated successfully', user));
