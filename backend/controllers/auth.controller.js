@@ -142,6 +142,91 @@ const AuthController = {
 			next(error);
 		}
 	},
+
+	async forgot(req, res, next) {
+		try {
+			const { email } = req.body;
+			if (!email) {
+				throw new ApiError(400, 'Email is required');
+			}
+
+			const user = await User.findOne({
+				where: {
+					email,
+				},
+			});
+			if (!user) throw new ApiError(404, 'User not found');
+
+			const token = Encoder.encode(user.uuid);
+			const url = new URL(process.env.APP_URL);
+			url.pathname = '/api/auth/recover-password';
+			url.searchParams.set('token', token);
+			const href = url.toString();
+
+			await EmailController.forgotPassword(href, user);
+
+			return res.json(
+				new ApiResponse('Password reset link sent successfully', user)
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	async recover(req, res, next) {
+		try {
+			const token = req.query.token;
+			if (!token) {
+				throw new ApiError(400, 'Token is required');
+			}
+
+			const uuid = Encoder.decode(token);
+			const user = await User.findOne({
+				where: { uuid },
+			});
+			if (!user) throw new ApiError(404, 'User not found');
+
+			const url = new URL(process.env.APP_ORIGIN);
+			url.pathname = '/auth/reset-password';
+			url.searchParams.set('token', token);
+			const href = url.toString();
+
+			return res.redirect(href);
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	async reset(req, res, next) {
+		try {
+			const { token } = req.body;
+			if (!token) {
+				throw new ApiError(400, 'Token is required');
+			}
+
+			const uuid = Encoder.decode(token);
+			const user = await User.findOne({
+				where: { uuid },
+			});
+			if (!user) throw new ApiError(404, 'User not found');
+
+			const { password, password_confirmation } = req.body;
+			if (password !== password_confirmation) {
+				throw new ApiError(
+					400,
+					'Password and password confirmation do not match'
+				);
+			}
+
+			await user.update({
+				password,
+			});
+
+			return res.json(new ApiResponse('Password reset successfully', user));
+		} catch (error) {
+			next(error);
+		}
+	},
 };
 
 module.exports = AuthController;

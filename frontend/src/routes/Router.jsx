@@ -16,6 +16,8 @@ import SignUp from '@/pages/auth/sign-up';
 import OneTimePassword from '@/pages/auth/otp';
 import ProfileDetail from '@/pages/setting/profile';
 import Setting from '@/pages/setting/setting';
+import ForgotPassword from '@/pages/auth/forgot-password';
+import ResetPassword from '@/pages/auth/reset-password';
 
 const load = (callback) => {
 	const Component = React.lazy(callback);
@@ -66,6 +68,8 @@ const Router = () => {
 					<Route path='signin' element={<SignIn />} />
 					<Route path='signup' element={<SignUp />} />
 					<Route path='otp' element={<OneTimePassword />} />
+					<Route path='forgot-password' element={<ForgotPassword />} />
+					<Route path='reset-password' element={<ResetPassword />} />
 				</Route>
 
 				<Route path='dashboard' element={<DashboardLayout />}>

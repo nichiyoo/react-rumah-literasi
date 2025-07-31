@@ -8,8 +8,9 @@ const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 const sequelizeStore = require('connect-session-sequelize')(session.Store);
-const { sequelize } = require('../models');
 const ratelimit = require('express-rate-limit');
+
+const { sequelize } = require('../models');
 
 dotenv.config();
 
