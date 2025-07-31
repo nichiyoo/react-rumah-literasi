@@ -146,85 +146,79 @@ const AuthController = {
 	async forgot(req, res, next) {
 		try {
 			const { email } = req.body;
-			if (!email) {
-				throw new ApiError(400, 'Email is required');
-			}
+			if (!email) throw new ApiError(400, 'Email is required');
 
-			const user = await User.findOne({
-				where: {
-					email,
-				},
-			});
+			const user = await User.findOne({ where: { email } });
 			if (!user) throw new ApiError(404, 'User not found');
 
-			const token = Encoder.encode(user.uuid);
+			req.session.reset = {
+				uuid: user.uuid,
+			};
+
+			const token = Encoder.encode(req.session.id);
 			const url = new URL(process.env.APP_URL);
 			url.pathname = '/api/auth/recover-password';
 			url.searchParams.set('token', token);
-			const href = url.toString();
 
-			await EmailController.forgotPassword(href, user);
+			await EmailController.forgotPassword(url.toString(), user);
 
-			return res.json(
-				new ApiResponse('Password reset link sent successfully', user)
-			);
-		} catch (error) {
-			next(error);
+			return res.json(new ApiResponse('Password reset link sent', user));
+		} catch (err) {
+			next(err);
 		}
 	},
 
 	async recover(req, res, next) {
 		try {
-			const token = req.query.token;
-			if (!token) {
-				throw new ApiError(400, 'Token is required');
-			}
+			const { token } = req.query;
+			if (!token) throw new ApiError(400, 'Token is required');
 
-			const uuid = Encoder.decode(token);
-			const user = await User.findOne({
-				where: { uuid },
+			const sid = Encoder.decode(token);
+			req.sessionStore.get(sid, (err, session) => {
+				if (err || !session || !session.reset) {
+					const url = new URL(process.env.APP_ORIGIN);
+					url.pathname = '/expired';
+					return res.redirect(url.toString());
+				}
+
+				const url = new URL(process.env.APP_ORIGIN);
+				url.pathname = '/auth/reset-password';
+				url.searchParams.set('token', token);
+
+				return res.redirect(url.toString());
 			});
-			if (!user) throw new ApiError(404, 'User not found');
-
-			const url = new URL(process.env.APP_ORIGIN);
-			url.pathname = '/auth/reset-password';
-			url.searchParams.set('token', token);
-			const href = url.toString();
-
-			return res.redirect(href);
-		} catch (error) {
-			next(error);
+		} catch (err) {
+			next(err);
 		}
 	},
 
 	async reset(req, res, next) {
 		try {
-			const { token } = req.body;
-			if (!token) {
-				throw new ApiError(400, 'Token is required');
-			}
-
-			const uuid = Encoder.decode(token);
-			const user = await User.findOne({
-				where: { uuid },
-			});
-			if (!user) throw new ApiError(404, 'User not found');
-
-			const { password, password_confirmation } = req.body;
+			const { token, password, password_confirmation } = req.body;
+			if (!token) throw new ApiError(400, 'Token is required');
 			if (password !== password_confirmation) {
-				throw new ApiError(
-					400,
-					'Password and password confirmation do not match'
-				);
+				throw new ApiError(400, 'Password and confirmation do not match');
 			}
 
-			await user.update({
-				password,
-			});
+			const sid = Encoder.decode(token);
+			req.sessionStore.get(sid, async (err, session) => {
+				if (err || !session || !session.reset) {
+					return next(new ApiError(400, 'Invalid or expired token'));
+				}
 
-			return res.json(new ApiResponse('Password reset successfully', user));
-		} catch (error) {
-			next(error);
+				const user = await User.findOne({
+					where: { uuid: session.reset.uuid },
+				});
+
+				if (!user) return next(new ApiError(404, 'User not found'));
+
+				await user.update({ password });
+				req.sessionStore.destroy(sid, () => {});
+
+				return res.json(new ApiResponse('Password reset successfully', user));
+			});
+		} catch (err) {
+			next(err);
 		}
 	},
 };

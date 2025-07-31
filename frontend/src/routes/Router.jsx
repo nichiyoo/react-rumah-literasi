@@ -18,6 +18,7 @@ import ProfileDetail from '@/pages/setting/profile';
 import Setting from '@/pages/setting/setting';
 import ForgotPassword from '@/pages/auth/forgot-password';
 import ResetPassword from '@/pages/auth/reset-password';
+import ExpiredLink from '@/pages/expired-link';
 
 const load = (callback) => {
 	const Component = React.lazy(callback);
@@ -123,6 +124,7 @@ const Router = () => {
 				</Route>
 
 				<Route path='admin' element={<AdminLayout />}></Route>
+				<Route path='expired' element={<ExpiredLink />} />
 				<Route path='*' element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
