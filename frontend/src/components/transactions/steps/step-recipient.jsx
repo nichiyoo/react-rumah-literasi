@@ -16,7 +16,6 @@ const TransactionSchema = z.object({
 	phone: z.string().min(11),
 	address: z.string().min(3),
 	note: z.string().optional(),
-	borrowed_date: z.coerce.date(),
 	latitude: z.coerce.number(),
 	longitude: z.coerce.number(),
 });
@@ -39,7 +38,7 @@ const StepRecipient = () => {
 	const onSubmit = async (data) => {
 		setRecipient({
 			...data,
-			borrowed_date: new Date(data.borrowed_date).toISOString().split('T')[0],
+			borrowed_date: new Date().toISOString().split('T')[0],
 		});
 		route(STEPS.COURIER);
 	};
@@ -127,18 +126,6 @@ const StepRecipient = () => {
 						setValue('longitude', location.longitude);
 					}}
 				/>
-			</div>
-
-			<div>
-				<Label htmlFor='borrowed_date'>Borrowed Date</Label>
-				<Input
-					type='date'
-					placeholder='Enter your borrowed date'
-					{...register('borrowed_date')}
-				/>
-				{errors.borrowed_date && (
-					<span className='text-red-500'>{errors.borrowed_date.message}</span>
-				)}
 			</div>
 
 			<div className='flex items-center justify-end gap-2 col-span-full'>

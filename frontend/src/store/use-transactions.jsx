@@ -15,8 +15,8 @@ export const INITIAL_RECIPIENT = {
 	phone: '',
 	address: '',
 	note: '',
+	borrowed_date: '',
 	...DEFAULT_LOCATION,
-	borrowed_date: new Date().toISOString().split('T')[0],
 };
 
 export const INITIAL_COURIER = {
@@ -30,7 +30,6 @@ const schemas = z.object({
 	phone: z.string().min(11),
 	address: z.string().min(3),
 	note: z.string().optional(),
-	borrowed_date: z.coerce.date(),
 	latitude: z.coerce.number(),
 	longitude: z.coerce.number(),
 	zipcode: z.coerce.number(),

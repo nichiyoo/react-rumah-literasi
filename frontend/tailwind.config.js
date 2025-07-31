@@ -17,7 +17,7 @@ export default {
 				sans: ['var(--font-sans)', ...fontFamily.sans],
 			},
 			colors: {
-				primary: colors.teal,
+				primary: colors.pink,
 				temporary: {
 					50: '#eff6ff',
 					100: '#dbebfe',

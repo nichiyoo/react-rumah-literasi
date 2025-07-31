@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - argon2
+  - es5-ext
+  - esbuild
+  - sharp
+  - sqlite3

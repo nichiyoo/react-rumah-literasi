@@ -29,7 +29,7 @@ const TransactionController = {
 			if (books.length === 0) throw new ApiError(400, 'Books are required');
 
 			const duration = 14;
-			const borrowed_date = moment(rest.borrowed_date).format('YYYY-MM-DD');
+			const borrowed_date = new moment().format('YYYY-MM-DD');
 			const deadline_date = moment(borrowed_date)
 				.add(duration, 'days')
 				.format('YYYY-MM-DD');
