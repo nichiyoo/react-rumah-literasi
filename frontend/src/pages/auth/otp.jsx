@@ -3,7 +3,7 @@ import * as z from 'zod';
 
 import { toast } from 'sonner';
 import { Link } from 'react-router';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -12,9 +12,13 @@ import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { OTPInput } from '@/components/ui/otp-input';
 
 const OneTimePasswordSchema = z.object({
-	otp: z.coerce.number().int().positive().min(6),
+	otp: z
+		.string()
+		.length(6)
+		.regex(/^\d{6}$/),
 });
 
 const OneTimePassword = () => {
@@ -26,7 +30,7 @@ const OneTimePassword = () => {
 	}, [session, loading, navigate]);
 
 	const {
-		register,
+		control,
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
@@ -71,8 +75,14 @@ const OneTimePassword = () => {
 
 			<form className='grid gap-6' onSubmit={onSubmit}>
 				<div>
-					<Label htmlFor='otp'>One Time Password</Label>
-					<Input type='otp' placeholder='Enter your otp' {...register('otp')} />
+					<Label htmlFor='otp'>Input code</Label>
+					<Controller
+						control={control}
+						name='otp'
+						render={({ field }) => (
+							<OTPInput value={field.value} onChange={field.onChange} />
+						)}
+					/>
 					{errors.otp && (
 						<span className='text-red-500'>{errors.otp.message}</span>
 					)}

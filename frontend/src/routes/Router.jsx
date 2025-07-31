@@ -123,7 +123,6 @@ const Router = () => {
 					<Route path='settings' element={<Setting />} />
 				</Route>
 
-				<Route path='admin' element={<AdminLayout />}></Route>
 				<Route path='expired' element={<ExpiredLink />} />
 				<Route path='*' element={<NotFound />} />
 			</Routes>

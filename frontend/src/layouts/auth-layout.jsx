@@ -19,7 +19,7 @@ const AuthLayout = () => {
 				<Logo />
 			</Link>
 
-			<div className='w-full h-screen'>
+			<div className='hidden w-full h-screen lg:block'>
 				<img
 					src='/backdrop.jpg'
 					alt='logo'
