@@ -25,7 +25,7 @@ module.exports = {
 						name: 'Administrator',
 						email: 'admin@example.com',
 						password: hashed,
-						role: 'admin',
+						role: 'superadmin',
 						is_verified: true,
 						created_at: new Date(),
 						updated_at: new Date(),

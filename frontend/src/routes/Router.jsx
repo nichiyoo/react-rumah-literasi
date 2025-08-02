@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
 import LazyRoute from '@/routes/lazy';
 import AuthLayout from '@/layouts/auth-layout';
-import AdminLayout from '@/layouts/admin-layout';
+import AuthorizeLayout from '@/layouts/authorize-layout';
 import LandingLayout from '@/layouts/landing-layout';
 import DashboardLayout from '@/layouts/dashboard-layout';
 
@@ -21,6 +21,8 @@ import ResetPassword from '@/pages/auth/reset-password';
 import NotFound from '@/pages/errors/not-found';
 import ExpiredLink from '@/pages/errors/expired-link';
 import Unauhtorized from '@/pages/errors/unauthorized';
+
+import { ROLES } from '@/libs/constant';
 
 const load = (callback) => {
 	const Component = React.lazy(callback);
@@ -78,43 +80,61 @@ const Router = () => {
 				<Route path='dashboard' element={<DashboardLayout />}>
 					<Route index element={<Dashboard />} />
 
-					<Route path='books' element={<AdminLayout />}>
-						<Route index element={<ListBooks />} />
-						<Route path='create' element={<AddBook />} />
-						<Route path=':id/edit' element={<EditBook />} />
-					</Route>
-
-					<Route path='events' element={<AdminLayout />}>
-						<Route index element={<ListEvents />} />
-						<Route path='create' element={<AddEvent />} />
-						<Route path=':id/edit' element={<EditEvent />} />
-					</Route>
-
-					<Route path='members' element={<AdminLayout />}>
+					<Route path='members' element={<AuthorizeLayout />}>
 						<Route index element={<ListUsers />} />
 						<Route path='create' element={<AddUser />} />
 						<Route path=':id/edit' element={<EditUser />} />
 					</Route>
 
-					<Route path='donations'>
+					<Route
+						path='books'
+						element={<AuthorizeLayout roles={[ROLES.LIBRARIAN]} />}>
+						<Route index element={<ListBooks />} />
+						<Route path='create' element={<AddBook />} />
+						<Route path=':id/edit' element={<EditBook />} />
+					</Route>
+
+					<Route
+						path='events'
+						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
+						<Route index element={<ListEvents />} />
+						<Route path='create' element={<AddEvent />} />
+						<Route path=':id/edit' element={<EditEvent />} />
+					</Route>
+
+					<Route
+						path='donations'
+						element={<AuthorizeLayout roles={[ROLES.GUEST, ROLES.ADMIN]} />}>
 						<Route index element={<ListDonations />} />
 						<Route path='create' element={<AddDonation />} />
 						<Route path=':id/detail' element={<ShowDonation />} />
-						<Route path=':id/edit' element={<AdminLayout />}>
-							<Route index element={<EditDonation />} />
-						</Route>
 					</Route>
 
-					<Route path='gifts'>
+					<Route
+						path='donations'
+						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
+						<Route path=':id/edit' element={<EditDonation />} />
+					</Route>
+
+					<Route
+						path='gifts'
+						element={<AuthorizeLayout roles={[ROLES.GUEST, ROLES.ADMIN]} />}>
 						<Route index element={<ListGifts />} />
 						<Route path='create' element={<AddGift />} />
 						<Route path=':id/detail' element={<ShowGift />} />
-						<Route path=':id/edit' element={<AdminLayout />}>
-							<Route index element={<EditGift />} />
-						</Route>
 					</Route>
 
-					<Route path='transactions'>
+					<Route
+						path='gifts'
+						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
+						<Route path=':id/edit' element={<EditGift />} />
+					</Route>
+
+					<Route
+						path='transactions'
+						element={
+							<AuthorizeLayout roles={[ROLES.GUEST, ROLES.LIBRARIAN]} />
+						}>
 						<Route index element={<ListTransactions />} />
 						<Route path='create' element={<AddTransaction />} />
 						<Route path=':uuid/detail' element={<ShowTransaction />} />

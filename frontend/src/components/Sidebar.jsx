@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { toast } from 'sonner';
-import { LogOut } from 'lucide-react';
-import { Link, useNavigate } from 'react-router';
+import { User2, LogOut } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router';
 
 import { cn } from '@/libs/utils';
 import { useAuth } from '@/hooks/use-auth';
-import { ADMIN_MENUS, MEMBER_MENUS } from '@/libs/constant';
+import { SIDEBAR_MENUS } from '@/libs/constant';
 
 import {
 	Accordion,
@@ -15,8 +15,6 @@ import {
 } from '@/components/ui/accordion';
 
 import SidebarCard from '@/components/sidebar-card';
-import { useLocation } from 'react-router';
-import { User2 } from 'lucide-react';
 import { useConfirm } from '@/hooks/use-confirm';
 
 const Sidebar = ({ className }) => {
@@ -27,9 +25,16 @@ const Sidebar = ({ className }) => {
 	const location = useLocation();
 
 	const MENUS = React.useMemo(() => {
-		if (loading) return [];
-		if (user && user.role === 'admin') return ADMIN_MENUS;
-		return MEMBER_MENUS;
+		if (loading || !user) return [];
+		return SIDEBAR_MENUS.map((menu) => {
+			return {
+				...menu,
+				submenus: menu.submenus.filter((submenu) => {
+					if (submenu.roles === null) return true;
+					else return submenu.roles.includes(user.role);
+				}),
+			};
+		});
 	}, [loading, user]);
 
 	const handleLogout = async () => {

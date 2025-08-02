@@ -15,7 +15,14 @@ import {
 	Home,
 } from 'lucide-react';
 
-export const ADMIN_MENUS = [
+export const ROLES = {
+	GUEST: 'guest',
+	ADMIN: 'admin',
+	LIBRARIAN: 'librarian',
+	SUPERADMIN: 'superadmin',
+};
+
+export const SIDEBAR_MENUS = [
 	{
 		id: 'general',
 		label: 'General',
@@ -24,31 +31,37 @@ export const ADMIN_MENUS = [
 				href: '/dashboard',
 				label: 'Dashboard',
 				icon: Home,
+				roles: null,
 			},
 			{
 				href: '/dashboard/books',
 				label: 'List Books',
 				icon: Book,
+				roles: [ROLES.LIBRARIAN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/events',
 				label: 'List Events',
 				icon: Calendar,
+				roles: [ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/gifts',
 				label: 'List Gifts',
 				icon: Gift,
+				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/donations',
 				label: 'List Donations',
 				icon: HeartHandshake,
+				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/transactions',
 				label: 'List Transactions',
 				icon: Library,
+				roles: [ROLES.GUEST, ROLES.LIBRARIAN, ROLES.SUPERADMIN],
 			},
 		],
 	},
@@ -60,51 +73,13 @@ export const ADMIN_MENUS = [
 				href: '/dashboard/members',
 				label: 'List Members',
 				icon: UsersRound,
+				roles: [ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/settings',
 				label: 'Settings',
 				icon: Bolt,
-			},
-		],
-	},
-];
-
-export const MEMBER_MENUS = [
-	{
-		id: 'general',
-		label: 'General',
-		submenus: [
-			{
-				href: '/dashboard',
-				label: 'Dashboard',
-				icon: Home,
-			},
-			{
-				href: '/dashboard/gifts',
-				label: 'List Gifts',
-				icon: Gift,
-			},
-			{
-				href: '/dashboard/donations',
-				label: 'List Donations',
-				icon: HeartHandshake,
-			},
-			{
-				href: '/dashboard/transactions',
-				label: 'List Transactions',
-				icon: Library,
-			},
-		],
-	},
-	{
-		id: 'configuration',
-		label: 'Configuration',
-		submenus: [
-			{
-				href: '/dashboard/settings',
-				label: 'Settings',
-				icon: Bolt,
+				roles: null,
 			},
 		],
 	},

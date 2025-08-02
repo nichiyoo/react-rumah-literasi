@@ -1,12 +1,14 @@
-import * as React from 'react';
-
 import { Outlet, Navigate } from 'react-router';
 import { useAuth } from '@/hooks/use-auth';
 import { Loading } from '@/components/loading';
+import { ROLES } from '@/libs/constant';
 
-const AdminLayout = () => {
+const DEFAULT = [];
+
+const AuthorizeLayout = ({ roles = DEFAULT }) => {
 	const { user, loading } = useAuth();
-	const admin = user && user.role === 'admin';
+	const set = new Set([...roles, ROLES.SUPERADMIN]);
+	const authorized = user && set.has(user.role);
 
 	if (loading) {
 		return (
@@ -23,7 +25,16 @@ const AdminLayout = () => {
 		);
 	}
 
-	return admin ? <Outlet /> : <Navigate to='/dashboard' />;
+	if (authorized) return <Outlet />;
+
+	return (
+		<Navigate
+			to='/unauthorized'
+			state={{
+				from: location.pathname,
+			}}
+		/>
+	);
 };
 
-export default AdminLayout;
+export default AuthorizeLayout;

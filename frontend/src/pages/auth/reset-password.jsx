@@ -50,7 +50,8 @@ const ResetPassword = () => {
 	React.useEffect(() => {
 		const token = search.get('token');
 		if (token) setValue('token', token);
-	}, [search, setValue]);
+		else navigate('/expired');
+	}, [search, setValue, navigate]);
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
