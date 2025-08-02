@@ -10,15 +10,17 @@ import DashboardLayout from '@/layouts/dashboard-layout';
 import Home from '@/pages/home';
 import About from '@/pages/about';
 import Contact from '@/pages/contact';
-import NotFound from '@/pages/not-found';
 import SignIn from '@/pages/auth/sign-in';
 import SignUp from '@/pages/auth/sign-up';
+import Setting from '@/pages/setting/setting';
 import OneTimePassword from '@/pages/auth/otp';
 import ProfileDetail from '@/pages/setting/profile';
-import Setting from '@/pages/setting/setting';
 import ForgotPassword from '@/pages/auth/forgot-password';
 import ResetPassword from '@/pages/auth/reset-password';
-import ExpiredLink from '@/pages/expired-link';
+
+import NotFound from '@/pages/errors/not-found';
+import ExpiredLink from '@/pages/errors/expired-link';
+import Unauhtorized from '@/pages/errors/unauthorized';
 
 const load = (callback) => {
 	const Component = React.lazy(callback);
@@ -124,6 +126,7 @@ const Router = () => {
 				</Route>
 
 				<Route path='expired' element={<ExpiredLink />} />
+				<Route path='unauthorized' element={<Unauhtorized />} />
 				<Route path='*' element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
