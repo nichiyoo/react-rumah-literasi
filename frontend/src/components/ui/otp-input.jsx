@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cn } from '@/libs/utils';
 
 const OTPInput = React.forwardRef(
-	({ length = 6, onChange, className }, ref) => {
+	({ length = 6, autoFocus = false, onChange, className }, ref) => {
 		const inputs = React.useRef([]);
 
 		const handleChange = (e, i) => {
@@ -63,6 +63,7 @@ const OTPInput = React.forwardRef(
 						type='text'
 						inputMode='numeric'
 						maxLength={1}
+						autoFocus={autoFocus && i === 0}
 						className='text-lg text-center border size-14 aspect-square border-zinc-200 rounded-xl focus:ring-primary-500 focus:border-primary-500'
 						onChange={(e) => handleChange(e, i)}
 						onKeyDown={(e) => handleKeyDown(e, i)}

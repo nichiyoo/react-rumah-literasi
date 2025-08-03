@@ -48,7 +48,7 @@ const UserController = {
 			const uuid = req.params.uuid;
 			if (!uuid) throw new ApiError(400, 'UUID is required');
 
-			const user = await User.scope('authentication').findOne({
+			const user = await User.findOne({
 				where: { uuid },
 			});
 
@@ -70,7 +70,6 @@ const UserController = {
 			const user = await User.findOne({
 				where: { uuid },
 			});
-
 			if (!user) throw new ApiError(404, 'User not found');
 
 			await user.destroy();

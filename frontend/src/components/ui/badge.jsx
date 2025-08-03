@@ -16,7 +16,7 @@ const Badge = React.forwardRef(
 			<span
 				ref={ref}
 				className={cn(
-					'border flex-none whitespace-nowrap items-center rounded-full px-3 py-1 text-xs font-medium ',
+					'border flex-none whitespace-nowrap items-center rounded-full px-3 py-1 text-xs font-medium capitalize',
 					vraiants,
 					className
 				)}

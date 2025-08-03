@@ -16,18 +16,22 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
+import { ROLES } from '@/libs/constant';
 
 const ShowDonation = () => {
 	const { id } = useParams();
-	const { user, loading: userLoading } = useAuth();
+	const { user, loading: loading } = useAuth();
 
 	const {
 		error,
 		data: result,
-		isLoading: loading,
+		isLoading: fetching,
 	} = useSWR('/donations/' + id);
 
-	const admin = !userLoading && user.role === 'admin';
+	const allowed = React.useMemo(() => {
+		if (loading) return false;
+		return [ROLES.ADMIN, ROLES.SUPERADMIN].includes(user.role);
+	}, [user, loading]);
 
 	return (
 		<div className='grid gap-8'>
@@ -40,8 +44,8 @@ const ShowDonation = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<Error error={!loading && error} />
-			<Loading loading={loading} />
+			<Error error={!fetching && error} />
+			<Loading loading={fetching} />
 
 			{result && (
 				<div className='grid gap-6 lg:grid-cols-2'>
@@ -75,7 +79,7 @@ const ShowDonation = () => {
 								</Link>
 							)}
 
-							{admin && (
+							{allowed && (
 								<Link to={'../edit'} relative='path'>
 									<Button>Edit</Button>
 								</Link>

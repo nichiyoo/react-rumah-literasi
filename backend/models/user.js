@@ -1,6 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 const argon2 = require('argon2');
+const { ROLES } = require('../libs/constant');
 
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
@@ -62,8 +63,8 @@ module.exports = (sequelize, DataTypes) => {
 			role: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: ['guest', 'librarian', 'admin', 'superadmin'],
-				defaultValue: 'guest',
+				values: [ROLES.GUEST, ROLES.LIBRARIAN, ROLES.ADMIN, ROLES.SUPERADMIN],
+				defaultValue: ROLES.GUEST,
 				validate: {
 					notEmpty: true,
 				},

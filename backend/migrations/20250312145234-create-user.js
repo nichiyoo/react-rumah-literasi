@@ -1,4 +1,6 @@
 'use strict';
+const { ROLES } = require('../libs/constant');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, DataTypes) {
@@ -29,8 +31,8 @@ module.exports = {
 			role: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: ['guest', 'librarian', 'admin', 'superadmin'],
-				defaultValue: 'guest',
+				values: [ROLES.GUEST, ROLES.LIBRARIAN, ROLES.ADMIN, ROLES.SUPERADMIN],
+				defaultValue: ROLES.GUEST,
 			},
 			is_verified: {
 				allowNull: false,

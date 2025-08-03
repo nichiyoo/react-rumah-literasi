@@ -16,13 +16,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Map } from '@/components/map';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
+import { ROLES } from '@/libs/constant';
 
 const ShowGift = () => {
 	const { id } = useParams();
-	const { user, loading: userLoading } = useAuth();
-	const { error, data: result, isLoading: loading } = useSWR('/gifts/' + id);
+	const { user, loading } = useAuth();
+	const { error, data: result, isLoading: fetching } = useSWR('/gifts/' + id);
 
-	const admin = !userLoading && user.role === 'admin';
+	const allowed = React.useMemo(() => {
+		if (loading) return false;
+		return [ROLES.ADMIN, ROLES.SUPERADMIN].includes(user.role);
+	}, [user, loading]);
 
 	return (
 		<div className='grid gap-8'>
@@ -35,8 +39,8 @@ const ShowGift = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<Error error={!loading && error} />
-			<Loading loading={loading} />
+			<Error error={!fetching && error} />
+			<Loading loading={fetching} />
 
 			{result && (
 				<div className='grid gap-6 lg:grid-cols-2'>
@@ -82,7 +86,7 @@ const ShowGift = () => {
 								<Button variant='outline'>Back</Button>
 							</Link>
 
-							{admin && (
+							{allowed && (
 								<Link to={'../edit'} relative='path'>
 									<Button>Edit</Button>
 								</Link>

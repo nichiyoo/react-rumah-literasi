@@ -6,18 +6,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { ROLES } from '@/libs/constant';
+
+const ROLE_LIST = Object.values(ROLES);
 
 const MemberSchema = z.object({
 	name: z.string().min(3),
 	email: z.string().min(3),
 	password: z.string().optional(),
-	role: z.enum(['student', 'admin', 'librarian']),
+	role: z.enum(ROLE_LIST),
 	is_verified: z.coerce.boolean(),
 });
 
 const MemberForm = ({ initial, action, label }) => {
 	const {
-		watch,
 		register,
 		handleSubmit,
 		formState: { errors },
@@ -27,13 +29,13 @@ const MemberForm = ({ initial, action, label }) => {
 			name: '',
 			email: '',
 			password: '',
-			role: 'student',
+			role: ROLES.GUEST,
 			is_verified: 'true',
 		},
 	});
 
 	return (
-		<form onSubmit={handleSubmit(action)} className='grid lg:grid-cols-2 gap-6'>
+		<form onSubmit={handleSubmit(action)} className='grid gap-6 lg:grid-cols-2'>
 			<div className='col-span-full'>
 				<Label htmlFor='name'>Name</Label>
 				<Input
@@ -72,15 +74,15 @@ const MemberForm = ({ initial, action, label }) => {
 
 			<div>
 				<Label htmlFor='role'>Role</Label>
-
 				<select
-					className='block w-full p-3 border shadow-sm border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
+					className='block w-full p-3 capitalize border shadow-sm border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 					{...register('role')}>
-					<option value='student'>Student</option>
-					<option value='admin'>Admin</option>
-					<option value='librarian'>Librarian</option>
+					{ROLE_LIST.map((role) => (
+						<option key={role} value={role}>
+							{role}
+						</option>
+					))}
 				</select>
-
 				{errors.role && (
 					<span className='text-red-500'>{errors.role.message}</span>
 				)}

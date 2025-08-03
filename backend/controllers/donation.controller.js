@@ -2,13 +2,14 @@ const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
 const { Donation } = require('../models');
+const { ROLES } = require('../libs/constant');
 const PaymentController = require('./payment.controller');
 
 const DonationController = {
 	async index(req, res, next) {
 		try {
 			const donations = await Donation.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findAll({
 				include: 'user',
 			});
@@ -47,7 +48,7 @@ const DonationController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const donation = await Donation.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 				include: 'user',
@@ -68,7 +69,7 @@ const DonationController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const donation = await Donation.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 			});
@@ -91,17 +92,14 @@ const DonationController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const donation = await Donation.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 			});
 
 			if (!donation) throw new ApiError(404, 'Donation not found');
-
-			const admin = req.user.role === 'admin';
 			const pending = donation.status === 'pending';
-
-			if (!pending && !admin) {
+			if (!pending) {
 				throw new ApiError(
 					400,
 					'Cannot delete donation unless the status is pending'

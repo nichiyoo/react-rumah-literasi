@@ -1,6 +1,7 @@
 'use strict';
 const argon2 = require('argon2');
 const { v4: uuidv4 } = require('uuid');
+const { ROLES } = require('../libs/constant');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -22,10 +23,40 @@ module.exports = {
 				[
 					{
 						uuid: uuidv4(),
+						name: 'Super Administrator',
+						email: 'superadmin@example.com',
+						password: hashed,
+						role: ROLES.SUPERADMIN,
+						is_verified: true,
+						created_at: new Date(),
+						updated_at: new Date(),
+					},
+					{
+						uuid: uuidv4(),
 						name: 'Administrator',
 						email: 'admin@example.com',
 						password: hashed,
-						role: 'superadmin',
+						role: ROLES.ADMIN,
+						is_verified: true,
+						created_at: new Date(),
+						updated_at: new Date(),
+					},
+					{
+						uuid: uuidv4(),
+						name: 'Librarian',
+						email: 'librarian@example.com',
+						password: hashed,
+						role: ROLES.LIBRARIAN,
+						is_verified: true,
+						created_at: new Date(),
+						updated_at: new Date(),
+					},
+					{
+						uuid: uuidv4(),
+						name: 'Guest',
+						email: 'guest@example.com',
+						password: hashed,
+						role: ROLES.GUEST,
 						is_verified: true,
 						created_at: new Date(),
 						updated_at: new Date(),

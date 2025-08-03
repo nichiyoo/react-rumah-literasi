@@ -5,12 +5,13 @@ const ApiResponse = require('../libs/response');
 const { Transaction, TransactionItem, sequelize } = require('../models');
 const DeliveryController = require('./delivery.controller');
 const { Op } = require('sequelize');
+const { ROLES } = require('../libs/constant');
 
 const TransactionController = {
 	async index(req, res, next) {
 		try {
 			const transactions = await Transaction.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findAll({
 				include: ['user', 'transaction_items'],
 			});
@@ -108,7 +109,7 @@ const TransactionController = {
 			if (!uuid) throw new ApiError(400, 'UUID is required');
 
 			const transaction = await Transaction.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { uuid },
 				include: [
@@ -136,7 +137,7 @@ const TransactionController = {
 			if (!uuid) throw new ApiError(400, 'UUID is required');
 
 			const transaction = await Transaction.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: {
 					uuid,
@@ -188,11 +189,8 @@ const TransactionController = {
 			});
 
 			if (!transaction) throw new ApiError(404, 'Transaction not found');
-
-			const admin = req.user.role === 'admin';
 			const pending = transaction.status === 'pending';
-
-			if (!pending && !admin) {
+			if (!pending) {
 				throw new ApiError(
 					400,
 					'Cannot delete transaction unless the status is pending'

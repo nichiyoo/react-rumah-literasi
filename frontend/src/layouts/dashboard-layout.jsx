@@ -9,9 +9,7 @@ import { useAuth } from '@/hooks/use-auth';
 
 const DashboardLayout = () => {
 	const { user, loading } = useAuth();
-
 	const navigate = useNavigate();
-	const admin = user && user.role === 'admin';
 
 	React.useEffect(() => {
 		if (!loading && !user) navigate('/auth/signin');
@@ -28,8 +26,8 @@ const DashboardLayout = () => {
 					</div>
 
 					<div className='flex items-center justify-between w-full gap-2 px-10'>
-						<span className='font-medium'>
-							{admin ? 'Admin Dashboard' : 'Member Dashboard'}
+						<span className='font-medium capitalize'>
+							{user && user.role} Dashboard
 						</span>
 						<Profile />
 					</div>

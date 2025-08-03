@@ -83,7 +83,7 @@ const Router = () => {
 					<Route path='members' element={<AuthorizeLayout />}>
 						<Route index element={<ListUsers />} />
 						<Route path='create' element={<AddUser />} />
-						<Route path=':id/edit' element={<EditUser />} />
+						<Route path=':uuid/edit' element={<EditUser />} />
 					</Route>
 
 					<Route

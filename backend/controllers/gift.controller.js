@@ -2,12 +2,13 @@ const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
 const { Gift } = require('../models');
+const { ROLES } = require('../libs/constant');
 
 const GiftController = {
 	async index(req, res, next) {
 		try {
 			const gifts = await Gift.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findAll({
 				include: 'user',
 			});
@@ -36,7 +37,7 @@ const GiftController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const gift = await Gift.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 				include: 'user',
@@ -55,7 +56,7 @@ const GiftController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const gift = await Gift.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 			});
@@ -76,17 +77,14 @@ const GiftController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const gift = await Gift.scope({
-				method: ['authorize', req.user],
+				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 			});
 
 			if (!gift) throw new ApiError(404, 'Gift not found');
-
-			const admin = req.user.role === 'admin';
 			const pending = gift.status === 'pending';
-
-			if (!pending && !admin) {
+			if (!pending) {
 				throw new ApiError(
 					400,
 					'Cannot delete gift unless the status is pending'

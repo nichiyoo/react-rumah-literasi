@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as z from 'zod';
 
 import { toast } from 'sonner';
-import { Link } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +10,6 @@ import { useAuth } from '@/hooks/use-auth';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { OTPInput } from '@/components/ui/otp-input';
 
 const OneTimePasswordSchema = z.object({
@@ -80,7 +78,11 @@ const OneTimePassword = () => {
 						control={control}
 						name='otp'
 						render={({ field }) => (
-							<OTPInput value={field.value} onChange={field.onChange} />
+							<OTPInput
+								autoFocus
+								value={field.value}
+								onChange={field.onChange}
+							/>
 						)}
 					/>
 					{errors.otp && (

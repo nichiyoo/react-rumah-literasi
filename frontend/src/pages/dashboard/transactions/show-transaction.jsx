@@ -22,21 +22,22 @@ import { BookCard } from '@/components/books/book-card';
 import CourierDetail from '@/components/transactions/courier-detail';
 import RecipientDetail from '@/components/transactions/recipient-detail';
 import { INITIAL_COURIER, INITIAL_RECIPIENT } from '@/store/use-transactions';
+import { ROLES } from '@/libs/constant';
 
 const ShowTransaction = () => {
 	const { uuid } = useParams();
 	const { confirm } = useConfirm();
-	const { user, loading: userLoading } = useAuth();
+	const { user, loading } = useAuth();
 
 	const {
 		data,
 		error,
 		mutate,
-		isLoading: loading,
+		isLoading: fetching,
 	} = useSWR('/transactions/' + uuid);
 
 	const { recipient, books, courier, status } = React.useMemo(() => {
-		if (error || loading) {
+		if (error || fetching) {
 			return {
 				books: [],
 				recipient: INITIAL_RECIPIENT,
@@ -69,9 +70,12 @@ const ShowTransaction = () => {
 			},
 			status: data.data.status,
 		};
-	}, [error, loading, data]);
+	}, [error, fetching, data]);
 
-	const admin = !userLoading && user.role === 'admin';
+	const allowed = React.useMemo(() => {
+		if (loading) return false;
+		return [ROLES.LIBRARIAN, ROLES.SUPERADMIN].includes(user.role);
+	}, [user, loading]);
 
 	const handleApproval = (status, variant = 'primary') => {
 		confirm({
@@ -117,7 +121,10 @@ const ShowTransaction = () => {
 				</HeadingDescription>
 			</Heading>
 
-			{!loading && (
+			<Error error={!fetching && error} />
+			<Loading loading={fetching} />
+
+			{data && (
 				<div className='relative grid items-start gap-6 xl:grid-cols-3'>
 					<div className='grid gap-6'>
 						<RecipientDetail recipient={recipient} />
@@ -128,7 +135,7 @@ const ShowTransaction = () => {
 								<Button variant='outline'>Back</Button>
 							</Link>
 
-							{admin && status === 'pending' && (
+							{allowed && status === 'pending' && (
 								<React.Fragment>
 									<Button
 										variant='destructive'
@@ -149,7 +156,7 @@ const ShowTransaction = () => {
 								</Link>
 							)}
 
-							{admin && status === 'approved' && (
+							{allowed && status === 'approved' && (
 								<Button onClick={() => handleApproval('completed')}>
 									Complete
 								</Button>
@@ -164,9 +171,6 @@ const ShowTransaction = () => {
 					</div>
 				</div>
 			)}
-
-			<Error error={!loading && error} />
-			<Loading loading={loading} />
 		</div>
 	);
 };
