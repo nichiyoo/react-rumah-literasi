@@ -1,3 +1,4 @@
+import React from 'react';
 import {
 	Tailwind,
 	Body,
@@ -13,7 +14,7 @@ import {
 	Link,
 } from '@react-email/components';
 
-const ForgotPassword = ({ href, name }) => {
+const ForgotPassword = ({ href = '{{href}}', name = '{{name}}' }) => {
 	return (
 		<Tailwind>
 			<Head>

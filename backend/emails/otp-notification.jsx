@@ -1,3 +1,4 @@
+import React from 'react';
 import {
 	Tailwind,
 	Body,
@@ -11,7 +12,7 @@ import {
 	Font,
 } from '@react-email/components';
 
-const OneTimePasswordEmail = ({ otp, name }) => {
+const OneTimePasswordEmail = ({ otp = '{{otp}}', name = '{{name}}' }) => {
 	return (
 		<Tailwind>
 			<Head>

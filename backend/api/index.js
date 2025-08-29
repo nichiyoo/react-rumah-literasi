@@ -1,7 +1,3 @@
-require('@babel/register')({
-	extensions: ['.js', '.jsx'],
-});
-
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
@@ -35,11 +31,14 @@ app.use(
 app.use(
 	session({
 		store: store,
-		secret: SECRET,
 		resave: false,
-		saveUninitialized: true,
+		secret: SECRET,
+		saveUninitialized: false,
+		proxy: true,
 		cookie: {
 			httpOnly: true,
+			sameSite: 'none',
+			secure: process.env.NODE_ENV === 'production',
 		},
 	})
 );

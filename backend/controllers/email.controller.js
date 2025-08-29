@@ -1,9 +1,7 @@
-const { render } = require('@react-email/components');
+const fs = require('fs');
+const path = require('path');
 const transporter = require('../libs/nodemailer');
-
-const OneTimePasswordEmail = require('../emails/otp-notification.jsx').default;
-const UserVerification = require('../emails/user-verification.jsx').default;
-const ForgotPassword = require('../emails/forgot-password.jsx').default;
+const EmailHelper = require('../libs/email-template');
 
 const NODEMAILER_FROM = process.env.NODEMAILER_FROM;
 const ACTIVATE_EMAIL = process.env.ACTIVATE_EMAIL == 'true';
@@ -15,16 +13,17 @@ const EmailController = {
 	 * @param {object} user - The user object
 	 */
 	otp: async (otp, user) => {
-		const output = await render(
-			<OneTimePasswordEmail otp={otp} name={user.name} />
-		);
+		const html = EmailHelper.render('otp-notification', {
+			otp,
+			name: user.name,
+		});
 
 		if (ACTIVATE_EMAIL) {
 			await transporter.sendMail({
 				from: NODEMAILER_FROM,
 				to: user.email,
 				subject: 'Your verification code for secure access',
-				html: output,
+				html: html,
 			});
 		}
 
@@ -37,16 +36,17 @@ const EmailController = {
 	 * @param {object} user - The user object
 	 */
 	verify: async (href, user) => {
-		const output = await render(
-			<UserVerification href={href} name={user.name} />
-		);
+		const html = EmailHelper.render('user-verification', {
+			href,
+			name: user.name,
+		});
 
 		if (ACTIVATE_EMAIL) {
 			await transporter.sendMail({
 				from: NODEMAILER_FROM,
 				to: user.email,
 				subject: 'One more step to complete your registration',
-				html: output,
+				html: html,
 			});
 		}
 
@@ -59,16 +59,17 @@ const EmailController = {
 	 * @param {object} user - The user object
 	 */
 	forgotPassword: async (href, user) => {
-		const output = await render(
-			<ForgotPassword href={href} name={user.name} />
-		);
+		const html = EmailHelper.render('forgot-password', {
+			href,
+			name: user.name,
+		});
 
 		if (ACTIVATE_EMAIL) {
 			await transporter.sendMail({
 				from: NODEMAILER_FROM,
 				to: user.email,
 				subject: 'Password reset link',
-				html: output,
+				html: html,
 			});
 		}
 

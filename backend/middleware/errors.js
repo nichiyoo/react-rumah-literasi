@@ -13,15 +13,13 @@ const errorHandler = (err, req, res, next) => {
 	res.locals.message = err.message;
 	res.locals.error = process.env.NODE_ENV === 'development' ? err : {};
 
-	if (process.env.NODE_ENV === 'development') {
-		console.error({
-			path: req.path,
-			method: req.method,
-			message: err.message,
-			user: req.user ? req.user.name : 'Unauthenticated',
-			role: req.user ? req.user.role : 'Unauthenticated',
-		});
-	}
+	console.error({
+		path: req.path,
+		method: req.method,
+		message: err.message,
+		user: req.user ? req.user.name : 'Unauthenticated',
+		role: req.user ? req.user.role : 'Unauthenticated',
+	});
 
 	switch (err.name) {
 		case 'SequelizeValidationError':

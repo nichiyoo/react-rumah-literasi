@@ -10,10 +10,10 @@ import { createRoot } from 'react-dom/client';
 import { AuthProvider } from '@/contexts/auth-context';
 import { ConfirmProvider } from '@/contexts/confirm-context';
 
-import Router from '@/routes/router.jsx';
-import { Toaster } from '@/components/ui/toaster';
+import Router from '@/routes/router';
 import { fetcher } from '@/libs/axios';
-import { ERROR_MESSAGES } from './libs/constant';
+import { Toaster } from '@/components/ui/toaster';
+import { ERROR_MESSAGES } from '@/libs/constant';
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>

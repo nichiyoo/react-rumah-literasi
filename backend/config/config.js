@@ -14,9 +14,9 @@ module.exports = {
 		logging: false,
 	},
 	production: {
-		url: process.env.DATABASE_URL,
+		use_env_variable: 'DATABASE_URL',
 		dialect: process.env.DATABASE_DIALECT,
-		dialectOptions: { ssl: true },
+		dialectModule: require('pg'),
 		migrationStorageTableName: 'sequelize_meta',
 		logging: false,
 	},
