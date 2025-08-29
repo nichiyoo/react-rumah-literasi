@@ -41,3 +41,12 @@ export const animate = () => {
 		});
 	}, 250);
 };
+
+export const formatByte = (size) => {
+	return Intl.NumberFormat('en', {
+		notation: 'compact',
+		style: 'unit',
+		unit: 'byte',
+		unitDisplay: 'narrow',
+	}).format(size);
+};

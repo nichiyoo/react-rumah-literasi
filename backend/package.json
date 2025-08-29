@@ -16,6 +16,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@sequelize/postgres": "7.0.0-alpha.46",
+		"@vercel/blob": "^1.1.1",
 		"argon2": "^0.41.1",
 		"axios": "^1.8.4",
 		"connect-session-sequelize": "^7.1.7",

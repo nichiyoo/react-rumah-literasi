@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { cn, formatByte } from '@/libs/utils';
 
 const BookSchema = z.object({
 	title: z.string().min(3),
@@ -14,7 +15,18 @@ const BookSchema = z.object({
 	year: z.coerce.number(),
 	language: z.string().min(3),
 	amount: z.coerce.number().min(1),
-	cover: z.any(),
+	cover: z.any().refine(
+		(files) => {
+			if (!files) return true;
+
+			const [file] = files;
+			if (!file) return true;
+			if (file.size > 2 * 1024 * 1024) return false;
+
+			return file.type.startsWith('image/');
+		},
+		{ message: 'File must be an image and smaller than 2MB' }
+	),
 });
 
 const BookForm = ({ initial, action, label }) => {
@@ -22,6 +34,7 @@ const BookForm = ({ initial, action, label }) => {
 		register,
 		handleSubmit,
 		formState: { errors },
+		watch,
 	} = useForm({
 		resolver: zodResolver(BookSchema),
 		defaultValues: initial || {
@@ -34,6 +47,10 @@ const BookForm = ({ initial, action, label }) => {
 			cover: undefined,
 		},
 	});
+
+	const cover = watch('cover');
+	const selected = cover && cover[0].size;
+	const filesize = selected ? formatByte(selected) : 0;
 
 	return (
 		<form onSubmit={handleSubmit(action)} className='grid gap-6 lg:grid-cols-2'>
@@ -110,11 +127,19 @@ const BookForm = ({ initial, action, label }) => {
 			</div>
 
 			<div className='col-span-full'>
-				<Label htmlFor='cover'>Cover</Label>
+				<Label htmlFor='cover' className='flex justify-between w-full'>
+					<span>Cover Image</span>
+					<span
+						className={cn('font-light text-zinc-500', {
+							'text-red-500': filesize > 2,
+						})}>
+						(Max 2MB, Selected {filesize})
+					</span>
+				</Label>
 				<Input
 					type='file'
 					accept='image/*'
-					placeholder='Enter your cover'
+					placeholder='Select cover image'
 					className='file:hidden'
 					{...register('cover')}
 				/>

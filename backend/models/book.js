@@ -1,4 +1,5 @@
 'use strict';
+const path = require('path');
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -66,7 +67,9 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 				get() {
-					return process.env.APP_URL + '/' + this.getDataValue('cover');
+					const value = this.getDataValue('cover');
+					const check = value.startsWith('http');
+					return check ? value : process.env.APP_URL + '/' + value;
 				},
 			},
 		},

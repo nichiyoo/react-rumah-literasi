@@ -18,7 +18,7 @@ const BookCard = React.forwardRef(({ book, className, ...props }, ref) => {
 				<img
 					src='/cover.webp'
 					alt='Book cover'
-					className='absolute inset-0 object-cover size-full mix-blend-multiply'
+					className='absolute inset-0 object-cover pointer-events-none size-full mix-blend-multiply'
 				/>
 				<img
 					src={book.cover}
