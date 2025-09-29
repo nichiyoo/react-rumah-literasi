@@ -18,7 +18,7 @@ const DashboardLayout = () => {
 	return (
 		<div className='relative flex'>
 			<div className='absolute z-50 w-full bg-white border-b'>
-				<div className='flex h-16 '>
+				<div className='flex h-16'>
 					<div className='items-center justify-center flex-none hidden border-r lg:flex w-72'>
 						<Link to='/'>
 							<Logo />
@@ -37,7 +37,7 @@ const DashboardLayout = () => {
 			<Sidebar className='flex-none hidden h-screen pt-16 overflow-y-auto border-r lg:block w-72' />
 
 			<div className='w-full h-screen pt-16 overflow-y-auto'>
-				<div className='container p-10 max-w-7xl'>
+				<div className='container max-w-6xl p-10'>
 					<Outlet />
 				</div>
 			</div>

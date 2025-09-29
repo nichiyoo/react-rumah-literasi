@@ -50,8 +50,8 @@ app.use('/uploads', express.static('uploads'));
 
 app.use(
 	ratelimit({
-		limit: 30,
-		windowMs: 1 * 60 * 1000,
+		limit: 100,
+		windowMs: 1000 * 60,
 		standardHeaders: 'draft-8',
 	})
 );

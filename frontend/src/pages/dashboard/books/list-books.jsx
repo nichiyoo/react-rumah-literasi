@@ -82,7 +82,6 @@ const ListBooks = () => {
 						<TableRow>
 							<TableHead>Title</TableHead>
 							<TableHead>Author</TableHead>
-							<TableHead>Publisher</TableHead>
 							<TableHead>Year</TableHead>
 							<TableHead>Language</TableHead>
 							<TableHead>Amount</TableHead>
@@ -103,7 +102,6 @@ const ListBooks = () => {
 									</div>
 								</TableCell>
 								<TableCell>{book.author}</TableCell>
-								<TableCell>{book.publisher}</TableCell>
 								<TableCell>{book.year}</TableCell>
 								<TableCell>
 									<Badge>{book.language}</Badge>

@@ -8,7 +8,7 @@ const About = () => {
 					<img
 						src='/about.jpg'
 						alt='home'
-						className='object-cover rounded-full size-full aspect-square'
+						className='object-cover rounded-full size-full aspect-square '
 					/>
 
 					<div className='absolute top-0 xl:top-auto xl:-left-20 xl:bottom-16'>

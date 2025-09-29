@@ -63,7 +63,7 @@ const DonationForm = ({ initial, action, label }) => {
 					<Label htmlFor='status'>Status</Label>
 
 					<select
-						className='block w-full p-3 border shadow-sm border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
+						className='block w-full p-3 border border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 						{...register('status')}>
 						<option value='pending'>Pending</option>
 						<option value='success'>Success</option>
