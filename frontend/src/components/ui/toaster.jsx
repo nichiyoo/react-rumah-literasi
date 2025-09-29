@@ -3,16 +3,14 @@ import { Toaster as Sonner } from 'sonner';
 const Toaster = ({ ...props }) => {
 	return (
 		<Sonner
-			className='toaster group'
 			toastOptions={{
 				classNames: {
 					toast:
-						'group font-sans toast group-[.toaster]:text-foreground group-[.toaster]:border-primary-500 group-[.toaster]:rounded-2xl group-[.toaster]:shadow-none',
-					description: 'group-[.toast]:text-muted-foreground',
-					actionButton:
-						'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
-					cancelButton:
-						'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
+						'font-sans !items-start !border-zinc-300 !rounded-2xl !shadow-none',
+					description: 'text-zinc-500',
+					actionButton: 'bg-primary-500 text-white',
+					cancelButton: 'bg-zinc-500 text-white',
+					icon: '!size-4 !text-primary-500',
 				},
 			}}
 			{...props}

@@ -52,11 +52,7 @@ const OTPInput = React.forwardRef(
 		}));
 
 		return (
-			<div
-				className={cn(
-					'flex gap-2 p-3 bg-zinc-100 rounded-2xl justify-center',
-					className
-				)}>
+			<div className={cn('flex gap-3 justify-center', className)}>
 				{Array.from({ length }).map((_, i) => (
 					<input
 						key={i}

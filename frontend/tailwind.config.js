@@ -18,19 +18,6 @@ export default {
 			},
 			colors: {
 				primary: colors.pink,
-				temporary: {
-					50: '#eff6ff',
-					100: '#dbebfe',
-					200: '#c0dcfd',
-					300: '#94c7fc',
-					400: '#62a8f8',
-					500: '#5092f5',
-					600: '#2768e9',
-					700: '#1f53d6',
-					800: '#2044ad',
-					900: '#1f3d89',
-					950: '#182653',
-				},
 			},
 			aspectRatio: {
 				thumbnail: '4 / 3',
