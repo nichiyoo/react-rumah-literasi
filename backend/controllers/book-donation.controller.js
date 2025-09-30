@@ -1,18 +1,20 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
-const { Gift } = require('../models');
+const { BookDonation } = require('../models');
 const { ROLES } = require('../libs/constant');
 
-const GiftController = {
+const BookDonationController = {
 	async index(req, res, next) {
 		try {
-			const gifts = await Gift.scope({
+			const bookDonations = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findAll({
 				include: 'user',
 			});
-			return res.json(new ApiResponse('Gifts retrieved successfully', gifts));
+			return res.json(
+				new ApiResponse('Book Donations retrieved successfully', bookDonations)
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -20,12 +22,14 @@ const GiftController = {
 
 	async store(req, res, next) {
 		try {
-			const gift = await Gift.create({
+			const bookDonation = await BookDonation.create({
 				...req.body,
 				user_id: req.user.id,
 			});
 
-			return res.json(new ApiResponse('Gift created successfully', gift));
+			return res.json(
+				new ApiResponse('Book Donation created successfully', bookDonation)
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -36,15 +40,17 @@ const GiftController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const gift = await Gift.scope({
+			const bookDonation = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 				include: 'user',
 			});
 
-			if (!gift) throw new ApiError(404, 'Gift not found');
-			return res.json(new ApiResponse('Gift retrieved successfully', gift));
+			if (!bookDonation) throw new ApiError(404, 'Book Donation not found');
+			return res.json(
+				new ApiResponse('Book Donation retrieved successfully', bookDonation)
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -55,17 +61,19 @@ const GiftController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const gift = await Gift.scope({
+			const bookDonation = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 			});
 
-			if (!gift) throw new ApiError(404, 'Gift not found');
-			await gift.update(req.body);
-			await gift.save();
+			if (!bookDonation) throw new ApiError(404, 'Book Donation not found');
+			await bookDonation.update(req.body);
+			await bookDonation.save();
 
-			return res.json(new ApiResponse('Gift updated successfully', gift));
+			return res.json(
+				new ApiResponse('Book Donation updated successfully', bookDonation)
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -76,27 +84,29 @@ const GiftController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const gift = await Gift.scope({
+			const bookDonation = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
 			});
 
-			if (!gift) throw new ApiError(404, 'Gift not found');
-			const pending = gift.status === 'pending';
+			if (!bookDonation) throw new ApiError(404, 'Book Donation not found');
+			const pending = bookDonation.status === 'pending';
 			if (!pending) {
 				throw new ApiError(
 					400,
-					'Cannot delete gift unless the status is pending'
+					'Cannot delete bookDonation unless the status is pending'
 				);
 			}
 
-			await gift.destroy();
-			return res.json(new ApiResponse('Gift deleted successfully', gift));
+			await bookDonation.destroy();
+			return res.json(
+				new ApiResponse('Book Donation deleted successfully', bookDonation)
+			);
 		} catch (error) {
 			next(error);
 		}
 	},
 };
 
-module.exports = GiftController;
+module.exports = BookDonationController;

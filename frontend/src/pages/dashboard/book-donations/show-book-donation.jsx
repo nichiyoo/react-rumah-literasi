@@ -18,10 +18,14 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 import { ROLES } from '@/libs/constant';
 
-const ShowGift = () => {
+const ShowBookDonation = () => {
 	const { id } = useParams();
 	const { user, loading } = useAuth();
-	const { error, data: result, isLoading: fetching } = useSWR('/gifts/' + id);
+	const {
+		error,
+		data: result,
+		isLoading: fetching,
+	} = useSWR('/book-donations/' + id);
 
 	const allowed = React.useMemo(() => {
 		if (loading) return false;
@@ -31,7 +35,7 @@ const ShowGift = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Detail Gift</HeadingTitle>
+				<HeadingTitle>Detail Book Donation</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -82,7 +86,7 @@ const ShowGift = () => {
 
 					<div className='col-span-full'>
 						<div className='flex items-center gap-2'>
-							<Link to='/dashboard/gifts'>
+							<Link to='/dashboard/book-donations'>
 								<Button variant='outline'>Back</Button>
 							</Link>
 
@@ -99,4 +103,4 @@ const ShowGift = () => {
 	);
 };
 
-export default ShowGift;
+export default ShowBookDonation;

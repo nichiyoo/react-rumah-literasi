@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 const { scope } = require('../middleware/authorize');
 
 module.exports = (sequelize, DataTypes) => {
-	class Gift extends Model {
+	class BookDonation extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 			});
 		}
 	}
-	Gift.init(
+	BookDonation.init(
 		{
 			title: {
 				allowNull: false,
@@ -79,11 +79,11 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			sequelize,
-			modelName: 'Gift',
-			tableName: 'gifts',
+			modelName: 'BookDonation',
+			tableName: 'book_donations',
 			underscored: true,
 			scopes: scope,
 		}
 	);
-	return Gift;
+	return BookDonation;
 };

@@ -46,8 +46,8 @@ export const SIDEBAR_MENUS = [
 				roles: [ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
-				href: '/dashboard/gifts',
-				label: 'List Gifts',
+				href: '/dashboard/book-donations',
+				label: 'List Book Donation',
 				icon: Gift,
 				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
 			},

@@ -30,9 +30,9 @@ import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { Avatar } from '@/components/ui/avatar';
 
-const ListGifts = () => {
+const ListBookDonations = () => {
 	const { confirm } = useConfirm();
-	const { error, mutate, data, isLoading: loading } = useSWR('/gifts');
+	const { error, mutate, data, isLoading: loading } = useSWR('/book-donations');
 	const { result, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
@@ -43,13 +43,13 @@ const ListGifts = () => {
 		})
 			.then(async () => {
 				try {
-					await axios.delete('/gifts/' + id);
+					await axios.delete('/book-donations/' + id);
 					mutate();
-					toast('Gift deleted', {
-						description: 'Successfully deleted gift',
+					toast('Book Donation deleted', {
+						description: 'Successfully deleted book donation',
 					});
 				} catch (error) {
-					toast.error('Failed to delete gift', {
+					toast.error('Failed to delete book donation', {
 						description: error.response.data.message || error.message,
 					});
 					console.log(error);
@@ -63,7 +63,7 @@ const ListGifts = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Gifts List</HeadingTitle>
+				<HeadingTitle>Book Donations List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -71,8 +71,8 @@ const ListGifts = () => {
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/gifts/create'>
-						<Button>Create Gift</Button>
+					<Link to='/dashboard/book-donations/create'>
+						<Button>Create Book Donation</Button>
 					</Link>
 				</div>
 			</Heading>
@@ -91,30 +91,35 @@ const ListGifts = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{result.map((gift) => (
-							<TableRow key={gift.id}>
+						{result.map((bookDonation) => (
+							<TableRow key={bookDonation.id}>
 								<TableCell>
 									<div className='flex items-center gap-4'>
-										<Avatar name={gift.user.name} className='flex-none' />
-										<span className='font-medium'>{gift.user.name}</span>
+										<Avatar
+											name={bookDonation.user.name}
+											className='flex-none'
+										/>
+										<span className='font-medium'>
+											{bookDonation.user.name}
+										</span>
 									</div>
 								</TableCell>
-								<TableCell>{gift.title}</TableCell>
-								<TableCell>{gift.genre}</TableCell>
-								<TableCell>{gift.amount}</TableCell>
-								<TableCell>{gift.address}</TableCell>
+								<TableCell>{bookDonation.title}</TableCell>
+								<TableCell>{bookDonation.genre}</TableCell>
+								<TableCell>{bookDonation.amount}</TableCell>
+								<TableCell>{bookDonation.address}</TableCell>
 								<TableCell>
-									<Badge>{gift.status}</Badge>
+									<Badge>{bookDonation.status}</Badge>
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={gift.id + '/detail'} relative='path'>
+										<Link to={bookDonation.id + '/detail'} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
 											</button>
 										</Link>
 										<button
-											onClick={() => handleDelete(gift.id)}
+											onClick={() => handleDelete(bookDonation.id)}
 											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>
@@ -133,4 +138,4 @@ const ListGifts = () => {
 	);
 };
 
-export default ListGifts;
+export default ListBookDonations;

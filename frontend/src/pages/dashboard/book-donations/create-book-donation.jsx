@@ -11,26 +11,26 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import GiftForm from '@/components/gifts/form-gift';
+import BookDonationForm from '@/components/book-donations/form-book-donation';
 
-const CreateGift = () => {
+const CreateBookDonation = () => {
 	const navigate = useNavigate();
 	const { mutate } = useSWRConfig();
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.post('/gifts', data, {
+			await axios.post('/book-donations', data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			toast('Gift created', {
-				description: 'Successfully created gift',
+			toast('Book Donation created', {
+				description: 'Successfully created book donation',
 			});
 
-			mutate('/gifts');
-			navigate('/dashboard/gifts');
+			mutate('/book-donations');
+			navigate('/dashboard/book-donations');
 		} catch (error) {
-			toast.error('Failed to create gift', {
+			toast.error('Failed to create book donation', {
 				description: error.response.data.message || error.message,
 			});
 			console.error(error);
@@ -40,7 +40,7 @@ const CreateGift = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Create Gift</HeadingTitle>
+				<HeadingTitle>Create Book Donation</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -48,9 +48,9 @@ const CreateGift = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<GiftForm action={onSubmit} label='Create Gift' />
+			<BookDonationForm action={onSubmit} label='Create Book donation' />
 		</div>
 	);
 };
 
-export default CreateGift;
+export default CreateBookDonation;

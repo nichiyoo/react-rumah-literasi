@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
 				as: 'donations',
 			});
 
-			this.hasMany(models.Gift, {
+			this.hasMany(models.BookDonation, {
 				foreignKey: 'user_id',
-				as: 'gifts',
+				as: 'book_donations',
 			});
 
 			this.hasMany(models.Transaction, {

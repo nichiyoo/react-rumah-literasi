@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { DEFAULT_LOCATION } from '@/libs/constant';
 import { useConfirm } from '@/hooks/use-confirm';
 
-const GiftSchema = z.object({
+const BookDonationSchema = z.object({
 	title: z.string().min(3),
 	genre: z.string().min(3),
 	amount: z.coerce.number().min(1),
@@ -20,13 +20,13 @@ const GiftSchema = z.object({
 	longitude: z.coerce.number(),
 });
 
-const EditSchema = GiftSchema.merge(
+const EditSchema = BookDonationSchema.merge(
 	z.object({
 		status: z.enum(['pending', 'ongoing', 'accepted', 'rejected']),
 	})
 );
 
-const GiftForm = ({ initial, action, label }) => {
+const BookDonationForm = ({ initial, action, label }) => {
 	const { confirm } = useConfirm();
 
 	const {
@@ -36,7 +36,7 @@ const GiftForm = ({ initial, action, label }) => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(initial ? EditSchema : GiftSchema),
+		resolver: zodResolver(initial ? EditSchema : BookDonationSchema),
 		defaultValues: initial || {
 			title: '',
 			genre: '',
@@ -75,7 +75,7 @@ const GiftForm = ({ initial, action, label }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(action)} className='grid lg:grid-cols-2 gap-6'>
+		<form onSubmit={handleSubmit(action)} className='grid gap-6 lg:grid-cols-2'>
 			<div className='col-span-full'>
 				<Label htmlFor='title'>Title</Label>
 				<Input
@@ -162,4 +162,4 @@ const GiftForm = ({ initial, action, label }) => {
 	);
 };
 
-export default GiftForm;
+export default BookDonationForm;

@@ -67,7 +67,7 @@ const { delay } = require('../middleware/delay');
 const userRoutes = require('../routes/user.routes');
 const bookRoutes = require('../routes/book.routes');
 const eventRoutes = require('../routes/event.routes');
-const giftRoutes = require('../routes/gift.routes');
+const bookDonationRoutes = require('../routes/book-donation.routes');
 const donationRoutes = require('../routes/donation.routes');
 const transactionRoutes = require('../routes/transaction.routes');
 const deliveryRoutes = require('../routes/delivery.routes');
@@ -83,7 +83,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
 
 app.use(authenticate);
-app.use('/api/gifts', giftRoutes);
+app.use('/api/book-donations', bookDonationRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/deliveries', deliveryRoutes);

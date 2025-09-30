@@ -11,11 +11,11 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import GiftForm from '@/components/gifts/form-gift';
+import BookDonationForm from '@/components/book-donations/form-book-donation';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
 
-const EditGift = () => {
+const EditBookDonation = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
@@ -24,22 +24,22 @@ const EditGift = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/gifts/' + id);
+	} = useSWR('/book-donations/' + id);
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.put('/gifts/' + result.data.id, data, {
+			await axios.put('/book-donations/' + result.data.id, data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			toast('Gift updated', {
-				description: 'Successfully updated gift',
+			toast('Book Donation updated', {
+				description: 'Successfully updated book donation',
 			});
 
 			mutate();
-			navigate('/dashboard/gifts');
+			navigate('/dashboard/book-donations');
 		} catch (error) {
-			toast.error('Failed to update gift', {
+			toast.error('Failed to update book donation', {
 				description: error.response.data.message || error.message,
 			});
 			console.error(error);
@@ -49,7 +49,7 @@ const EditGift = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Edit Gift</HeadingTitle>
+				<HeadingTitle>Edit Book Donation</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -61,10 +61,14 @@ const EditGift = () => {
 			<Loading loading={loading} />
 
 			{result && (
-				<GiftForm initial={result.data} action={onSubmit} label='Update Gift' />
+				<BookDonationForm
+					initial={result.data}
+					action={onSubmit}
+					label='Update BookDonation'
+				/>
 			)}
 		</div>
 	);
 };
 
-export default EditGift;
+export default EditBookDonation;

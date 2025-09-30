@@ -35,10 +35,18 @@ const ListBooks = load(() => import('~/books/list-books'));
 const AddBook = load(() => import('~/books/create-book'));
 const EditBook = load(() => import('~/books/edit-book'));
 
-const ListGifts = load(() => import('~/gifts/list-gifts'));
-const AddGift = load(() => import('~/gifts/create-gift'));
-const EditGift = load(() => import('~/gifts/edit-gift'));
-const ShowGift = load(() => import('~/gifts/show-gift'));
+const ListBookDonations = load(() =>
+	import('~/book-donations/list-book-donations')
+);
+const AddBookDonation = load(() =>
+	import('~/book-donations/create-book-donation')
+);
+const EditBookDonation = load(() =>
+	import('~/book-donations/edit-book-donation')
+);
+const ShowBookDonation = load(() =>
+	import('~/book-donations/show-book-donation')
+);
 
 const ListEvents = load(() => import('~/events/list-events'));
 const AddEvent = load(() => import('~/events/create-event'));
@@ -117,17 +125,17 @@ const Router = () => {
 					</Route>
 
 					<Route
-						path='gifts'
+						path='book-donations'
 						element={<AuthorizeLayout roles={[ROLES.GUEST, ROLES.ADMIN]} />}>
-						<Route index element={<ListGifts />} />
-						<Route path='create' element={<AddGift />} />
-						<Route path=':id/detail' element={<ShowGift />} />
+						<Route index element={<ListBookDonations />} />
+						<Route path='create' element={<AddBookDonation />} />
+						<Route path=':id/detail' element={<ShowBookDonation />} />
 					</Route>
 
 					<Route
-						path='gifts'
+						path='book-donations'
 						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
-						<Route path=':id/edit' element={<EditGift />} />
+						<Route path=':id/edit' element={<EditBookDonation />} />
 					</Route>
 
 					<Route

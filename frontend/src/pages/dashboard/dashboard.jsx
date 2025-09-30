@@ -19,8 +19,8 @@ const Dashboard = () => {
 				'Track and manage donation transactions, processed via our payment gateway.',
 		},
 		{
-			href: '/dashboard/gifts',
-			title: 'List Gifts',
+			href: '/dashboard/book-donations',
+			title: 'List Book Donations',
 			icon: Gift,
 			description:
 				'Oversee book donations, verify records, and manage distributions.',

@@ -33,7 +33,7 @@ const UserController = {
 
 			const user = await User.findOne({
 				where: { uuid },
-				include: ['donations', 'gifts'],
+				include: ['donations', 'book_donations'],
 			});
 
 			if (!user) throw new ApiError(404, 'User not found');
