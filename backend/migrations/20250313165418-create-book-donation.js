@@ -43,6 +43,34 @@ module.exports = {
 				allowNull: false,
 				type: DataTypes.INTEGER,
 			},
+			province_id: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			city_id: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			district_id: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			zipcode: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			dimension: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			weight: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
+			},
+			image_url: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
 			created_at: {
 				allowNull: false,
 				type: DataTypes.DATE,

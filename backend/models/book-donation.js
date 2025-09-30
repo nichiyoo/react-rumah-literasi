@@ -14,6 +14,18 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'user_id',
 				as: 'user',
 			});
+			this.belongsTo(models.Province, {
+				foreignKey: 'province_id',
+				as: 'province',
+			});
+			this.belongsTo(models.City, {
+				foreignKey: 'city_id',
+				as: 'city',
+			});
+			this.belongsTo(models.District, {
+				foreignKey: 'district_id',
+				as: 'district',
+			});
 		}
 	}
 	BookDonation.init(
@@ -75,6 +87,48 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					notEmpty: true,
 				},
+			},
+			province_id: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			city_id: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			district_id: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			zipcode: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+					isNumeric: true,
+					len: [5],
+				},
+			},
+			dimension: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			weight: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
+			},
+			image_url: {
+				allowNull: true,
+				type: DataTypes.STRING,
 			},
 		},
 		{

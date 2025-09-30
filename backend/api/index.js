@@ -71,6 +71,7 @@ const bookDonationRoutes = require('../routes/book-donation.routes');
 const donationRoutes = require('../routes/donation.routes');
 const transactionRoutes = require('../routes/transaction.routes');
 const deliveryRoutes = require('../routes/delivery.routes');
+const placesRoutes = require('../routes/places.route');
 
 app.use('/api/_healthcheck', (req, res) => {
 	res.status(200).json({
@@ -81,6 +82,8 @@ app.use('/api/_healthcheck', (req, res) => {
 app.use(delay(1000));
 app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
+
+app.use('/api/places', placesRoutes);
 
 app.use(authenticate);
 app.use('/api/book-donations', bookDonationRoutes);
