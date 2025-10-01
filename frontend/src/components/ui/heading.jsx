@@ -27,7 +27,7 @@ HeadingDescription.displayName = 'HeadingDescription';
 
 const Heading = React.forwardRef(({ className, children, ...props }, ref) => {
 	return (
-		<div className={cn('flex flex-col', className)} ref={ref} {...props}>
+		<div className={cn('flex flex-col gap-2', className)} ref={ref} {...props}>
 			{children}
 		</div>
 	);

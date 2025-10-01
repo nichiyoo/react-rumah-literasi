@@ -10,7 +10,7 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import DonationForm from '@/components/donations/form-donation';
+import DonationForm from '@/components/financial-donations/form-financial-donation';
 import { useNavigate } from 'react-router';
 
 const CreateDonation = () => {
@@ -19,13 +19,13 @@ const CreateDonation = () => {
 
 	const onSubmit = async (data) => {
 		try {
-			const { data: result } = await axios.post('/donations', data);
-			toast('Donation created', {
+			const { data: result } = await axios.post('/financial-donations', data);
+			toast('Financial donation created', {
 				description: 'Successfully created donation',
 			});
-			mutate('/donations');
+			mutate('/financial-donations');
 			window.open(result.data.payment_url, '_blank');
-			navigate('/dashboard/donations');
+			navigate('/dashboard/financial-donations');
 		} catch (error) {
 			toast.error('Failed to create donation', {
 				description: error.response.data.message || error.message,
@@ -37,7 +37,7 @@ const CreateDonation = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Create Donation</HeadingTitle>
+				<HeadingTitle>Create Financial Donations</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam

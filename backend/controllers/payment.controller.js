@@ -10,12 +10,12 @@ const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
 const ACTIVATE_PAYMENT = process.env.ACTIVATE_PAYMENT == 'true';
 
 const PaymentController = {
-	async midtrans(donation, user) {
+	async midtrans(financialDonation, user) {
 		if (ACTIVATE_PAYMENT) {
 			return await midtrans.post('/transactions', {
 				transaction_details: {
-					order_id: donation.uuid,
-					gross_amount: donation.amount,
+					order_id: financialDonation.uuid,
+					gross_amount: financialDonation.amount,
 					customer_details: {
 						email: user.email,
 					},
@@ -51,28 +51,30 @@ const PaymentController = {
 			const statuses = ['settlement', 'cancel', 'failure', 'expire'];
 			if (!statuses.includes(transaction_status)) return res.sendStatus(IGNORE);
 
-			const donation = await Donation.findOne({
+			const financialDonation = await FinancialDonation.findOne({
 				where: { uuid: order_id },
 				include: ['user'],
 			});
 
-			if (!donation) return res.sendStatus(IGNORE);
-			if (donation.amount !== Number(gross_amount))
+			if (!financialDonation) return res.sendStatus(IGNORE);
+			if (financialDonation.amount !== Number(gross_amount)) {
 				return res.sendStatus(IGNORE);
-			if (donation.status === 'success') return res.sendStatus(200);
+			}
+
+			if (financialDonation.status === 'success') return res.sendStatus(200);
 
 			switch (transaction_status) {
 				case 'settlement':
-					donation.status = 'success';
+					financialDonation.status = 'success';
 					break;
 				case 'cancel':
 				case 'failure':
 				case 'expire':
-					donation.status = 'failed';
+					financialDonation.status = 'failed';
 					break;
 			}
 
-			await donation.save();
+			await financialDonation.save();
 			return res.sendStatus(200);
 		} catch (error) {
 			if (error instanceof ApiError) return next(error);

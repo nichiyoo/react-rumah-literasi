@@ -32,7 +32,12 @@ import { Error } from '@/components/error';
 const ListDonations = () => {
 	const { confirm } = useConfirm();
 
-	const { error, mutate, data, isLoading: loading } = useSWR('/donations');
+	const {
+		error,
+		mutate,
+		data,
+		isLoading: loading,
+	} = useSWR('/financial-donations');
 	const { result, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
@@ -43,9 +48,9 @@ const ListDonations = () => {
 		})
 			.then(async () => {
 				try {
-					await axios.delete('/donations/' + id);
+					await axios.delete('/financial-donations/' + id);
 					mutate();
-					toast('Donation deleted', {
+					toast('Financial donation deleted', {
 						description: 'Successfully deleted donation',
 					});
 				} catch (error) {
@@ -63,7 +68,7 @@ const ListDonations = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Donations List</HeadingTitle>
+				<HeadingTitle>Financial Donations List</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -71,8 +76,8 @@ const ListDonations = () => {
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/donations/create'>
-						<Button>Create Donation</Button>
+					<Link to='/dashboard/financial-donations/create'>
+						<Button>Create Financial Donation</Button>
 					</Link>
 				</div>
 			</Heading>
@@ -90,23 +95,28 @@ const ListDonations = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{result.map((donation) => (
-							<TableRow key={donation.id}>
+						{result.map((financialDonation) => (
+							<TableRow key={financialDonation.id}>
 								<TableCell>
 									<div className='flex items-center gap-4'>
-										<Avatar name={donation.user.name} className='flex-none' />
-										<span className='font-medium'>{donation.user.name}</span>
+										<Avatar
+											name={financialDonation.user.name}
+											className='flex-none'
+										/>
+										<span className='font-medium'>
+											{financialDonation.user.name}
+										</span>
 									</div>
 								</TableCell>
-								<TableCell>{donation.amount}</TableCell>
-								<TableCell>{donation.notes}</TableCell>
+								<TableCell>{financialDonation.amount}</TableCell>
+								<TableCell>{financialDonation.notes}</TableCell>
 								<TableCell>
-									<Badge>{donation.status}</Badge>
+									<Badge>{financialDonation.status}</Badge>
 								</TableCell>
 								<TableCell>
-									{donation.status === 'pending' && (
+									{financialDonation.status === 'pending' && (
 										<a
-											href={donation.payment_url}
+											href={financialDonation.payment_url}
 											target='_blank'
 											rel='noreferrer'>
 											<span className='text-primary-500'>Complete Payment</span>
@@ -115,13 +125,13 @@ const ListDonations = () => {
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={donation.id + '/detail'} relative='path'>
+										<Link to={financialDonation.id + '/detail'} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
 											</button>
 										</Link>
 										<button
-											onClick={() => handleDelete(donation.id)}
+											onClick={() => handleDelete(financialDonation.id)}
 											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>

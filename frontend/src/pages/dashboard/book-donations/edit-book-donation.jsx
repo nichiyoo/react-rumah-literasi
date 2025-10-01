@@ -32,7 +32,7 @@ const EditBookDonation = () => {
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			toast('Book Donation updated', {
+			toast('Book donation updated', {
 				description: 'Successfully updated book donation',
 			});
 

@@ -35,6 +35,19 @@ const ListBooks = load(() => import('~/books/list-books'));
 const AddBook = load(() => import('~/books/create-book'));
 const EditBook = load(() => import('~/books/edit-book'));
 
+const ListEvents = load(() => import('~/events/list-events'));
+const AddEvent = load(() => import('~/events/create-event'));
+const EditEvent = load(() => import('~/events/edit-event'));
+
+const ListUsers = load(() => import('~/members/list-member'));
+const AddUser = load(() => import('~/members/create-member'));
+const EditUser = load(() => import('~/members/edit-member'));
+
+const ListTransactions = load(() => import('~/transactions/list-transactions'));
+const AddTransaction = load(() => import('~/transactions/create-transaction'));
+const ShowTransaction = load(() => import('~/transactions/show-transaction'));
+const TrackTransaction = load(() => import('~/transactions/track-transaction'));
+
 const ListBookDonations = load(() =>
 	import('~/book-donations/list-book-donations')
 );
@@ -48,23 +61,18 @@ const ShowBookDonation = load(() =>
 	import('~/book-donations/show-book-donation')
 );
 
-const ListEvents = load(() => import('~/events/list-events'));
-const AddEvent = load(() => import('~/events/create-event'));
-const EditEvent = load(() => import('~/events/edit-event'));
-
-const ListDonations = load(() => import('~/donations/list-donations'));
-const AddDonation = load(() => import('~/donations/create-donation'));
-const EditDonation = load(() => import('~/donations/edit-donation'));
-const ShowDonation = load(() => import('~/donations/show-donation'));
-
-const ListUsers = load(() => import('~/members/list-member'));
-const AddUser = load(() => import('~/members/create-member'));
-const EditUser = load(() => import('~/members/edit-member'));
-
-const ListTransactions = load(() => import('~/transactions/list-transactions'));
-const AddTransaction = load(() => import('~/transactions/create-transaction'));
-const ShowTransaction = load(() => import('~/transactions/show-transaction'));
-const TrackTransaction = load(() => import('~/transactions/track-transaction'));
+const ListDonations = load(() =>
+	import('@/pages/dashboard/financial-donations/list-financial-donations')
+);
+const AddDonation = load(() =>
+	import('@/pages/dashboard/financial-donations/create-financial-donation')
+);
+const EditDonation = load(() =>
+	import('@/pages/dashboard/financial-donations/edit-financial-donation')
+);
+const ShowDonation = load(() =>
+	import('@/pages/dashboard/financial-donations/show-financial-donation')
+);
 
 const Router = () => {
 	return (
@@ -111,7 +119,7 @@ const Router = () => {
 					</Route>
 
 					<Route
-						path='donations'
+						path='financial-donations'
 						element={<AuthorizeLayout roles={[ROLES.GUEST, ROLES.ADMIN]} />}>
 						<Route index element={<ListDonations />} />
 						<Route path='create' element={<AddDonation />} />
@@ -119,7 +127,7 @@ const Router = () => {
 					</Route>
 
 					<Route
-						path='donations'
+						path='financial-donations'
 						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
 						<Route path=':id/edit' element={<EditDonation />} />
 					</Route>

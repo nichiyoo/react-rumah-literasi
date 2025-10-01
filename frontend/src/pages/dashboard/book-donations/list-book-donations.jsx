@@ -45,7 +45,7 @@ const ListBookDonations = () => {
 				try {
 					await axios.delete('/book-donations/' + id);
 					mutate();
-					toast('Book Donation deleted', {
+					toast('Book donation deleted', {
 						description: 'Successfully deleted book donation',
 					});
 				} catch (error) {

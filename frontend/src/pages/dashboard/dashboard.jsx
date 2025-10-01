@@ -12,11 +12,11 @@ import { Library } from 'lucide-react';
 const Dashboard = () => {
 	const menus = [
 		{
-			href: '/dashboard/donations',
-			title: 'List Donations',
+			href: '/dashboard/financial-donations',
+			title: 'List Financial Donations',
 			icon: HeartHandshake,
 			description:
-				'Track and manage donation transactions, processed via our payment gateway.',
+				'Track and manage financial donation transactions, processed via our payment gateway.',
 		},
 		{
 			href: '/dashboard/book-donations',

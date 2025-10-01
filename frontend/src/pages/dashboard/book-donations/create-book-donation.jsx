@@ -23,7 +23,7 @@ const CreateBookDonation = () => {
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			toast('Book Donation created', {
+			toast('Book donation created', {
 				description: 'Successfully created book donation',
 			});
 

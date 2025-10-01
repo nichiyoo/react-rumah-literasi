@@ -13,7 +13,7 @@ const BookDonationController = {
 				include: 'user',
 			});
 			return res.json(
-				new ApiResponse('Book Donations retrieved successfully', bookDonations)
+				new ApiResponse('Book donations retrieved successfully', bookDonations)
 			);
 		} catch (error) {
 			next(error);
@@ -28,7 +28,7 @@ const BookDonationController = {
 			});
 
 			return res.json(
-				new ApiResponse('Book Donation created successfully', bookDonation)
+				new ApiResponse('Book donation created successfully', bookDonation)
 			);
 		} catch (error) {
 			next(error);
@@ -47,9 +47,9 @@ const BookDonationController = {
 				include: 'user',
 			});
 
-			if (!bookDonation) throw new ApiError(404, 'Book Donation not found');
+			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
 			return res.json(
-				new ApiResponse('Book Donation retrieved successfully', bookDonation)
+				new ApiResponse('Book donation retrieved successfully', bookDonation)
 			);
 		} catch (error) {
 			next(error);
@@ -67,12 +67,12 @@ const BookDonationController = {
 				where: { id },
 			});
 
-			if (!bookDonation) throw new ApiError(404, 'Book Donation not found');
+			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
 			await bookDonation.update(req.body);
 			await bookDonation.save();
 
 			return res.json(
-				new ApiResponse('Book Donation updated successfully', bookDonation)
+				new ApiResponse('Book donation updated successfully', bookDonation)
 			);
 		} catch (error) {
 			next(error);
@@ -90,7 +90,7 @@ const BookDonationController = {
 				where: { id },
 			});
 
-			if (!bookDonation) throw new ApiError(404, 'Book Donation not found');
+			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
 			const pending = bookDonation.status === 'pending';
 			if (!pending) {
 				throw new ApiError(
@@ -101,7 +101,7 @@ const BookDonationController = {
 
 			await bookDonation.destroy();
 			return res.json(
-				new ApiResponse('Book Donation deleted successfully', bookDonation)
+				new ApiResponse('Book donation deleted successfully', bookDonation)
 			);
 		} catch (error) {
 			next(error);

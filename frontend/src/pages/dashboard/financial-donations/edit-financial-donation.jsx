@@ -12,7 +12,7 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import DonationForm from '@/components/donations/form-donation';
+import DonationForm from '@/components/financial-donations/form-financial-donation';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
 
@@ -25,18 +25,18 @@ const EditDonation = () => {
 		mutate,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/donations/' + id);
+	} = useSWR('/financial-donations/' + id);
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.put('/donations/' + result.data.id, data);
+			await axios.put('/financial-donations/' + result.data.id, data);
 
-			toast('Donation updated', {
+			toast('Financial donation updated', {
 				description: 'Successfully updated donation',
 			});
 
 			mutate();
-			navigate('/dashboard/donations');
+			navigate('/dashboard/financial-donations');
 		} catch (error) {
 			toast.error('Failed to update donation', {
 				description: error.response.data.message || error.message,
@@ -48,7 +48,7 @@ const EditDonation = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Edit Donation</HeadingTitle>
+				<HeadingTitle>Edit Financial Donations</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam

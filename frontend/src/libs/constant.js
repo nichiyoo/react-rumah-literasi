@@ -52,8 +52,8 @@ export const SIDEBAR_MENUS = [
 				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
-				href: '/dashboard/donations',
-				label: 'List Donations',
+				href: '/dashboard/financial-donations',
+				label: 'List Financial Donations',
 				icon: HeartHandshake,
 				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
 			},

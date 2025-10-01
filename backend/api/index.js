@@ -68,7 +68,7 @@ const userRoutes = require('../routes/user.routes');
 const bookRoutes = require('../routes/book.routes');
 const eventRoutes = require('../routes/event.routes');
 const bookDonationRoutes = require('../routes/book-donation.routes');
-const donationRoutes = require('../routes/donation.routes');
+const financialDonationRoutes = require('../routes/financial-donation.routes');
 const transactionRoutes = require('../routes/transaction.routes');
 const deliveryRoutes = require('../routes/delivery.routes');
 const placesRoutes = require('../routes/places.route');
@@ -87,7 +87,7 @@ app.use('/api/places', placesRoutes);
 
 app.use(authenticate);
 app.use('/api/book-donations', bookDonationRoutes);
-app.use('/api/donations', donationRoutes);
+app.use('/api/financial-donations', financialDonationRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/deliveries', deliveryRoutes);
 app.use('/api/books', bookRoutes);

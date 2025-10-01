@@ -26,7 +26,7 @@ const ShowDonation = () => {
 		error,
 		data: result,
 		isLoading: fetching,
-	} = useSWR('/donations/' + id);
+	} = useSWR('/financial-donations/' + id);
 
 	const allowed = React.useMemo(() => {
 		if (loading) return false;
@@ -36,7 +36,7 @@ const ShowDonation = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Detail Donation</HeadingTitle>
+				<HeadingTitle>Detail Financial Donations</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -66,11 +66,11 @@ const ShowDonation = () => {
 
 					<div className='col-span-full'>
 						<div className='flex items-center gap-2'>
-							<Link to='/dashboard/donations'>
+							<Link to='/dashboard/financial-donations'>
 								<Button variant='outline'>Back</Button>
 							</Link>
 
-							{result.data.status !== 'pending ' && (
+							{result.data.status === 'pending ' && (
 								<Link
 									to={result.data.payment_url}
 									target='_blank'

@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 const { scope } = require('../middleware/authorize');
 
 module.exports = (sequelize, DataTypes) => {
-	class Donation extends Model {
+	class FinancialDonation extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 			});
 		}
 	}
-	Donation.init(
+	FinancialDonation.init(
 		{
 			uuid: {
 				allowNull: false,
@@ -63,11 +63,11 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			sequelize,
-			modelName: 'Donation',
-			tableName: 'donations',
+			modelName: 'FinancialDonation',
+			tableName: 'financial_donations',
 			underscored: true,
 			scopes: scope,
 		}
 	);
-	return Donation;
+	return FinancialDonation;
 };
