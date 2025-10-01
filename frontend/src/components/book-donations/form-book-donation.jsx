@@ -10,14 +10,22 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DEFAULT_LOCATION } from '@/libs/constant';
 import { useConfirm } from '@/hooks/use-confirm';
+import { useLocation } from '@/hooks/use-location';
 
 const BookDonationSchema = z.object({
 	title: z.string().min(3),
 	genre: z.string().min(3),
 	amount: z.coerce.number().min(1),
+	province_id: z.string().min(1, 'Province is required'),
+	city_id: z.string().min(1, 'City is required'),
+	district_id: z.string().min(1, 'District is required'),
 	address: z.string().min(3),
 	latitude: z.coerce.number(),
 	longitude: z.coerce.number(),
+	zipcode: z
+		.string()
+		.min(5, 'Zipcode must be 5 digits')
+		.max(5, 'Zipcode must be 5 digits'),
 });
 
 const EditSchema = BookDonationSchema.merge(
@@ -28,6 +36,17 @@ const EditSchema = BookDonationSchema.merge(
 
 const BookDonationForm = ({ initial, action, label }) => {
 	const { confirm } = useConfirm();
+	const {
+		province,
+		city,
+		provinces,
+		districts,
+		cities,
+		loading,
+		handleCityChange,
+		handleDistrictChange,
+		handleProvinceChange,
+	} = useLocation();
 
 	const {
 		watch,
@@ -41,6 +60,10 @@ const BookDonationForm = ({ initial, action, label }) => {
 			title: '',
 			genre: '',
 			amount: 1,
+			province_id: '',
+			city_id: '',
+			district_id: '',
+			zipcode: '',
 			address: '',
 			...DEFAULT_LOCATION,
 		},
@@ -109,6 +132,77 @@ const BookDonationForm = ({ initial, action, label }) => {
 				/>
 				{errors.amount && (
 					<span className='text-red-500'>{errors.amount.message}</span>
+				)}
+			</div>
+
+			<div>
+				<Label htmlFor='province_id'>Province</Label>
+				<select
+					className='block w-full p-3 border bg-zinc-100 border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
+					{...register('province_id')}
+					onChange={(e) => handleProvinceChange(e.target.value)}
+					disabled={loading.provinces}>
+					<option value=''>Select a province</option>
+					{provinces.map((province) => (
+						<option key={province.id} value={province.id}>
+							{province.name}
+						</option>
+					))}
+				</select>
+				{errors.province_id && (
+					<span className='text-red-500'>{errors.province_id.message}</span>
+				)}
+			</div>
+
+			<div>
+				<Label htmlFor='city_id'>City</Label>
+				<select
+					className='block w-full p-3 border bg-zinc-100 border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
+					{...register('city_id')}
+					onChange={(e) => handleCityChange(e.target.value)}
+					disabled={loading.cities || !province}>
+					<option value=''>Select a city</option>
+					{cities.map((city) => (
+						<option key={city.id} value={city.id}>
+							{city.name}
+						</option>
+					))}
+				</select>
+				{errors.city_id && (
+					<span className='text-red-500'>{errors.city_id.message}</span>
+				)}
+			</div>
+
+			<div>
+				<Label htmlFor='district_id'>District</Label>
+				<select
+					className='block w-full p-3 border bg-zinc-100 border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
+					{...register('district_id')}
+					onChange={(e) => handleDistrictChange(e.target.value)}
+					disabled={loading.districts || !city}>
+					<option value=''>Select a district</option>
+					{districts.map((district) => (
+						<option key={district.id} value={district.id}>
+							{district.name}
+						</option>
+					))}
+				</select>
+				{errors.district_id && (
+					<span className='text-red-500'>{errors.district_id.message}</span>
+				)}
+			</div>
+
+			<div>
+				<Label htmlFor='zipcode'>Zipcode</Label>
+				<Input
+					type='text'
+					placeholder='Enter zipcode'
+					maxLength={5}
+					pattern='[0-9]*'
+					{...register('zipcode')}
+				/>
+				{errors.zipcode && (
+					<span className='text-red-500'>{errors.zipcode.message}</span>
 				)}
 			</div>
 
