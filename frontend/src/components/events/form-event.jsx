@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { cn, formatByte } from '@/libs/utils';
 
 const EventSchema = z.object({
@@ -15,18 +16,21 @@ const EventSchema = z.object({
 	date: z.coerce.date(),
 	time: z.string(),
 	location: z.string(),
-	media: z.any().refine(
-		(files) => {
-			if (!files) return true;
+	media: z
+		.any()
+		.refine(
+			(files) => {
+				if (!files) return true;
 
-			const [file] = files;
-			if (!file) return true;
-			if (file.size > 2 * 1024 * 1024) return false;
+				const [file] = files;
+				if (!file) return true;
+				if (file.size > 2 * 1024 * 1024) return false;
 
-			return file.type.startsWith('image/');
-		},
-		{ message: 'File must be an image and smaller than 2MB' }
-	),
+				return file.type.startsWith('image/');
+			},
+			{ message: 'File must be an image and smaller than 2MB' }
+		)
+		.optional(),
 });
 
 const EventForm = ({ initial, action, label }) => {
@@ -114,11 +118,10 @@ const EventForm = ({ initial, action, label }) => {
 						(Max 2MB, Selected {filesize})
 					</span>
 				</Label>
-				<Input
-					type='file'
+				<ImageUpload
+					name='media'
 					accept='image/*'
-					placeholder='Select event image'
-					className='file:hidden'
+					defaultValue={media}
 					{...register('media')}
 				/>
 				{errors.media && (

@@ -59,7 +59,7 @@ const ShowEvent = () => {
 
 					<div className='col-span-full'>
 						<Label htmlFor='location'>Location</Label>
-						<Input
+						<Textarea
 							disabled
 							type='text'
 							defaultValue={result.data.location || '-'}
@@ -73,7 +73,7 @@ const ShowEvent = () => {
 								<img
 									src={result.data.media}
 									alt={result.data.title}
-									className='h-auto max-w-full border rounded-lg border-zinc-200'
+									className='object-contain aspect-[2/1] border rounded-lg border-zinc-300 bg-zinc-100'
 								/>
 							</div>
 						</div>

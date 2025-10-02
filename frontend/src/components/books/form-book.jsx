@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { cn, formatByte } from '@/libs/utils';
+import { ImageUpload } from '../ui/image-upload';
 
 const BookSchema = z.object({
 	title: z.string().min(3),
@@ -136,11 +137,10 @@ const BookForm = ({ initial, action, label }) => {
 						(Max 2MB, Selected {filesize})
 					</span>
 				</Label>
-				<Input
-					type='file'
+				<ImageUpload
+					name='cover'
 					accept='image/*'
-					placeholder='Select cover image'
-					className='file:hidden'
+					defaultValue={cover}
 					{...register('cover')}
 				/>
 				{errors.cover && (
