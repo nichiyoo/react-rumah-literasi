@@ -21,6 +21,28 @@ module.exports = {
 				allowNull: false,
 				type: DataTypes.DATEONLY,
 			},
+			time: {
+				allowNull: false,
+				type: DataTypes.TIME,
+			},
+			location: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			media: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			user_id: {
+				allowNull: false,
+				type: DataTypes.INTEGER,
+				references: {
+					model: 'users',
+					key: 'id',
+				},
+				onDelete: 'SET NULL',
+				onUpdate: 'CASCADE',
+			},
 			created_at: {
 				allowNull: false,
 				type: DataTypes.DATE,

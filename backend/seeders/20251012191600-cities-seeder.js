@@ -16,15 +16,15 @@ module.exports = {
 		 */
 		const cities = require('../data/cities.json');
 
-		const citiesWithTimestamps = cities.map((city) => ({
-			...city,
-			name: capitalize(city.name),
-			created_at: new Date(),
-			updated_at: new Date(),
-		}));
-
 		try {
-			await queryInterface.bulkInsert('cities', citiesWithTimestamps, {});
+			const citiesData = cities.map((city) => ({
+				...city,
+				name: capitalize(city.name),
+				created_at: new Date(),
+				updated_at: new Date(),
+			}));
+
+			await queryInterface.bulkInsert('cities', citiesData, {});
 		} catch (error) {
 			console.log('Error inserting cities:', error);
 		}

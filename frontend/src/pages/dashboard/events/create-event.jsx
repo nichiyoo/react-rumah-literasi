@@ -20,7 +20,7 @@ const CreateEvent = () => {
 	const onSubmit = async (data) => {
 		try {
 			await axios.post('/events', data, {
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-Type': 'multipart/form-data' },
 			});
 
 			toast('Event created', {

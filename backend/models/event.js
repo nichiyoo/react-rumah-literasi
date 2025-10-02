@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			//
+			this.belongsTo(models.User, {
+				foreignKey: 'user_id',
+				as: 'user',
+			});
 		}
 	}
 	Event.init(
@@ -32,6 +35,30 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.DATEONLY,
 				validate: {
 					notEmpty: true,
+				},
+			},
+			time: {
+				allowNull: false,
+				type: DataTypes.TIME,
+			},
+			location: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			media: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				get() {
+					const value = this.getDataValue('media');
+					const check = value.startsWith('http');
+					return check ? value : process.env.APP_URL + '/' + value;
+				},
+			},
+			user_id: {
+				allowNull: false,
+				type: DataTypes.INTEGER,
+				validate: {
+					isNumeric: true,
 				},
 			},
 		},

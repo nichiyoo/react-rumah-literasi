@@ -38,6 +38,7 @@ const EditBook = load(() => import('~/books/edit-book'));
 const ListEvents = load(() => import('~/events/list-events'));
 const AddEvent = load(() => import('~/events/create-event'));
 const EditEvent = load(() => import('~/events/edit-event'));
+const ShowEvent = load(() => import('~/events/show-event'));
 
 const ListUsers = load(() => import('~/members/list-member'));
 const AddUser = load(() => import('~/members/create-member'));
@@ -115,6 +116,7 @@ const Router = () => {
 						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
 						<Route index element={<ListEvents />} />
 						<Route path='create' element={<AddEvent />} />
+						<Route path=':id/detail' element={<ShowEvent />} />
 						<Route path=':id/edit' element={<EditEvent />} />
 					</Route>
 

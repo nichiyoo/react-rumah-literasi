@@ -35,31 +35,31 @@ export const SIDEBAR_MENUS = [
 			},
 			{
 				href: '/dashboard/books',
-				label: 'List Books',
+				label: 'Manage Books',
 				icon: Book,
 				roles: [ROLES.LIBRARIAN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/events',
-				label: 'List Events',
+				label: 'Manage Events',
 				icon: Calendar,
 				roles: [ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/book-donations',
-				label: 'List Book Donation',
+				label: 'Book Donation',
 				icon: Gift,
 				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/financial-donations',
-				label: 'List Financial Donations',
+				label: 'Financial Donations',
 				icon: HeartHandshake,
 				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/transactions',
-				label: 'List Transactions',
+				label: 'Transactions',
 				icon: Library,
 				roles: [ROLES.GUEST, ROLES.LIBRARIAN, ROLES.SUPERADMIN],
 			},
@@ -71,7 +71,7 @@ export const SIDEBAR_MENUS = [
 		submenus: [
 			{
 				href: '/dashboard/members',
-				label: 'List Members',
+				label: 'Members',
 				icon: UsersRound,
 				roles: [ROLES.SUPERADMIN],
 			},

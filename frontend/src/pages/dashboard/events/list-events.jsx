@@ -82,6 +82,7 @@ const ListEvents = () => {
 							<TableHead>Title</TableHead>
 							<TableHead>Description</TableHead>
 							<TableHead>Date</TableHead>
+							<TableHead>Location</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -91,11 +92,12 @@ const ListEvents = () => {
 								<TableCell className='font-medium'>{event.title}</TableCell>
 								<TableCell>{event.description}</TableCell>
 								<TableCell>{event.date}</TableCell>
+								<TableCell>{event.location}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={event.id + '/edit'} relative='path'>
+										<Link to={event.id + '/detail'} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
-												Edit
+												Detail
 											</button>
 										</Link>
 										<button

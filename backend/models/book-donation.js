@@ -126,7 +126,7 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: true,
 				type: DataTypes.FLOAT,
 			},
-			image_url: {
+			media: {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},

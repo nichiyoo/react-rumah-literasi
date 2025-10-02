@@ -1,5 +1,9 @@
 'use strict';
 
+const { where } = require('sequelize');
+const { User } = require('../models');
+const { ROLES } = require('../libs/constant');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
@@ -14,14 +18,52 @@ module.exports = {
 		 */
 
 		try {
+			const user = await User.findOne({
+				where: { role: ROLES.ADMIN },
+			});
+
+			if (!user) {
+				throw new Error(
+					'No users found. Please seed users first before seeding events.'
+				);
+			}
+
 			await queryInterface.bulkInsert(
 				'events',
 				[
 					{
-						title: 'Book Donation Event',
+						title: 'Annual Book Donation Campaign',
 						description:
-							'In support of the worldwide book donation movement, we are organizing a book donation event to raise funds for the World Book Day Foundation.',
-						date: new Date().toISOString().split('T')[0],
+							'Join us for our annual book donation campaign where we collect books for underprivileged children in rural areas.',
+						date: '2025-06-15',
+						time: '09:00:00',
+						location: 'Jakarta Convention Center',
+						media: 'uploads/event-annual-donation.jpg',
+						user_id: user.id,
+						created_at: new Date(),
+						updated_at: new Date(),
+					},
+					{
+						title: 'Book Fair & Cultural Exchange',
+						description:
+							'An international book fair featuring authors and publishers from various countries.',
+						date: '2025-09-10',
+						time: '10:00:00',
+						location: 'Jakarta International Expo',
+						media: 'uploads/event-book-fair.jpg',
+						user_id: user.id,
+						created_at: new Date(),
+						updated_at: new Date(),
+					},
+					{
+						title: 'Poetry & Literature Night',
+						description:
+							'An evening of poetry reading, literary discussions, and book recommendations.',
+						date: '2025-10-12',
+						time: '19:00:00',
+						location: 'Literary Café & Bookstore',
+						media: 'uploads/event-poetry-night.jpg',
+						user_id: user.id,
 						created_at: new Date(),
 						updated_at: new Date(),
 					},
@@ -29,7 +71,8 @@ module.exports = {
 				{}
 			);
 		} catch (error) {
-			console.log(error);
+			console.log('Error seeding events:', error);
+			throw error; // Re-throw the error to fail the migration
 		}
 	},
 
@@ -40,5 +83,6 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
+		await queryInterface.bulkDelete('events', null, {});
 	},
 };

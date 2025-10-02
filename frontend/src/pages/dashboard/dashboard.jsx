@@ -13,21 +13,21 @@ const Dashboard = () => {
 	const menus = [
 		{
 			href: '/dashboard/financial-donations',
-			title: 'List Financial Donations',
+			title: 'Financial Donations',
 			icon: HeartHandshake,
 			description:
 				'Track and manage financial donation transactions, processed via our payment gateway.',
 		},
 		{
 			href: '/dashboard/book-donations',
-			title: 'List Book Donations',
+			title: 'Book Donations',
 			icon: Gift,
 			description:
 				'Oversee book donations, verify records, and manage distributions.',
 		},
 		{
 			href: '/dashboard/transactions',
-			title: 'List Transactions',
+			title: 'Transactions',
 			icon: Library,
 			description:
 				'Manage book borrowing transactions, track loaned books, and oversee returns.',
@@ -45,7 +45,7 @@ const Dashboard = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<div className='grid gap-6 lg:grid-cols-2 2xl:grid-cols-3'>
+			<div className='grid gap-6 lg:grid-cols-2'>
 				{menus.map((menu) => {
 					const Icon = menu.icon;
 					return (

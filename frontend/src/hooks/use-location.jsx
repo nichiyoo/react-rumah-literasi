@@ -10,20 +10,20 @@ export const useLocation = () => {
 		data: provincesData,
 		error: provincesError,
 		isLoading: provincesLoading,
-	} = useSWR('/places/provinces', fetcher);
+	} = useSWR('/places', fetcher);
 
 	const {
 		data: citiesData,
 		error: citiesError,
 		isLoading: citiesLoading,
-	} = useSWR(province ? `/places/provinces/${province}` : null, fetcher);
+	} = useSWR(province ? '/places/' + province : null, fetcher);
 
 	const {
 		data: districtsData,
 		error: districtsError,
 		isLoading: districtsLoading,
 	} = useSWR(
-		province && city ? `/places/provinces/${province}/${city}` : null,
+		province && city ? '/places/' + province + '/' + city : null,
 		fetcher
 	);
 

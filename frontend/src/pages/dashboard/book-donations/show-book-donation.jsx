@@ -63,6 +63,34 @@ const ShowBookDonation = () => {
 						<Input disabled type='number' defaultValue={result.data.amount} />
 					</div>
 
+					<div>
+						<Label htmlFor='province'>Province</Label>
+						<Input
+							disabled
+							type='text'
+							defaultValue={result.data.province?.name}
+						/>
+					</div>
+
+					<div>
+						<Label htmlFor='city'>City</Label>
+						<Input disabled type='text' defaultValue={result.data.city?.name} />
+					</div>
+
+					<div>
+						<Label htmlFor='district'>District</Label>
+						<Input
+							disabled
+							type='text'
+							defaultValue={result.data.district?.name}
+						/>
+					</div>
+
+					<div>
+						<Label htmlFor='zipcode'>Zipcode</Label>
+						<Input disabled type='text' defaultValue={result.data.zipcode} />
+					</div>
+
 					<div className='col-span-full'>
 						<Label htmlFor='address'>Address</Label>
 						<Textarea disabled defaultValue={result.data.address} />

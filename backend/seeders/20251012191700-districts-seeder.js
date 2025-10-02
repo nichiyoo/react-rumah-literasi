@@ -16,15 +16,15 @@ module.exports = {
 		 */
 		const districts = require('../data/districts.json');
 
-		const districtsWithTimestamps = districts.map((district) => ({
-			...district,
-			name: capitalize(district.name),
-			created_at: new Date(),
-			updated_at: new Date(),
-		}));
-
 		try {
-			await queryInterface.bulkInsert('districts', districtsWithTimestamps, {});
+			const districtsData = districts.map((district) => ({
+				...district,
+				name: capitalize(district.name),
+				created_at: new Date(),
+				updated_at: new Date(),
+			}));
+
+			await queryInterface.bulkInsert('districts', districtsData, {});
 		} catch (error) {
 			console.log('Error inserting districts:', error);
 		}

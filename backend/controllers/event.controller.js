@@ -6,7 +6,9 @@ const { Event } = require('../models');
 const EventController = {
 	async index(req, res, next) {
 		try {
-			const events = await Event.findAll();
+			const events = await Event.findAll({
+				include: ['user'],
+			});
 			return res.json(new ApiResponse('Events retrieved successfully', events));
 		} catch (error) {
 			next(error);
@@ -15,7 +17,12 @@ const EventController = {
 
 	async store(req, res, next) {
 		try {
-			const event = await Event.create(req.body);
+			const event = await Event.create({
+				...req.body,
+				media: req.file.path,
+				user_id: req.user.id,
+			});
+
 			return res.json(new ApiResponse('Event created successfully', event));
 		} catch (error) {
 			next(error);
@@ -29,6 +36,7 @@ const EventController = {
 
 			const event = await Event.findOne({
 				where: { id },
+				include: ['user'],
 			});
 
 			if (!event) throw new ApiError(404, 'Event not found');
@@ -48,7 +56,10 @@ const EventController = {
 			});
 
 			if (!event) throw new ApiError(404, 'Event not found');
-			await event.update(req.body);
+			await event.update({
+				...req.body,
+				media: req.file ? req.file.path : event.media,
+			});
 			await event.save();
 
 			return res.json(new ApiResponse('Event updated successfully', event));

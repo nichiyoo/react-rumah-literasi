@@ -83,6 +83,12 @@ module.exports = {
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				references: {
+					model: 'users',
+					key: 'id',
+				},
+				onDelete: 'SET NULL',
+				onUpdate: 'CASCADE',
 			},
 			created_at: {
 				allowNull: false,

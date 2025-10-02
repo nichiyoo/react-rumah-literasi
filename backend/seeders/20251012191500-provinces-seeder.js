@@ -16,15 +16,15 @@ module.exports = {
 		 */
 		const provinces = require('../data/provinces.json');
 
-		const provincesWithTimestamps = provinces.map((province) => ({
-			...province,
-			name: capitalize(province.name),
-			created_at: new Date(),
-			updated_at: new Date(),
-		}));
-
 		try {
-			await queryInterface.bulkInsert('provinces', provincesWithTimestamps, {});
+			const provincesData = provinces.map((province) => ({
+				...province,
+				name: capitalize(province.name),
+				created_at: new Date(),
+				updated_at: new Date(),
+			}));
+
+			await queryInterface.bulkInsert('provinces', provincesData, {});
 		} catch (error) {
 			console.log('Error inserting provinces:', error);
 		}

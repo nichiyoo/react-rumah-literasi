@@ -29,7 +29,7 @@ const EditEvent = () => {
 	const onSubmit = async (data) => {
 		try {
 			await axios.put('/events/' + result.data.id, data, {
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-Type': 'multipart/form-data' },
 			});
 
 			toast('Event updated', {

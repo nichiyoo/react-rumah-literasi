@@ -10,8 +10,9 @@ const BookDonationController = {
 			const bookDonations = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findAll({
-				include: 'user',
+				include: ['user', 'province', 'city', 'district'],
 			});
+
 			return res.json(
 				new ApiResponse('Book donations retrieved successfully', bookDonations)
 			);
@@ -44,7 +45,7 @@ const BookDonationController = {
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
-				include: 'user',
+				include: ['user', 'province', 'city', 'district'],
 			});
 
 			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
