@@ -50,3 +50,10 @@ export const formatByte = (size) => {
 		unitDisplay: 'narrow',
 	}).format(size);
 };
+
+export const formatDate = (raw) => {
+	const date = new Date(raw);
+	return new Intl.DateTimeFormat('id-ID', {
+		dateStyle: 'medium',
+	}).format(date);
+};

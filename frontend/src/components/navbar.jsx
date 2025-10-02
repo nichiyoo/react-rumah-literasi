@@ -46,6 +46,11 @@ const Navbar = ({ className }) => {
 						</Link>
 					</li>
 					<li>
+						<Link to='/events' className='hover:text-primary-500'>
+							Events
+						</Link>
+					</li>
+					<li>
 						<Link to='/contact' className='hover:text-primary-500'>
 							Contact
 						</Link>

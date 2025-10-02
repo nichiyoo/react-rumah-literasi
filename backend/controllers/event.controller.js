@@ -6,9 +6,13 @@ const { Event } = require('../models');
 const EventController = {
 	async index(req, res, next) {
 		try {
+			const { limit } = req.query;
+
 			const events = await Event.findAll({
 				include: ['user'],
+				limit: limit ? parseInt(limit) : undefined,
 			});
+
 			return res.json(new ApiResponse('Events retrieved successfully', events));
 		} catch (error) {
 			next(error);

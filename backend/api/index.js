@@ -79,10 +79,8 @@ app.use('/api/_healthcheck', (req, res) => {
 	});
 });
 
-app.use(delay(1000));
 app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
-
 app.use('/api/places', placesRoutes);
 
 app.use(authenticate);
