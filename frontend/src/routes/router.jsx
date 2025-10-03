@@ -31,10 +31,6 @@ const load = (callback) => {
 
 const Dashboard = load(() => import('~/dashboard'));
 
-const ListBooks = load(() => import('~/books/list-books'));
-const AddBook = load(() => import('~/books/create-book'));
-const EditBook = load(() => import('~/books/edit-book'));
-
 const ListEvents = load(() => import('~/events/list-events'));
 const AddEvent = load(() => import('~/events/create-event'));
 const EditEvent = load(() => import('~/events/edit-event'));
@@ -43,11 +39,6 @@ const ShowEvent = load(() => import('~/events/show-event'));
 const ListUsers = load(() => import('~/members/list-member'));
 const AddUser = load(() => import('~/members/create-member'));
 const EditUser = load(() => import('~/members/edit-member'));
-
-const ListTransactions = load(() => import('~/transactions/list-transactions'));
-const AddTransaction = load(() => import('~/transactions/create-transaction'));
-const ShowTransaction = load(() => import('~/transactions/show-transaction'));
-const TrackTransaction = load(() => import('~/transactions/track-transaction'));
 
 const ListBookDonations = load(() =>
 	import('~/book-donations/list-book-donations')
@@ -104,14 +95,6 @@ const Router = () => {
 					</Route>
 
 					<Route
-						path='books'
-						element={<AuthorizeLayout roles={[ROLES.LIBRARIAN]} />}>
-						<Route index element={<ListBooks />} />
-						<Route path='create' element={<AddBook />} />
-						<Route path=':id/edit' element={<EditBook />} />
-					</Route>
-
-					<Route
 						path='events'
 						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
 						<Route index element={<ListEvents />} />
@@ -146,17 +129,6 @@ const Router = () => {
 						path='book-donations'
 						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
 						<Route path=':id/edit' element={<EditBookDonation />} />
-					</Route>
-
-					<Route
-						path='transactions'
-						element={
-							<AuthorizeLayout roles={[ROLES.GUEST, ROLES.LIBRARIAN]} />
-						}>
-						<Route index element={<ListTransactions />} />
-						<Route path='create' element={<AddTransaction />} />
-						<Route path=':uuid/detail' element={<ShowTransaction />} />
-						<Route path=':uuid/track' element={<TrackTransaction />} />
 					</Route>
 
 					<Route path='profile' element={<ProfileDetail />} />

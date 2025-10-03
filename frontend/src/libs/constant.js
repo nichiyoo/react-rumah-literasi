@@ -6,12 +6,10 @@ import {
 	Facebook,
 	HeartHandshake,
 	Bolt,
-	Library,
 	Calendar,
 	Twitter,
 	Mail,
 	Globe,
-	Book,
 	Home,
 } from 'lucide-react';
 
@@ -34,12 +32,6 @@ export const SIDEBAR_MENUS = [
 				roles: null,
 			},
 			{
-				href: '/dashboard/books',
-				label: 'Manage Books',
-				icon: Book,
-				roles: [ROLES.LIBRARIAN, ROLES.SUPERADMIN],
-			},
-			{
 				href: '/dashboard/events',
 				label: 'Manage Events',
 				icon: Calendar,
@@ -56,12 +48,6 @@ export const SIDEBAR_MENUS = [
 				label: 'Financial Donations',
 				icon: HeartHandshake,
 				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
-			},
-			{
-				href: '/dashboard/transactions',
-				label: 'Transactions',
-				icon: Library,
-				roles: [ROLES.GUEST, ROLES.LIBRARIAN, ROLES.SUPERADMIN],
 			},
 		],
 	},

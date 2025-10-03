@@ -1,13 +1,10 @@
-import * as React from 'react';
-
 import {
 	Heading,
 	HeadingDescription,
 	HeadingTitle,
 } from '@/components/ui/heading';
-import { HeartHandshake, Gift, Book } from 'lucide-react';
+import { HeartHandshake, Gift } from 'lucide-react';
 import { Link } from 'react-router';
-import { Library } from 'lucide-react';
 
 const Dashboard = () => {
 	const menus = [
@@ -16,7 +13,7 @@ const Dashboard = () => {
 			title: 'Financial Donations',
 			icon: HeartHandshake,
 			description:
-				'Track and manage financial donation transactions, processed via our payment gateway.',
+				'Track and manage financial donation, processed via our payment gateway.',
 		},
 		{
 			href: '/dashboard/book-donations',
@@ -24,13 +21,6 @@ const Dashboard = () => {
 			icon: Gift,
 			description:
 				'Oversee book donations, verify records, and manage distributions.',
-		},
-		{
-			href: '/dashboard/transactions',
-			title: 'Transactions',
-			icon: Library,
-			description:
-				'Manage book borrowing transactions, track loaned books, and oversee returns.',
 		},
 	];
 
