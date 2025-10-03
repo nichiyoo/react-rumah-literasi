@@ -11,7 +11,8 @@
 		"email:build": "email export --pretty",
 		"db:migrate": "sequelize db:migrate",
 		"db:seed": "sequelize db:seed:all",
-		"db:refresh": "del database\\development.sqlite && sequelize db:migrate && sequelize db:seed:all"
+		"db:refresh": "del database\\development.sqlite && sequelize db:migrate && sequelize db:seed:all",
+		"db:drop": "sequelize db:drop"
 	},
 	"keywords": [],
 	"author": "",

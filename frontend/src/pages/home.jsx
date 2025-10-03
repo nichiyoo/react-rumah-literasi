@@ -3,11 +3,15 @@ import { Link } from 'react-router';
 import useSWR from 'swr';
 import { Button } from '@/components/ui/button';
 import { EventCard } from '@/components/events/event-card';
-import { TriangleAlert } from 'lucide-react';
+import { useResultState } from '@/hooks/use-result-state';
+import { Empty } from '@/components/empty';
+import { Loading } from '@/components/loading';
+import { Error } from '@/components/error';
 
 const Home = () => {
 	const ref = React.useRef(null);
-	const { data: result, error, isLoading } = useSWR('/events?limit=3');
+	const { error, data, isLoading: loading } = useSWR('/public/events?limit=3');
+	const { result, empty } = useResultState(error, loading, data);
 
 	return (
 		<React.Fragment>
@@ -67,38 +71,17 @@ const Home = () => {
 					</p>
 				</div>
 
-				{error ? (
-					<div className='aspect-[2/1] bg-zinc-50 rounded-xl border border-dashed w-full flex items-center justify-center'>
-						<div className='flex items-center gap-4 text-sm'>
-							<TriangleAlert className='text-red-500' />
-							<span className='text-zinc-500'>Failed to load events</span>
-						</div>
-					</div>
-				) : (
-					<div className='grid items-start gap-6 mb-16 md:grid-cols-2 lg:grid-cols-4'>
-						{result?.data.map((event) => (
-							<EventCard key={event.id} event={event} />
-						))}
-						{isLoading &&
-							Array.from({ length: 3 }).map(() => (
-								<div className='aspect-[4/2] bg-zinc-50 rounded-xl border'>
-									<div className='aspect-[4/3] bg-zinc-100 animate-pulse' />
-									<div className='flex flex-col gap-4 p-4'>
-										<div className='h-8 rounded-lg bg-zinc-100 animate-pulse' />
-										<div className='flex w-full gap-6'>
-											<div className='w-full h-4 rounded-lg bg-zinc-100 animate-pulse' />
-											<div className='w-full h-4 rounded-lg bg-zinc-100 animate-pulse' />
-										</div>
-										<div className='flex flex-col gap-2'>
-											<div className='h-4 rounded-lg bg-zinc-100 animate-pulse' />
-											<div className='h-4 rounded-lg bg-zinc-100 animate-pulse' />
-											<div className='w-1/2 h-4 rounded-lg bg-zinc-100 animate-pulse' />
-										</div>
-									</div>
-								</div>
-							))}
-					</div>
-				)}
+				<Error error={!loading && error} />
+				<Empty empty={!loading && empty} />
+				<Loading loading={loading} />
+
+				<div className='grid gap-8 mb-8 md:grid-cols-2 lg:grid-cols-3'>
+					{result.map((event) => (
+						<Link to={'/events/' + event.id} key={event.id}>
+							<EventCard event={event} />
+						</Link>
+					))}
+				</div>
 
 				<div className='flex justify-center'>
 					<Link to='/events'>

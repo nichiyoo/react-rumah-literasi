@@ -54,6 +54,8 @@ export const formatByte = (size) => {
 export const formatDate = (raw) => {
 	const date = new Date(raw);
 	return new Intl.DateTimeFormat('id-ID', {
-		dateStyle: 'medium',
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
 	}).format(date);
 };

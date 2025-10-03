@@ -22,6 +22,9 @@ import NotFound from '@/pages/errors/not-found';
 import ExpiredLink from '@/pages/errors/expired-link';
 import Unauhtorized from '@/pages/errors/unauthorized';
 
+import ListEventsPage from '@/pages/events/list-events';
+import ShowEventPage from '@/pages/events/show-event';
+
 import { ROLES } from '@/libs/constant';
 
 const load = (callback) => {
@@ -74,6 +77,10 @@ const Router = () => {
 					<Route index element={<Home />} />
 					<Route path='about' element={<About />} />
 					<Route path='contact' element={<Contact />} />
+					<Route path='events'>
+						<Route index element={<ListEventsPage />} />
+						<Route path=':id' element={<ShowEventPage />} />
+					</Route>
 				</Route>
 
 				<Route path='auth' element={<AuthLayout />}>
