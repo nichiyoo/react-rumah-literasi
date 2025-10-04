@@ -19,27 +19,25 @@ const ListEvents = () => {
 	const { result, empty } = useResultState(error, loading, data);
 
 	return (
-		<div className='container min-h-screen py-24 max-w-7xl'>
-			<div className='grid gap-8'>
-				<Heading>
-					<HeadingTitle>Our Events</HeadingTitle>
-					<HeadingDescription>
-						Discover our upcoming and past events that make an impact in our
-						community.
-					</HeadingDescription>
-				</Heading>
+		<div className='container grid min-h-screen gap-8 py-24 max-w-7xl'>
+			<div className='gap-4'>
+				<h1 className='text-6xl font-bold'>Our Events</h1>
+				<p className='text-zinc-600'>
+					Discover our upcoming and past events that make an impact in our
+					community, and join us for a fun-filled experience.
+				</p>
+			</div>
 
-				<Error error={!loading && error} />
-				<Empty empty={!loading && empty} />
-				<Loading loading={loading} />
+			<Error error={!loading && error} />
+			<Empty empty={!loading && empty} />
+			<Loading loading={loading} />
 
-				<div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
-					{result.map((event) => (
-						<Link to={'/events/' + event.id} key={event.id}>
-							<EventCard event={event} />
-						</Link>
-					))}
-				</div>
+			<div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
+				{result.map((event) => (
+					<Link to={'/events/' + event.id} key={event.id}>
+						<EventCard event={event} />
+					</Link>
+				))}
 			</div>
 		</div>
 	);
