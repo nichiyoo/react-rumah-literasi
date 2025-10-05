@@ -12,9 +12,9 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'city_id',
 				as: 'districts',
 			});
-			this.hasMany(models.BookDonation, {
+			this.hasMany(models.Address, {
 				foreignKey: 'city_id',
-				as: 'bookDonations',
+				as: 'addresses',
 			});
 		}
 	}
@@ -36,6 +36,8 @@ module.exports = (sequelize, DataTypes) => {
 					model: 'provinces',
 					key: 'id',
 				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 			},
 			latitude: {
 				type: DataTypes.DOUBLE,

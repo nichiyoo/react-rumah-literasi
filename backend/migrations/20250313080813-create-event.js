@@ -40,8 +40,8 @@ module.exports = {
 					model: 'users',
 					key: 'id',
 				},
-				onDelete: 'SET NULL',
 				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 			},
 			created_at: {
 				allowNull: false,

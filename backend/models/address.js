@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 const { scope } = require('../middleware/authorize');
 
 module.exports = (sequelize, DataTypes) => {
-	class BookDonation extends Model {
+	class Address extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -14,43 +14,82 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'user_id',
 				as: 'user',
 			});
-			this.belongsTo(models.Address, {
-				foreignKey: 'address_id',
-				as: 'address',
+			this.belongsTo(models.Province, {
+				foreignKey: 'province_id',
+				as: 'province',
+			});
+			this.belongsTo(models.City, {
+				foreignKey: 'city_id',
+				as: 'city',
+			});
+			this.belongsTo(models.District, {
+				foreignKey: 'district_id',
+				as: 'district',
 			});
 		}
 	}
-	BookDonation.init(
+	Address.init(
 		{
-			title: {
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: DataTypes.INTEGER,
+			},
+			street_address: {
 				allowNull: false,
 				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
-			genre: {
+			latitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			longitude: {
+				allowNull: false,
+				type: DataTypes.FLOAT,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			province_id: {
 				allowNull: false,
 				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
-			amount: {
+			city_id: {
 				allowNull: false,
 				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
 			},
-			status: {
+			district_id: {
 				allowNull: false,
-				type: DataTypes.ENUM,
-				values: ['pending', 'ongoing', 'approved', 'rejected'],
-				defaultValue: 'pending',
+				type: DataTypes.STRING,
 				validate: {
 					notEmpty: true,
 				},
+			},
+			zipcode: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+					isNumeric: true,
+					len: [5],
+				},
+			},
+			note: {
+				allowNull: true,
+				type: DataTypes.STRING,
 			},
 			user_id: {
 				allowNull: false,
@@ -59,33 +98,14 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
-			address_id: {
-				allowNull: false,
-				type: DataTypes.INTEGER,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			dimension: {
-				allowNull: true,
-				type: DataTypes.STRING,
-			},
-			weight: {
-				allowNull: true,
-				type: DataTypes.FLOAT,
-			},
-			media: {
-				allowNull: true,
-				type: DataTypes.STRING,
-			},
 		},
 		{
 			sequelize,
-			modelName: 'BookDonation',
-			tableName: 'book_donations',
+			modelName: 'Address',
+			tableName: 'addresses',
 			underscored: true,
 			scopes: scope,
 		}
 	);
-	return BookDonation;
+	return Address;
 };

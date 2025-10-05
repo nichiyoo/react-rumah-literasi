@@ -1,7 +1,7 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
-const { BookDonation } = require('../models');
+const { BookDonation, Address } = require('../models');
 const { ROLES } = require('../libs/constant');
 
 const BookDonationController = {
@@ -10,7 +10,7 @@ const BookDonationController = {
 			const bookDonations = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findAll({
-				include: ['user', 'province', 'city', 'district'],
+				include: ['user', 'address'],
 			});
 
 			return res.json(
@@ -23,8 +23,18 @@ const BookDonationController = {
 
 	async store(req, res, next) {
 		try {
+			const { address_id, ...data } = req.body;
+
+			const address = await Address.scope({
+				method: ['authorize', req.user, [ROLES.ADMIN]],
+			}).findOne({
+				where: { id: address_id },
+			});
+			if (!address) throw new ApiError(404, 'Address not found');
+
 			const bookDonation = await BookDonation.create({
-				...req.body,
+				...data,
+				address_id,
 				user_id: req.user.id,
 			});
 
@@ -45,10 +55,10 @@ const BookDonationController = {
 				method: ['authorize', req.user, [ROLES.ADMIN]],
 			}).findOne({
 				where: { id },
-				include: ['user', 'province', 'city', 'district'],
+				include: ['user', 'address'],
 			});
-
 			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
+
 			return res.json(
 				new ApiResponse('Book donation retrieved successfully', bookDonation)
 			);
@@ -67,9 +77,19 @@ const BookDonationController = {
 			}).findOne({
 				where: { id },
 			});
-
 			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
-			await bookDonation.update(req.body);
+
+			const { address_id, ...data } = req.body;
+
+			const address = await Address.scope({
+				method: ['authorize', req.user, [ROLES.ADMIN]],
+			}).findOne({
+				where: { id: address_id },
+			});
+			if (!address) throw new ApiError(404, 'Address not found');
+
+			bookDonation.address_id = address_id;
+			await bookDonation.update(data);
 			await bookDonation.save();
 
 			return res.json(
@@ -90,10 +110,10 @@ const BookDonationController = {
 			}).findOne({
 				where: { id },
 			});
-
 			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
-			const pending = bookDonation.status === 'pending';
-			if (!pending) {
+
+			const validateStatus = bookDonation.status === 'pending';
+			if (!validateStatus) {
 				throw new ApiError(
 					400,
 					'Cannot delete bookDonation unless the status is pending'

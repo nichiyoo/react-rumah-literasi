@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
 				as: 'book_donations',
 			});
 
+			this.hasMany(models.Address, {
+				foreignKey: 'user_id',
+				as: 'addresses',
+			});
+
 			this.hasMany(models.Transaction, {
 				foreignKey: 'user_id',
 				as: 'transactions',

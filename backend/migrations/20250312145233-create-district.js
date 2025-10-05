@@ -19,6 +19,8 @@ module.exports = {
 					model: 'cities',
 					key: 'id',
 				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 			},
 			latitude: {
 				type: DataTypes.DOUBLE,

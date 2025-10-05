@@ -21,43 +21,25 @@ module.exports = {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},
-			address: {
-				allowNull: false,
-				type: DataTypes.STRING,
-			},
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
 				values: ['pending', 'ongoing', 'approved', 'rejected'],
 				defaultValue: 'pending',
 			},
-			latitude: {
-				allowNull: false,
-				type: DataTypes.FLOAT,
-			},
-			longitude: {
-				allowNull: false,
-				type: DataTypes.FLOAT,
-			},
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
 			},
-			province_id: {
+			address_id: {
 				allowNull: false,
-				type: DataTypes.STRING,
-			},
-			city_id: {
-				allowNull: false,
-				type: DataTypes.STRING,
-			},
-			district_id: {
-				allowNull: false,
-				type: DataTypes.STRING,
-			},
-			zipcode: {
-				allowNull: false,
-				type: DataTypes.STRING,
+				type: DataTypes.INTEGER,
+				references: {
+					model: 'addresses',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 			},
 			dimension: {
 				allowNull: true,
