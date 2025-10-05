@@ -1,6 +1,7 @@
-import { UsersRound } from 'lucide-react';
-import { Gift } from 'lucide-react';
 import {
+	Gift,
+	MapPin,
+	UsersRound,
 	Phone,
 	Instagram,
 	Facebook,
@@ -60,6 +61,12 @@ export const SIDEBAR_MENUS = [
 				label: 'Members',
 				icon: UsersRound,
 				roles: [ROLES.SUPERADMIN],
+			},
+			{
+				href: '/dashboard/addresses',
+				label: 'Addresses',
+				icon: MapPin,
+				roles: [ROLES.GUEST, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/settings',

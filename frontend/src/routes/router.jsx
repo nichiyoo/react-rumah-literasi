@@ -69,6 +69,11 @@ const ShowDonation = load(() =>
 	import('@/pages/dashboard/financial-donations/show-financial-donation')
 );
 
+const ListAddresses = load(() => import('~/addresses/list-addresses'));
+const AddAddress = load(() => import('~/addresses/create-address'));
+const EditAddress = load(() => import('~/addresses/edit-address'));
+const ShowAddress = load(() => import('~/addresses/show-address'));
+
 const Router = () => {
 	return (
 		<BrowserRouter>
@@ -137,6 +142,18 @@ const Router = () => {
 						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
 						<Route path=':id/edit' element={<EditBookDonation />} />
 					</Route>
+
+					<Route
+						path='addresses'
+						element={<AuthorizeLayout roles={[ROLES.GUEST]} />}>
+						<Route index element={<ListAddresses />} />
+						<Route path='create' element={<AddAddress />} />
+						<Route path=':id/edit' element={<EditAddress />} />
+						<Route path=':id/detail' element={<ShowAddress />} />
+					</Route>
+
+					<Route path='profile' element={<ProfileDetail />} />
+					<Route path='settings' element={<Setting />} />
 
 					<Route path='profile' element={<ProfileDetail />} />
 					<Route path='settings' element={<Setting />} />

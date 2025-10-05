@@ -50,11 +50,7 @@ const ShowEvent = () => {
 
 					<div>
 						<Label htmlFor='time'>Time</Label>
-						<Input
-							disabled
-							type='text'
-							defaultValue={result.data.time || '-'}
-						/>
+						<Input disabled type='text' defaultValue={result.data.time} />
 					</div>
 
 					<div className='col-span-full'>
@@ -62,7 +58,7 @@ const ShowEvent = () => {
 						<Textarea
 							disabled
 							type='text'
-							defaultValue={result.data.location || '-'}
+							defaultValue={result.data.location}
 						/>
 					</div>
 
