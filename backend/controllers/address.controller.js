@@ -3,6 +3,7 @@ const ApiResponse = require('../libs/response');
 
 const { Address } = require('../models');
 const { ROLES } = require('../libs/constant');
+const { Op } = require('sequelize');
 
 const AddressController = {
 	async index(req, res, next) {
@@ -24,12 +25,57 @@ const AddressController = {
 
 	async store(req, res, next) {
 		try {
+			const addresses = await Address.scope({
+				method: ['authorize', req.user, [ROLES.ADMIN]],
+			}).findAll({
+				where: {
+					user_id: req.user.id,
+				},
+			});
+
+			const is_default = addresses.length === 0;
 			const address = await Address.create({
 				...req.body,
 				user_id: req.user.id,
+				is_default,
 			});
 
 			return res.json(new ApiResponse('Address created successfully', address));
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	async setDefault(req, res, next) {
+		try {
+			const id = req.params.id;
+			if (!id) throw new ApiError(400, 'ID is required');
+
+			const address = await Address.scope({
+				method: ['authorize', req.user, [ROLES.ADMIN]],
+			}).findOne({
+				where: { id },
+			});
+
+			if (!address) throw new ApiError(404, 'Address not found');
+			await Address.scope({
+				method: ['authorize', req.user, [ROLES.ADMIN]],
+			}).update(
+				{ is_default: false },
+				{
+					where: {
+						user_id: req.user.id,
+						id: { [Op.ne]: id },
+					},
+				}
+			);
+
+			await address.update({ is_default: true });
+			await address.save();
+
+			return res.json(
+				new ApiResponse('Default address updated successfully', address)
+			);
 		} catch (error) {
 			next(error);
 		}

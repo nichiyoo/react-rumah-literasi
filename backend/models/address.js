@@ -91,6 +91,11 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},
+			is_default: {
+				allowNull: false,
+				type: DataTypes.BOOLEAN,
+				defaultValue: false,
+			},
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,

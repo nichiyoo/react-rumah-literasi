@@ -1,4 +1,3 @@
-import * as React from 'react';
 import useSWR from 'swr';
 import { Link, useParams } from 'react-router';
 
@@ -15,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Map } from '@/components/map';
+import { Badge } from '@/components/ui/badge';
 
 const ShowAddress = () => {
 	const { id } = useParams();
@@ -27,7 +27,10 @@ const ShowAddress = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Address Details</HeadingTitle>
+				<HeadingTitle className='flex items-center justify-between'>
+					<span>Address Details</span>
+					{result && result.data.is_default && <Badge>default</Badge>}
+				</HeadingTitle>
 				<HeadingDescription>
 					View and manage your address details.
 				</HeadingDescription>

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 const Badge = React.forwardRef(
 	({ variant = 'primary', children, className, ...props }, ref) => {
-		const vraiants = {
+		const variants = {
 			'border-transparent bg-primary-500 text-white': variant === 'primary',
 			'border-zinc-200 text-primary-500': variant === 'outline',
 			'border-transparent bg-red-500 text-white': variant === 'destructive',
@@ -17,7 +17,7 @@ const Badge = React.forwardRef(
 				ref={ref}
 				className={cn(
 					'border flex-none whitespace-nowrap items-center rounded-full px-3 py-1 text-xs font-medium capitalize',
-					vraiants,
+					variants,
 					className
 				)}
 				{...props}>

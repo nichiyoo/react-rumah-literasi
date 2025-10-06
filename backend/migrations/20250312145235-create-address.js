@@ -58,6 +58,11 @@ module.exports = {
 				allowNull: true,
 				type: DataType.STRING,
 			},
+			is_default: {
+				allowNull: false,
+				type: DataType.BOOLEAN,
+				defaultValue: false,
+			},
 			user_id: {
 				allowNull: false,
 				type: DataType.INTEGER,

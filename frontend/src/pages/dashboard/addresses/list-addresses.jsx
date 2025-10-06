@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
+import { Badge } from '@/components/ui/badge';
 
 const ListAddresses = () => {
 	const { confirm } = useConfirm();
@@ -56,6 +57,30 @@ const ListAddresses = () => {
 			});
 	};
 
+	const handleDefault = async (id) => {
+		confirm({
+			title: 'Confirm Action',
+			description: 'Are you sure you want to set this address as default?',
+		})
+			.then(async () => {
+				try {
+					await axios.patch('/addresses/' + id + '/default');
+					mutate();
+					toast('Address set as default', {
+						description: 'Successfully set address as default',
+					});
+				} catch (error) {
+					toast.error('Failed to set address as default', {
+						description: error.response.data.message || error.message,
+					});
+					console.log(error);
+				}
+			})
+			.catch(() => {
+				// pass
+			});
+	};
+
 	return (
 		<div className='grid gap-8'>
 			<Heading>
@@ -76,33 +101,38 @@ const ListAddresses = () => {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Address</TableHead>
+							<TableHead>Status</TableHead>
 							<TableHead>City</TableHead>
 							<TableHead>Province</TableHead>
 							<TableHead>Zipcode</TableHead>
-							<TableHead>Note</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{result.map((address) => (
 							<TableRow key={address.id}>
-								<TableCell>
+								<TableCell className='flex items-center gap-2'>
 									<p className='truncate'>{address.street_address}</p>
+								</TableCell>
+								<TableCell>
+									{address.is_default ? (
+										<Badge variant='primary'>default</Badge>
+									) : (
+										<button
+											className='items-center flex-none px-3 py-1 text-xs font-medium capitalize border rounded-full whitespace-nowrap text-zinc-500'
+											onClick={() => handleDefault(address.id)}>
+											not default
+										</button>
+									)}
 								</TableCell>
 								<TableCell>{address.city.name}</TableCell>
 								<TableCell>{address.province.name}</TableCell>
 								<TableCell>{address.zipcode}</TableCell>
-								<TableCell>{address.note}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
 										<Link to={address.id + '/detail'} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
-											</button>
-										</Link>
-										<Link to={address.id + '/edit'} relative='path'>
-											<button className='bg-transparent hover:text-blue-500'>
-												Edit
 											</button>
 										</Link>
 										<button

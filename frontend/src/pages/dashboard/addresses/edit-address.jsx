@@ -1,30 +1,30 @@
 import * as React from 'react';
-
-import useSWR from 'swr';
 import { toast } from 'sonner';
-import { useSWRConfig } from 'swr';
-import { useNavigate, useParams } from 'react-router';
+import useSWR, { useSWRConfig } from 'swr';
+import { useParams, useNavigate } from 'react-router';
 
 import axios from '@/libs/axios';
-import { useResultState } from '@/hooks/use-result-state';
 
 import {
 	Heading,
 	HeadingDescription,
 	HeadingTitle,
 } from '@/components/ui/heading';
-
 import AddressForm from '@/components/addresses/form-address';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
+import { Badge } from '@/components/ui/badge';
 
 const EditAddress = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const { mutate } = useSWRConfig();
 
-	const { error, data, isLoading: loading } = useSWR(`/addresses/${id}`);
-	const { result } = useResultState(error, loading, data);
+	const {
+		error,
+		data: result,
+		isLoading: loading,
+	} = useSWR('/addresses/' + id);
 
 	const onSubmit = async (data) => {
 		try {
@@ -53,13 +53,22 @@ const EditAddress = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Edit Address</HeadingTitle>
+				<HeadingTitle className='flex items-center justify-between'>
+					<span>Edit Address</span>
+					{result && result.data.is_default && <Badge>default</Badge>}
+				</HeadingTitle>
 				<HeadingDescription>
 					Update your address information.
 				</HeadingDescription>
 			</Heading>
 
-			<AddressForm initial={result} action={onSubmit} label='Update Address' />
+			{result && (
+				<AddressForm
+					initial={result.data}
+					action={onSubmit}
+					label='Update Address'
+				/>
+			)}
 		</div>
 	);
 };

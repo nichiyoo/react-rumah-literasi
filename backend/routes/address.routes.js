@@ -11,5 +11,6 @@ router.post('/', guest, AddressController.store);
 router.get('/:id', guest, AddressController.show);
 router.put('/:id', guest, AddressController.update);
 router.delete('/:id', guest, AddressController.destroy);
+router.patch('/:id/default', guest, AddressController.setDefault);
 
 module.exports = router;
