@@ -65,7 +65,9 @@ const ListAddresses = () => {
 			.then(async () => {
 				try {
 					await axios.patch('/addresses/' + id + '/default');
-					mutate();
+
+					mutate('/addresses');
+					mutate('/addresses/' + id);
 					toast('Address set as default', {
 						description: 'Successfully set address as default',
 					});
@@ -100,10 +102,9 @@ const ListAddresses = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
+							<TableHead>Name</TableHead>
+							<TableHead>Default</TableHead>
 							<TableHead>Address</TableHead>
-							<TableHead>Status</TableHead>
-							<TableHead>City</TableHead>
-							<TableHead>Province</TableHead>
 							<TableHead>Zipcode</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
@@ -111,22 +112,24 @@ const ListAddresses = () => {
 					<TableBody>
 						{result.map((address) => (
 							<TableRow key={address.id}>
-								<TableCell className='flex items-center gap-2'>
-									<p className='truncate'>{address.street_address}</p>
-								</TableCell>
+								<TableCell>{address.name}</TableCell>
 								<TableCell>
 									{address.is_default ? (
 										<Badge variant='primary'>default</Badge>
 									) : (
-										<button
-											className='items-center flex-none px-3 py-1 text-xs font-medium capitalize border rounded-full whitespace-nowrap text-zinc-500'
-											onClick={() => handleDefault(address.id)}>
+										<Badge
+											variant='outline'
+											onClick={() => {
+												if (address.is_default) return;
+												handleDefault(address.id);
+											}}>
 											not default
-										</button>
+										</Badge>
 									)}
 								</TableCell>
-								<TableCell>{address.city.name}</TableCell>
-								<TableCell>{address.province.name}</TableCell>
+								<TableCell>
+									<p className='truncate'>{address.street_address}</p>
+								</TableCell>
 								<TableCell>{address.zipcode}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>

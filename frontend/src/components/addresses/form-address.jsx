@@ -14,6 +14,7 @@ import { useConfirm } from '@/hooks/use-confirm';
 import { useLocation } from '@/hooks/use-location';
 
 const AddressSchema = z.object({
+	name: z.string().min(1, 'Address name is required'),
 	street_address: z.string().min(3, 'Street address is required'),
 	province_id: z.string().min(1, 'Province is required'),
 	city_id: z.string().min(1, 'City is required'),
@@ -57,6 +58,7 @@ const AddressForm = ({ initial, action, label }) => {
 	} = useForm({
 		resolver: zodResolver(initial ? EditSchema : AddressSchema),
 		defaultValues: initial || {
+			name: '',
 			street_address: '',
 			province_id: '',
 			city_id: '',
@@ -97,6 +99,14 @@ const AddressForm = ({ initial, action, label }) => {
 
 	return (
 		<form onSubmit={handleSubmit(action)} className='grid gap-6 lg:grid-cols-2'>
+			<div>
+				<Label htmlFor='name'>Address Name</Label>
+				<Input placeholder='e.g., Home, Office, etc.' {...register('name')} />
+				{errors.name && (
+					<span className='text-red-500'>{errors.name.message}</span>
+				)}
+			</div>
+
 			<div className='col-span-full'>
 				<Label htmlFor='street_address'>Street Address</Label>
 				<Textarea
@@ -203,11 +213,14 @@ const AddressForm = ({ initial, action, label }) => {
 			</div>
 
 			<div className='col-span-full'>
-				<Label htmlFor='note'>Note (Optional)</Label>
+				<Label htmlFor='note'>Note</Label>
 				<Textarea
 					placeholder='Add a note for this address'
 					{...register('note')}
 				/>
+				<p className='mt-1 text-sm text-zinc-500'>
+					This note will help the driver navigate to your destination correctly.
+				</p>
 				{errors.note && (
 					<span className='text-red-500'>{errors.note.message}</span>
 				)}

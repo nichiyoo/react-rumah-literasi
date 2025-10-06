@@ -42,7 +42,7 @@ const CreateAddress = () => {
       <Heading>
         <HeadingTitle>Create Address</HeadingTitle>
         <HeadingDescription>
-          Add a new address to your profile for book donations and other activities.
+          Add a new address to your profile with a name (like Home, Office, etc.) for book donations and other activities.
         </HeadingDescription>
       </Heading>
 

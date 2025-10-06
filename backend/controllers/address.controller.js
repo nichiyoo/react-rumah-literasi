@@ -33,6 +33,13 @@ const AddressController = {
 				},
 			});
 
+			if (address.lenght >= 10) {
+				throw new ApiError(
+					400,
+					"You've reached the maximum limit of addresses"
+				);
+			}
+
 			const is_default = addresses.length === 0;
 			const address = await Address.create({
 				...req.body,
