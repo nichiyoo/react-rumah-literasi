@@ -1,6 +1,6 @@
 import * as React from 'react';
-import useSWR from 'swr';
 import { toast } from 'sonner';
+import useSWR, { useSWRConfig } from 'swr';
 import { useParams, useNavigate } from 'react-router';
 
 import axios from '@/libs/axios';
@@ -10,7 +10,6 @@ import {
 	HeadingDescription,
 	HeadingTitle,
 } from '@/components/ui/heading';
-
 import BookDonationForm from '@/components/book-donations/form-book-donation';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
@@ -18,10 +17,10 @@ import { Error } from '@/components/error';
 const EditBookDonation = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const { mutate } = useSWRConfig();
 
 	const {
 		error,
-		mutate,
 		data: result,
 		isLoading: loading,
 	} = useSWR('/book-donations/' + id);
@@ -36,7 +35,8 @@ const EditBookDonation = () => {
 				description: 'Successfully updated book donation',
 			});
 
-			mutate();
+			mutate('/book-donations');
+			mutate('/book-donations/' + id);
 			navigate('/dashboard/book-donations');
 		} catch (error) {
 			toast.error('Failed to update book donation', {

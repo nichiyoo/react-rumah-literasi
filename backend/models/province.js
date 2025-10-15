@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'province_id',
 				as: 'cities',
 			});
-			this.hasMany(models.BookDonation, {
+			this.hasMany(models.Address, {
 				foreignKey: 'province_id',
-				as: 'bookDonations',
+				as: 'addresses',
 			});
 		}
 	}

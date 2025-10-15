@@ -19,7 +19,7 @@ const ListEvents = () => {
 	const { result, empty } = useResultState(error, loading, data);
 
 	return (
-		<div className='container grid min-h-screen gap-8 py-24 max-w-7xl'>
+		<div className='container flex flex-col min-h-screen gap-8 py-24 max-w-7xl'>
 			<div className='gap-4'>
 				<h1 className='text-6xl font-bold'>Our Events</h1>
 				<p className='text-zinc-600'>

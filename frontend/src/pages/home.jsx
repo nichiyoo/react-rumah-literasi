@@ -18,12 +18,12 @@ const Home = () => {
 			<div className='container grid items-center gap-6 py-24 lg:grid-cols-2 max-w-7xl'>
 				<div className='flex flex-col gap-6'>
 					<h1 className='text-6xl font-bold'>
-						Shout My Name From The Rooftops
+						Empowering Communities Through Literacy
 					</h1>
 					<p className='text-zinc-600'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia quidem
-						ullam cupiditate laboriosam animi quae, aliquid quo, repellendus
-						iste voluptas.
+						Rumah Literasi is a non-profit initiative focused on redistributing
+						used books to underserved communities. Partner with us to foster
+						education, reduce waste, and drive social impact through literacy.
 					</p>
 					<div className='flex items-center gap-2'>
 						<Button
@@ -56,7 +56,7 @@ const Home = () => {
 
 							<h2 className='font-semibold'>Donate your books</h2>
 							<p className='text-zinc-600'>
-								Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+								Instead of throwing your old books away, let them do more
 							</p>
 						</div>
 					</div>

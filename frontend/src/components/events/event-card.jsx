@@ -4,7 +4,7 @@ import { User2 } from 'lucide-react';
 
 const EventCard = ({ event }) => {
 	return (
-		<div className='overflow-hidden bg-white border rounded-xl'>
+		<div className='overflow-hidden transition-colors duration-500 bg-white border rounded-xl group'>
 			<div className='aspect-[4/3] overflow-hidden'>
 				<img
 					src={event.media}
@@ -14,7 +14,7 @@ const EventCard = ({ event }) => {
 			</div>
 
 			<div className='flex flex-col gap-3 p-4'>
-				<h3 className='text-lg font-semibold text-zinc-900 line-clamp-1'>
+				<h3 className='text-lg font-semibold group-hover:text-primary-500 text-zinc-900 line-clamp-1'>
 					{event.title}
 				</h3>
 				<div className='flex items-center gap-2 text-sm'>

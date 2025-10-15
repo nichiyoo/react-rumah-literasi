@@ -14,17 +14,9 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'user_id',
 				as: 'user',
 			});
-			this.belongsTo(models.Province, {
-				foreignKey: 'province_id',
-				as: 'province',
-			});
-			this.belongsTo(models.City, {
-				foreignKey: 'city_id',
-				as: 'city',
-			});
-			this.belongsTo(models.District, {
-				foreignKey: 'district_id',
-				as: 'district',
+			this.belongsTo(models.Address, {
+				foreignKey: 'address_id',
+				as: 'address',
 			});
 		}
 	}
@@ -51,32 +43,11 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
-			address: {
-				allowNull: false,
-				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-				},
-			},
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
 				values: ['pending', 'ongoing', 'approved', 'rejected'],
 				defaultValue: 'pending',
-				validate: {
-					notEmpty: true,
-				},
-			},
-			latitude: {
-				allowNull: false,
-				type: DataTypes.FLOAT,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			longitude: {
-				allowNull: false,
-				type: DataTypes.FLOAT,
 				validate: {
 					notEmpty: true,
 				},
@@ -88,34 +59,11 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
-			province_id: {
+			address_id: {
 				allowNull: false,
-				type: DataTypes.STRING,
+				type: DataTypes.INTEGER,
 				validate: {
 					notEmpty: true,
-				},
-			},
-			city_id: {
-				allowNull: false,
-				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			district_id: {
-				allowNull: false,
-				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			zipcode: {
-				allowNull: false,
-				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-					isNumeric: true,
-					len: [5],
 				},
 			},
 			dimension: {

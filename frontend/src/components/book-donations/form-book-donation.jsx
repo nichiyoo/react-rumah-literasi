@@ -37,15 +37,14 @@ const EditSchema = BookDonationSchema.merge(
 const BookDonationForm = ({ initial, action, label }) => {
 	const { confirm } = useConfirm();
 	const {
+		provinces,
+		cities,
+		districts,
 		province,
 		city,
-		provinces,
-		districts,
-		cities,
-		loading,
 		handleCityChange,
-		handleDistrictChange,
 		handleProvinceChange,
+		loading,
 	} = useLocation();
 
 	const {
@@ -178,7 +177,6 @@ const BookDonationForm = ({ initial, action, label }) => {
 				<select
 					className='block w-full p-3 border bg-zinc-100 border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
 					{...register('district_id')}
-					onChange={(e) => handleDistrictChange(e.target.value)}
 					disabled={loading.districts || !city}>
 					<option value=''>Select a district</option>
 					{districts.map((district) => (

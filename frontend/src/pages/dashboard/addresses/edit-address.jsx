@@ -10,11 +10,12 @@ import {
 	HeadingDescription,
 	HeadingTitle,
 } from '@/components/ui/heading';
-import DonationForm from '@/components/financial-donations/form-financial-donation';
+import AddressForm from '@/components/addresses/form-address';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
+import { Badge } from '@/components/ui/badge';
 
-const EditDonation = () => {
+const EditAddress = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const { mutate } = useSWRConfig();
@@ -23,50 +24,53 @@ const EditDonation = () => {
 		error,
 		data: result,
 		isLoading: loading,
-	} = useSWR('/financial-donations/' + id);
+	} = useSWR('/addresses/' + id);
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.put('/financial-donations/' + result.data.id, data);
-
-			toast('Financial donation updated', {
-				description: 'Successfully updated donation',
+			await axios.put('/addresses/' + id, data, {
+				headers: { 'Content-Type': 'application/json' },
 			});
 
-			mutate('/financial-donations');
-			mutate('/financial-donations/' + id);
-			navigate('/dashboard/financial-donations');
+			toast('Address updated', {
+				description: 'Successfully updated address',
+			});
+
+			mutate('/addresses');
+			mutate('/addresses/' + id);
+			navigate('/dashboard/addresses');
 		} catch (error) {
-			toast.error('Failed to update donation', {
+			toast.error('Failed to update address', {
 				description: error.response.data.message || error.message,
 			});
 			console.error(error);
 		}
 	};
 
+	if (loading) return <Loading loading={loading} />;
+	if (error) return <Error error={!loading && error} />;
+
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Edit Financial Donations</HeadingTitle>
+				<HeadingTitle className='flex items-center justify-between'>
+					<span>Edit Address</span>
+					{result && result.data.is_default && <Badge>default</Badge>}
+				</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Update your address information.
 				</HeadingDescription>
 			</Heading>
 
-			<Error error={!loading && error} />
-			<Loading loading={loading} />
-
 			{result && (
-				<DonationForm
+				<AddressForm
 					initial={result.data}
 					action={onSubmit}
-					label='Update Donation'
+					label='Update Address'
 				/>
 			)}
 		</div>
 	);
 };
 
-export default EditDonation;
+export default EditAddress;

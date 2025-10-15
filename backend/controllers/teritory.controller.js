@@ -3,7 +3,7 @@ const ApiResponse = require('../libs/response');
 
 const { Province, City, District } = require('../models');
 
-const PlacesController = {
+const TeritoriesController = {
 	async provinces(req, res, next) {
 		try {
 			const provinces = await Province.findAll({
@@ -20,7 +20,7 @@ const PlacesController = {
 
 	async cities(req, res, next) {
 		try {
-			const province_id = req.params.province_id;
+			const { province_id } = req.params;
 
 			const cities = await City.findAll({
 				where: {
@@ -45,14 +45,11 @@ const PlacesController = {
 					province_id: province_id,
 				},
 			});
-
-			if (!city) {
-				throw new ApiError(404, 'City not found in the specified province');
-			}
+			if (!city) throw new ApiError(404, 'City not found');
 
 			const districts = await District.findAll({
 				where: {
-					city_id,
+					city_id: city.id,
 				},
 				order: [['name', 'ASC']],
 			});
@@ -66,4 +63,4 @@ const PlacesController = {
 	},
 };
 
-module.exports = PlacesController;
+module.exports = TeritoriesController;

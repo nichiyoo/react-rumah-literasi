@@ -1,6 +1,6 @@
 import * as React from 'react';
-import useSWR from 'swr';
 import { toast } from 'sonner';
+import useSWR, { useSWRConfig } from 'swr';
 import { useParams, useNavigate } from 'react-router';
 
 import axios from '@/libs/axios';
@@ -10,7 +10,6 @@ import {
 	HeadingDescription,
 	HeadingTitle,
 } from '@/components/ui/heading';
-
 import EventForm from '@/components/events/form-event';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
@@ -18,13 +17,9 @@ import { Error } from '@/components/error';
 const EditEvent = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const { mutate } = useSWRConfig();
 
-	const {
-		error,
-		mutate,
-		data: result,
-		isLoading: loading,
-	} = useSWR('/events/' + id);
+	const { error, data: result, isLoading: loading } = useSWR('/events/' + id);
 
 	const onSubmit = async (data) => {
 		try {
@@ -36,7 +31,8 @@ const EditEvent = () => {
 				description: 'Successfully updated event',
 			});
 
-			mutate();
+			mutate('/events');
+			mutate('/events/' + id);
 			navigate('/dashboard/events');
 		} catch (error) {
 			toast.error('Failed to update event', {

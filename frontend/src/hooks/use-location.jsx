@@ -1,62 +1,67 @@
-import { useState } from 'react';
+import * as React from 'react';
 import useSWR from 'swr';
 import { fetcher } from '@/libs/axios';
 
-export const useLocation = () => {
-	const [province, setProvince] = useState(null);
-	const [city, setcity] = useState(null);
+export const useLocation = (
+	{ province_id, city_id } = {
+		province_id: null,
+		city_id: null,
+	}
+) => {
+	const [province, setProvince] = React.useState(province_id);
+	const [city, setCity] = React.useState(city_id);
 
 	const {
 		data: provincesData,
 		error: provincesError,
 		isLoading: provincesLoading,
-	} = useSWR('/places', fetcher);
+	} = useSWR('/teritories', fetcher);
 
 	const {
 		data: citiesData,
 		error: citiesError,
 		isLoading: citiesLoading,
-	} = useSWR(province ? '/places/' + province : null, fetcher);
+	} = useSWR(province ? '/teritories/' + province : null, fetcher);
 
 	const {
 		data: districtsData,
 		error: districtsError,
 		isLoading: districtsLoading,
 	} = useSWR(
-		province && city ? '/places/' + province + '/' + city : null,
+		province && city ? '/teritories/' + province + '/' + city : null,
 		fetcher
 	);
 
-	const provinces = provincesData?.data || [];
-	const districts = districtsData?.data || [];
-	const cities = citiesData?.data || [];
+	const handleProvinceChange = (provinceId) => {
+		console.log(provinceId);
+		setProvince(provinceId);
+		setCity(null);
+	};
 
+	const handleCityChange = (cityId) => {
+		setCity(cityId);
+	};
+
+	const provinces = provincesData ? provincesData.data : [];
+	const cities = citiesData ? citiesData.data : [];
+	const districts = districtsData ? districtsData.data : [];
+
+	const error = provincesError || citiesError || districtsError;
 	const loading = {
 		provinces: provincesLoading,
 		districts: districtsLoading,
 		cities: citiesLoading,
 	};
 
-	const error = provincesError || citiesError || districtsError;
-
-	const handleProvinceChange = (provinceId) => {
-		setProvince(provinceId);
-		setcity(null);
-	};
-
-	const handleCityChange = (cityId) => {
-		setcity(cityId);
-	};
-
 	return {
 		provinces,
 		cities,
 		districts,
-		loading,
-		error,
 		province,
 		city,
 		handleProvinceChange,
 		handleCityChange,
+		loading,
+		error,
 	};
 };

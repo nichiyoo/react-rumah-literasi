@@ -1,6 +1,6 @@
 import * as React from 'react';
-import useSWR from 'swr';
 import { toast } from 'sonner';
+import useSWR, { useSWRConfig } from 'swr';
 import { useParams, useNavigate } from 'react-router';
 
 import axios from '@/libs/axios';
@@ -10,7 +10,6 @@ import {
 	HeadingDescription,
 	HeadingTitle,
 } from '@/components/ui/heading';
-
 import MemberForm from '@/components/members/form-member';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
@@ -18,10 +17,10 @@ import { Error } from '@/components/error';
 const EditMember = () => {
 	const { uuid } = useParams();
 	const navigate = useNavigate();
+	const { mutate } = useSWRConfig();
 
 	const {
 		error,
-		mutate,
 		data: result,
 		isLoading: loading,
 	} = useSWR('/members/' + uuid);
@@ -36,7 +35,8 @@ const EditMember = () => {
 				description: 'Successfully updated member',
 			});
 
-			mutate();
+			mutate('/members');
+			mutate('/members/' + uuid);
 			navigate('/dashboard/members');
 		} catch (error) {
 			toast.error('Failed to update member', {
