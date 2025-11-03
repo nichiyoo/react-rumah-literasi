@@ -3,11 +3,15 @@ const crypto = require('crypto');
 const biteship = require('../libs/biteship');
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
+const { Merchant } = require('../models');
 
 const DeliveryController = {
 	async calculate(recipient, books) {
+		const merchant = await Merchant.findOne();
+		if (!merchant) throw new Error('Merchant data not found in database');
+
 		const { data } = await biteship.post('/v1/rates/couriers', {
-			origin_area_id: process.env.MERCHANT_AREA_ID,
+			origin_area_id: merchant.area_id,
 			destination_latitude: recipient.latitude,
 			destination_longitude: recipient.longitude,
 			couriers: 'gojek,anteraja,jnt,jne,sicepat',
@@ -26,15 +30,18 @@ const DeliveryController = {
 	},
 
 	async order(transaction) {
+		const merchant = await Merchant.findOne();
+		if (!merchant) throw new Error('Merchant data not found in database');
+
 		const { data } = await biteship.post('/v1/orders', {
-			shipper_contact_name: process.env.MERCHANT_NAME,
-			shipper_contact_phone: process.env.MERCHANT_PHONE,
-			shipper_contact_email: process.env.MERCHANT_EMAIL,
-			shipper_organization: process.env.MERCHANT_NAME,
-			origin_contact_name: process.env.MERCHANT_NAME,
-			origin_contact_phone: process.env.MERCHANT_PHONE,
-			origin_address: process.env.MERCHANT_ADDRESS,
-			origin_postal_code: process.env.MERCHANT_ZIPCODE,
+			shipper_contact_name: merchant.name,
+			shipper_contact_phone: merchant.phone,
+			shipper_contact_email: merchant.email,
+			shipper_organization: merchant.name,
+			origin_contact_name: merchant.name,
+			origin_contact_phone: merchant.phone,
+			origin_address: merchant.address,
+			origin_postal_code: merchant.zipcode,
 			destination_contact_name: transaction.name,
 			destination_contact_phone: transaction.phone,
 			destination_address: transaction.address,

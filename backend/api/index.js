@@ -73,6 +73,7 @@ const deliveryRoutes = require('../routes/delivery.routes');
 const addressRoutes = require('../routes/address.routes');
 const teritoriesRoutes = require('../routes/teritory.route');
 const publicRoutes = require('../routes/public.routes');
+const merchantRoutes = require('../routes/merchant.routes');
 
 app.use('/api/_healthcheck', (req, res) => {
 	res.status(200).json({
@@ -99,6 +100,7 @@ app.use(admin);
 app.use('/api/books', bookRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/members', userRoutes);
+app.use('/api/merchant', merchantRoutes);
 
 app.use(errorHandler);
 app.get('*', (req, res) => {
