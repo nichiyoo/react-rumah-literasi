@@ -119,8 +119,8 @@ const ShowBookDonation = () => {
 							</Link>
 
 							{allowed && (
-								<Link to={'../edit'} relative='path'>
-									<Button>Edit</Button>
+								<Link to='../edit' relative='path'>
+									<Button>Edit Donation</Button>
 								</Link>
 							)}
 						</div>

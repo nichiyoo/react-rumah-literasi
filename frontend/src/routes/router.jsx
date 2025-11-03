@@ -12,12 +12,10 @@ import About from '@/pages/about';
 import Contact from '@/pages/contact';
 import SignIn from '@/pages/auth/sign-in';
 import SignUp from '@/pages/auth/sign-up';
-import Setting from '@/pages/setting/setting';
 import OneTimePassword from '@/pages/auth/otp';
 import ProfileDetail from '@/pages/setting/profile';
 import ForgotPassword from '@/pages/auth/forgot-password';
 import ResetPassword from '@/pages/auth/reset-password';
-
 import NotFound from '@/pages/errors/not-found';
 import ExpiredLink from '@/pages/errors/expired-link';
 import Unauhtorized from '@/pages/errors/unauthorized';
@@ -73,6 +71,9 @@ const ListAddresses = load(() => import('~/addresses/list-addresses'));
 const AddAddress = load(() => import('~/addresses/create-address'));
 const EditAddress = load(() => import('~/addresses/edit-address'));
 const ShowAddress = load(() => import('~/addresses/show-address'));
+
+const ShowMerchant = load(() => import('~/merchant/show-merchant'));
+const EditMerchant = load(() => import('~/merchant/edit-merchant'));
 
 const Router = () => {
 	return (
@@ -153,10 +154,11 @@ const Router = () => {
 					</Route>
 
 					<Route path='profile' element={<ProfileDetail />} />
-					<Route path='settings' element={<Setting />} />
 
-					<Route path='profile' element={<ProfileDetail />} />
-					<Route path='settings' element={<Setting />} />
+					<Route path='merchant' element={<AuthorizeLayout />}>
+						<Route index element={<ShowMerchant />} />
+						<Route path='edit' element={<EditMerchant />} />
+					</Route>
 				</Route>
 
 				<Route path='expired' element={<ExpiredLink />} />

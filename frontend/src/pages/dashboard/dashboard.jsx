@@ -1,3 +1,4 @@
+import { Card } from '@/components/card';
 import {
 	Heading,
 	HeadingDescription,
@@ -37,21 +38,15 @@ const Dashboard = () => {
 
 			<div className='grid gap-6 lg:grid-cols-2'>
 				{menus.map((menu) => {
-					const Icon = menu.icon;
 					return (
-						<Link
-							key={menu.href}
-							to={menu.href}
-							className='p-8 border border-zinc-200 rounded-2xl hover:border-primary-500'>
-							<div className='flex items-start gap-4'>
-								<div className='relative flex-none text-white rounded-full bg-primary-500 size-10'>
-									<Icon className='size-5 absolute-center' />
-								</div>
-								<div className='flex flex-col gap-2'>
-									<h3 className='font-semibold'>{menu.title}</h3>
-									<p className='text-zinc-600'>{menu.description}</p>
-								</div>
-							</div>
+						<Link key={menu.href} to={menu.href}>
+							<Card
+								content={{
+									icon: menu.icon,
+									title: menu.title,
+									description: menu.description,
+								}}
+							/>
 						</Link>
 					);
 				})}

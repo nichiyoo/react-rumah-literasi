@@ -121,12 +121,12 @@ const ShowAddress = () => {
 					</div>
 
 					<div className='col-span-full'>
-						<Label htmlFor='location'>Location on Map</Label>
+						<Label htmlFor='location'>Location</Label>
 						<div className='mt-2'>
 							<Map
 								location={{
-									latitude: result.data.latitude || 0,
-									longitude: result.data.longitude || 0,
+									latitude: result.data.latitude,
+									longitude: result.data.longitude,
 								}}
 								className='w-full aspect-video'
 								readonly
@@ -149,8 +149,8 @@ const ShowAddress = () => {
 									Set as Default
 								</Button>
 							)}
-							<Link to={'../edit'} relative='path'>
-								<Button>Edit</Button>
+							<Link to='../edit' relative='path'>
+								<Button>Edit Address</Button>
 							</Link>
 						</div>
 					</div>

@@ -80,8 +80,8 @@ const ShowDonation = () => {
 							)}
 
 							{allowed && (
-								<Link to={'../edit'} relative='path'>
-									<Button>Edit</Button>
+								<Link to='../edit' relative='path'>
+									<Button>Edit Donation</Button>
 								</Link>
 							)}
 						</div>

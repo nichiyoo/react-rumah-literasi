@@ -33,7 +33,7 @@ const AddressController = {
 				},
 			});
 
-			if (address.lenght >= 10) {
+			if (addresses.lenght >= 10) {
 				throw new ApiError(
 					400,
 					"You've reached the maximum limit of addresses"

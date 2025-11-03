@@ -91,8 +91,8 @@ const ShowEvent = () => {
 							<Link to='/dashboard/events'>
 								<Button variant='outline'>Back</Button>
 							</Link>
-							<Link to={'../edit'} relative='path'>
-								<Button>Edit</Button>
+							<Link to='../edit' relative='path'>
+								<Button>Edit Event</Button>
 							</Link>
 						</div>
 					</div>

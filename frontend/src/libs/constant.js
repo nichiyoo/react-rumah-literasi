@@ -1,3 +1,4 @@
+import { Store } from 'lucide-react';
 import {
 	Gift,
 	MapPin,
@@ -69,10 +70,10 @@ export const SIDEBAR_MENUS = [
 				roles: [ROLES.GUEST, ROLES.SUPERADMIN],
 			},
 			{
-				href: '/dashboard/settings',
-				label: 'Settings',
-				icon: Bolt,
-				roles: null,
+				href: '/dashboard/merchant',
+				label: 'Merchant',
+				icon: Store,
+				roles: [ROLES.SUPERADMIN],
 			},
 		],
 	},
