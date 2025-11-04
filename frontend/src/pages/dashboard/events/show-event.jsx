@@ -69,7 +69,7 @@ const ShowEvent = () => {
 								<img
 									src={result.data.media}
 									alt={result.data.title}
-									className='object-contain aspect-[2/1] border rounded-lg border-zinc-300 bg-zinc-100'
+									className='object-contain aspect-[2/1] border rounded-xl border-zinc-200 bg-zinc-100'
 								/>
 							</div>
 						</div>

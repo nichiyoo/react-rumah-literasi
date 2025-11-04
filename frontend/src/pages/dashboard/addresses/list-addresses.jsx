@@ -98,7 +98,7 @@ const ListAddresses = () => {
 				</div>
 			</Heading>
 
-			<div className='w-full overflow-x-auto border rounded-lg border-zinc-200'>
+			<div className='w-full overflow-x-auto border rounded-xl border-zinc-200'>
 				<Table>
 					<TableHeader>
 						<TableRow>

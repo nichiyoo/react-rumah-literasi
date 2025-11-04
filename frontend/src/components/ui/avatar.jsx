@@ -18,7 +18,7 @@ const Avatar = React.forwardRef(({ name, className, ...props }, ref) => {
 			ref={ref}
 			src={result}
 			className={cn(
-				'flex-none border rounded-full size-10 border-zinc-300',
+				'flex-none border rounded-full size-10 border-zinc-200',
 				className
 			)}
 		/>

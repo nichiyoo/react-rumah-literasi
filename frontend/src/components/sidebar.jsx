@@ -80,7 +80,7 @@ const Sidebar = ({ className }) => {
 													<Link
 														to={menu.href}
 														className={cn(
-															'flex items-center gap-4 font-medium rounded-md hover:text-primary-500',
+															'flex items-center gap-4 font-medium rounded-xl hover:text-primary-500',
 															{ 'text-primary-500': active }
 														)}>
 														<Icon className='size-5' />
@@ -102,14 +102,14 @@ const Sidebar = ({ className }) => {
 								<ul className='flex flex-col gap-6 text-sm'>
 									<Link
 										to='/dashboard/profile'
-										className='flex items-center gap-4 font-medium rounded-md hover:text-primary-500'>
+										className='flex items-center gap-4 font-medium rounded-xl hover:text-primary-500'>
 										<User2 className='size-5' />
 										<span>Profile</span>
 									</Link>
 
 									<button
 										onClick={handleLogout}
-										className='flex items-center gap-4 font-medium rounded-md hover:text-red-500'>
+										className='flex items-center gap-4 font-medium rounded-xl hover:text-red-500'>
 										<LogOut className='size-5' />
 										<span>Logout</span>
 									</button>

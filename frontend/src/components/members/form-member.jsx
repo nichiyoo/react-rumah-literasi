@@ -75,7 +75,7 @@ const MemberForm = ({ initial, action, label }) => {
 			<div>
 				<Label htmlFor='role'>Role</Label>
 				<select
-					className='block w-full p-3 capitalize border border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
+					className='block w-full p-3 capitalize border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 					{...register('role')}>
 					{ROLE_LIST.map((role) => (
 						<option key={role} value={role}>
@@ -92,7 +92,7 @@ const MemberForm = ({ initial, action, label }) => {
 				<Label htmlFor='is_verified'>Verified</Label>
 
 				<select
-					className='block w-full p-3 border border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
+					className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 					{...register('is_verified')}>
 					<option value='true'>Yes</option>
 					<option value='false'>No</option>

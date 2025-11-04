@@ -13,8 +13,8 @@ const Profile = () => {
 				<React.Fragment>
 					<div className='rounded-full size-10 bg-zinc-100 animate-pulse' />
 					<div className='flex-col flex-none hidden gap-1 lg:flex'>
-						<div className='w-32 h-5 rounded-md bg-zinc-100 animate-pulse' />
-						<div className='w-40 h-5 rounded-md bg-zinc-100 animate-pulse' />
+						<div className='w-32 h-5 rounded-xl bg-zinc-100 animate-pulse' />
+						<div className='w-40 h-5 rounded-xl bg-zinc-100 animate-pulse' />
 					</div>
 				</React.Fragment>
 			)}

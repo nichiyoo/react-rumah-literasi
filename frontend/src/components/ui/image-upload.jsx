@@ -48,7 +48,7 @@ const ImageUpload = React.forwardRef(
 			<div className={cn('w-full', props.className)}>
 				<div
 					className={cn(
-						'relative overflow-hidden border rounded-lg border-zinc-300 bg-zinc-100 cursor-pointer aspect-[2/1]'
+						'relative overflow-hidden border rounded-xl border-zinc-200 bg-zinc-100 cursor-pointer aspect-[2/1]'
 					)}
 					onClick={handleContainerClick}>
 					{preview ? (

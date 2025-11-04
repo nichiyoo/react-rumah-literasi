@@ -46,7 +46,7 @@ const Home = () => {
 					/>
 
 					<div className='absolute top-0 xl:-right-20 xl:top-16'>
-						<div className='relative p-6 text-sm origin-center bg-white border w-72 animate-slow-hover border-zinc-200 rounded-2xl'>
+						<div className='relative p-6 text-sm origin-center bg-white border w-72 animate-slow-hover border-zinc-200 rounded-xl'>
 							<div className='absolute top-0 left-0 -m-1'>
 								<div className='relative'>
 									<div className='absolute inset-0 rounded-full size-3 bg-primary-500'></div>
@@ -128,22 +128,22 @@ const Home = () => {
 							<img
 								alt='steps'
 								src='/steps/step-1.jpg'
-								className='object-cover w-full rounded-lg aspect-thumbnail'
+								className='object-cover w-full rounded-xl aspect-thumbnail'
 							/>
 							<img
 								alt='steps'
 								src='/steps/step-2.jpg'
-								className='object-cover w-full rounded-lg aspect-thumbnail'
+								className='object-cover w-full rounded-xl aspect-thumbnail'
 							/>
 							<img
 								alt='steps'
 								src='/steps/step-3.jpg'
-								className='object-cover w-full rounded-lg aspect-thumbnail'
+								className='object-cover w-full rounded-xl aspect-thumbnail'
 							/>
 							<img
 								alt='steps'
 								src='/steps/step-4.jpg'
-								className='object-cover w-full rounded-lg aspect-thumbnail'
+								className='object-cover w-full rounded-xl aspect-thumbnail'
 							/>
 						</div>
 					</div>
@@ -191,27 +191,27 @@ const Home = () => {
 						<img
 							alt='gallery'
 							src='/galleries/gallery-1.jpg'
-							className='object-cover w-full rounded-lg aspect-video'
+							className='object-cover w-full rounded-xl aspect-video'
 						/>
 						<img
 							alt='gallery'
 							src='/galleries/gallery-2.jpg'
-							className='object-cover w-full rounded-lg aspect-video'
+							className='object-cover w-full rounded-xl aspect-video'
 						/>
 						<img
 							alt='gallery'
 							src='/galleries/gallery-3.jpg'
-							className='object-cover w-full rounded-lg aspect-video'
+							className='object-cover w-full rounded-xl aspect-video'
 						/>
 						<img
 							alt='gallery'
 							src='/galleries/gallery-4.jpg'
-							className='object-cover w-full rounded-lg aspect-video'
+							className='object-cover w-full rounded-xl aspect-video'
 						/>
 						<img
 							alt='gallery'
 							src='/galleries/gallery-5.jpg'
-							className='object-cover w-full rounded-lg md:col-span-full aspect-video'
+							className='object-cover w-full rounded-xl md:col-span-full aspect-video'
 						/>
 					</div>
 				</div>

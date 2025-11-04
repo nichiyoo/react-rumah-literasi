@@ -137,7 +137,7 @@ const BookDonationForm = ({ initial, action, label }) => {
 			<div>
 				<Label htmlFor='province_id'>Province</Label>
 				<select
-					className='block w-full p-3 border bg-zinc-100 border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
+					className='block w-full p-3 border bg-zinc-100 border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
 					{...register('province_id')}
 					onChange={(e) => handleProvinceChange(e.target.value)}
 					disabled={loading.provinces}>
@@ -156,7 +156,7 @@ const BookDonationForm = ({ initial, action, label }) => {
 			<div>
 				<Label htmlFor='city_id'>City</Label>
 				<select
-					className='block w-full p-3 border bg-zinc-100 border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
+					className='block w-full p-3 border bg-zinc-100 border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
 					{...register('city_id')}
 					onChange={(e) => handleCityChange(e.target.value)}
 					disabled={loading.cities || !province}>
@@ -175,7 +175,7 @@ const BookDonationForm = ({ initial, action, label }) => {
 			<div>
 				<Label htmlFor='district_id'>District</Label>
 				<select
-					className='block w-full p-3 border bg-zinc-100 border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
+					className='block w-full p-3 border bg-zinc-100 border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm'
 					{...register('district_id')}
 					disabled={loading.districts || !city}>
 					<option value=''>Select a district</option>
@@ -231,7 +231,7 @@ const BookDonationForm = ({ initial, action, label }) => {
 				<div>
 					<Label htmlFor='status'>Status</Label>
 					<select
-						className='block w-full p-3 border border-zinc-300 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
+						className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 						{...register('status')}>
 						<option value='pending'>Pending</option>
 						<option value='ongoing'>Ongoing</option>

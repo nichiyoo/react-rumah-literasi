@@ -5,7 +5,7 @@ const Card = ({ content, className }) => {
 	return (
 		<div
 			className={cn(
-				'flex items-start gap-4 p-6 border border-zinc-200 rounded-2xl hover:border-primary-500',
+				'flex items-start gap-4 p-6 border border-zinc-200 rounded-xl hover:border-primary-500',
 				className
 			)}>
 			<div className='relative flex-none text-white rounded-full bg-primary-500 size-10'>

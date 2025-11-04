@@ -9,7 +9,7 @@ const Error = React.forwardRef(({ error, className, ...props }, ref) => {
 		<div
 			ref={ref}
 			className={cn(
-				'flex flex-col col-span-full items-center justify-center w-full gap-2 text-sm text-center text-zinc-500 h-32 rounded-2xl',
+				'flex flex-col col-span-full items-center justify-center w-full gap-2 text-sm text-center text-zinc-500 h-32 rounded-xl',
 				className
 			)}
 			{...props}>

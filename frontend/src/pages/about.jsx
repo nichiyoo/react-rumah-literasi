@@ -12,7 +12,7 @@ const About = () => {
 					/>
 
 					<div className='absolute top-0 xl:top-auto xl:-left-20 xl:bottom-16'>
-						<div className='relative p-6 text-sm origin-center bg-white border w-72 animate-slow-hover border-zinc-200 rounded-2xl'>
+						<div className='relative p-6 text-sm origin-center bg-white border w-72 animate-slow-hover border-zinc-200 rounded-xl'>
 							<div className='absolute top-0 left-0 -m-1'>
 								<div className='relative'>
 									<div className='absolute inset-0 rounded-full size-3 bg-primary-500'></div>

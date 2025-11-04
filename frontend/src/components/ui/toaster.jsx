@@ -6,7 +6,7 @@ const Toaster = ({ ...props }) => {
 			toastOptions={{
 				classNames: {
 					toast:
-						'font-sans !items-start !border-zinc-300 !rounded-2xl !shadow-none',
+						'font-sans !items-start !border-zinc-200 !rounded-xl !shadow-none',
 					description: 'text-zinc-500',
 					actionButton: 'bg-primary-500 text-white',
 					cancelButton: 'bg-zinc-500 text-white',
