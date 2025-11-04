@@ -43,7 +43,7 @@ export const SIDEBAR_MENUS = [
 				href: '/dashboard/book-donations',
 				label: 'Book Donation',
 				icon: Gift,
-				roles: [ROLES.GUEST, ROLES.ADMIN, ROLES.SUPERADMIN],
+				roles: [ROLES.GUEST, ROLES.LIBRARIAN, ROLES.SUPERADMIN],
 			},
 			{
 				href: '/dashboard/financial-donations',
@@ -73,7 +73,7 @@ export const SIDEBAR_MENUS = [
 				href: '/dashboard/merchant',
 				label: 'Merchant',
 				icon: Store,
-				roles: [ROLES.SUPERADMIN],
+				roles: [ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
 		],
 	},

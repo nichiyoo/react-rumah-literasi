@@ -8,7 +8,7 @@ const BookDonationController = {
 	async index(req, res, next) {
 		try {
 			const bookDonations = await BookDonation.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findAll({
 				include: ['user', 'address'],
 			});
@@ -26,7 +26,7 @@ const BookDonationController = {
 			const { address_id, ...data } = req.body;
 
 			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id: address_id },
 			});
@@ -52,7 +52,7 @@ const BookDonationController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const bookDonation = await BookDonation.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
 				include: ['user', 'address'],
@@ -73,7 +73,7 @@ const BookDonationController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const bookDonation = await BookDonation.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
 			});
@@ -82,7 +82,7 @@ const BookDonationController = {
 			const { address_id, ...data } = req.body;
 
 			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id: address_id },
 			});
@@ -106,7 +106,7 @@ const BookDonationController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const bookDonation = await BookDonation.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
 			});

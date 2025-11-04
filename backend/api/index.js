@@ -93,11 +93,6 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/deliveries', deliveryRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/books', bookRoutes);
-
-const admin = authorize('admin');
-
-app.use(admin);
-app.use('/api/books', bookRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/members', userRoutes);
 app.use('/api/merchant', merchantRoutes);

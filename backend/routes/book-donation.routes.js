@@ -5,13 +5,13 @@ const BookDonationController = require('../controllers/book-donation.controller'
 const { ROLES } = require('../libs/constant');
 const { authorize } = require('../middleware/authorize');
 
-const guest = authorize([ROLES.GUEST, ROLES.ADMIN]);
+const guest = authorize([ROLES.GUEST, ROLES.LIBRARIAN]);
 router.get('/', guest, BookDonationController.index);
 router.post('/', guest, BookDonationController.store);
 router.get('/:id', guest, BookDonationController.show);
 router.delete('/:id', guest, BookDonationController.destroy);
 
-const admin = authorize([ROLES.ADMIN]);
-router.put('/:id', admin, BookDonationController.update);
+const librarian = authorize([ROLES.LIBRARIAN]);
+router.put('/:id', librarian, BookDonationController.update);
 
 module.exports = router;

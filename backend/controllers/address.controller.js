@@ -9,9 +9,8 @@ const AddressController = {
 	async index(req, res, next) {
 		try {
 			const addresses = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user],
 			}).findAll({
-				where: { user_id: req.user.id },
 				include: ['user', 'province', 'city', 'district'],
 			});
 
@@ -26,12 +25,8 @@ const AddressController = {
 	async store(req, res, next) {
 		try {
 			const addresses = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
-			}).findAll({
-				where: {
-					user_id: req.user.id,
-				},
-			});
+				method: ['authorize', req.user],
+			}).findAll();
 
 			if (addresses.lenght >= 10) {
 				throw new ApiError(
@@ -59,14 +54,14 @@ const AddressController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user],
 			}).findOne({
 				where: { id },
 			});
 
 			if (!address) throw new ApiError(404, 'Address not found');
 			await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user],
 			}).update(
 				{ is_default: false },
 				{
@@ -94,7 +89,7 @@ const AddressController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user],
 			}).findOne({
 				where: { id },
 				include: ['user', 'province', 'city', 'district'],
@@ -115,7 +110,7 @@ const AddressController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user],
 			}).findOne({
 				where: { id },
 			});
@@ -136,7 +131,7 @@ const AddressController = {
 			if (!id) throw new ApiError(400, 'ID is required');
 
 			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
+				method: ['authorize', req.user],
 			}).findOne({
 				where: { id },
 			});

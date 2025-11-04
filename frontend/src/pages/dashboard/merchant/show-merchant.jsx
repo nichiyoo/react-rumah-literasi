@@ -16,9 +16,17 @@ import { Input } from '@/components/ui/input';
 import { Map } from '@/components/map';
 import { Card } from '@/components/card';
 import { Textarea } from '@/components/ui/textarea';
+import { useAuth } from '@/hooks/use-auth';
+import { ROLES } from '@/libs/constant';
 
 const ShowMerchant = () => {
+	const { user, loading } = useAuth();
 	const { error, data: result, isLoading: fetching } = useSWR('/merchant');
+
+	const allowed = React.useMemo(() => {
+		if (loading) return false;
+		return [ROLES.SUPERADMIN].includes(user.role);
+	}, [user, loading]);
 
 	return (
 		<div className='grid gap-8'>
@@ -35,22 +43,26 @@ const ShowMerchant = () => {
 			{result && (
 				<React.Fragment>
 					<div className='grid gap-6 lg:grid-cols-3'>
-						<Card
-							className='text-sm'
-							content={{
-								icon: Phone,
-								title: 'Phone',
-								description: result.data.phone,
-							}}
-						/>
-						<Card
-							className='text-sm'
-							content={{
-								icon: Mail,
-								title: 'Email',
-								description: result.data.email,
-							}}
-						/>
+						<Link to={'tel:' + result.data.phone}>
+							<Card
+								className='text-sm'
+								content={{
+									icon: Phone,
+									title: 'Phone',
+									description: result.data.phone,
+								}}
+							/>
+						</Link>
+						<Link to={'mailto:' + result.data.email}>
+							<Card
+								className='text-sm'
+								content={{
+									icon: Mail,
+									title: 'Email',
+									description: result.data.email,
+								}}
+							/>
+						</Link>
 						<Card
 							className='text-sm'
 							content={{
@@ -93,13 +105,15 @@ const ShowMerchant = () => {
 						</div>
 					</div>
 
-					<div className='col-span-full'>
-						<div className='flex items-center gap-2'>
-							<Link to='edit' relative='path'>
-								<Button>Edit Merchant</Button>
-							</Link>
+					{allowed && (
+						<div className='col-span-full'>
+							<div className='flex items-center gap-2'>
+								<Link to='edit' relative='path'>
+									<Button>Edit Merchant</Button>
+								</Link>
+							</div>
 						</div>
-					</div>
+					)}
 				</React.Fragment>
 			)}
 		</div>

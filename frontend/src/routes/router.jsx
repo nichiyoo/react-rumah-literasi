@@ -109,7 +109,7 @@ const Router = () => {
 
 					<Route
 						path='events'
-						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
+						element={<AuthorizeLayout allowed={[ROLES.ADMIN]} />}>
 						<Route index element={<ListEvents />} />
 						<Route path='create' element={<AddEvent />} />
 						<Route path=':id/detail' element={<ShowEvent />} />
@@ -118,7 +118,7 @@ const Router = () => {
 
 					<Route
 						path='financial-donations'
-						element={<AuthorizeLayout roles={[ROLES.GUEST, ROLES.ADMIN]} />}>
+						element={<AuthorizeLayout allowed={[ROLES.GUEST, ROLES.ADMIN]} />}>
 						<Route index element={<ListDonations />} />
 						<Route path='create' element={<AddDonation />} />
 						<Route path=':id/detail' element={<ShowDonation />} />
@@ -126,13 +126,15 @@ const Router = () => {
 
 					<Route
 						path='financial-donations'
-						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
+						element={<AuthorizeLayout allowed={[ROLES.ADMIN]} />}>
 						<Route path=':id/edit' element={<EditDonation />} />
 					</Route>
 
 					<Route
 						path='book-donations'
-						element={<AuthorizeLayout roles={[ROLES.GUEST, ROLES.ADMIN]} />}>
+						element={
+							<AuthorizeLayout allowed={[ROLES.GUEST, ROLES.LIBRARIAN]} />
+						}>
 						<Route index element={<ListBookDonations />} />
 						<Route path='create' element={<AddBookDonation />} />
 						<Route path=':id/detail' element={<ShowBookDonation />} />
@@ -140,24 +142,28 @@ const Router = () => {
 
 					<Route
 						path='book-donations'
-						element={<AuthorizeLayout roles={[ROLES.ADMIN]} />}>
+						element={<AuthorizeLayout allowed={[ROLES.LIBRARIAN]} />}>
 						<Route path=':id/edit' element={<EditBookDonation />} />
 					</Route>
 
+					<Route path='profile' element={<ProfileDetail />} />
+
 					<Route
 						path='addresses'
-						element={<AuthorizeLayout roles={[ROLES.GUEST]} />}>
+						element={<AuthorizeLayout allowed={[ROLES.GUEST]} />}>
 						<Route index element={<ListAddresses />} />
 						<Route path='create' element={<AddAddress />} />
 						<Route path=':id/edit' element={<EditAddress />} />
 						<Route path=':id/detail' element={<ShowAddress />} />
 					</Route>
 
-					<Route path='profile' element={<ProfileDetail />} />
-
-					<Route path='merchant' element={<AuthorizeLayout />}>
+					<Route
+						path='merchant'
+						element={<AuthorizeLayout allowed={[ROLES.ADMIN]} />}>
 						<Route index element={<ShowMerchant />} />
-						<Route path='edit' element={<EditMerchant />} />
+						<Route path='edit' element={<AuthorizeLayout />}>
+							<Route index element={<EditMerchant />} />
+						</Route>
 					</Route>
 				</Route>
 
