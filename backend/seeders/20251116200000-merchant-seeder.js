@@ -1,4 +1,7 @@
 'use strict';
+
+const biteship = require('../libs/biteship');
+
 require('dotenv').config();
 
 /** @type {import('sequelize-cli').Migration} */
@@ -31,10 +34,21 @@ module.exports = {
 			email: process.env.MERCHANT_EMAIL,
 			address: process.env.MERCHANT_ADDRESS,
 			zipcode: process.env.MERCHANT_ZIPCODE,
-			area_id: process.env.MERCHANT_AREA_ID,
 			latitude: parseFloat(process.env.MERCHANT_LATITUDE),
 			longitude: parseFloat(process.env.MERCHANT_LONGITUDE),
 		};
+
+		const { data } = await biteship.post('/v1/locations', {
+			name: MERCHANT.name,
+			contact_name: MERCHANT.name,
+			contact_phone: MERCHANT.phone,
+			address: MERCHANT.address,
+			note: MERCHANT.name,
+			postal_code: MERCHANT.zipcode,
+			latitude: MERCHANT.latitude,
+			longitude: MERCHANT.longitude,
+			type: 'destination',
+		});
 
 		try {
 			await queryInterface.bulkInsert(
@@ -46,7 +60,7 @@ module.exports = {
 						email: MERCHANT.email || FALLBACK.email,
 						address: MERCHANT.address || FALLBACK.address,
 						zipcode: MERCHANT.zipcode || FALLBACK.zipcode,
-						area_id: MERCHANT.area_id || FALLBACK.area_id,
+						area_id: data.id,
 						latitude: MERCHANT.latitude || FALLBACK.latitude,
 						longitude: MERCHANT.longitude || FALLBACK.longitude,
 						created_at: new Date(),

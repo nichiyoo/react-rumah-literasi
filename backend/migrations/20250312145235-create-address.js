@@ -1,32 +1,44 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-	async up(queryInterface, DataType) {
+	async up(queryInterface, DataTypes) {
 		await queryInterface.createTable('addresses', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
-				type: DataType.INTEGER,
+				type: DataTypes.INTEGER,
+			},
+			area_id: {
+				allowNull: true,
+				type: DataTypes.STRING,
 			},
 			name: {
 				allowNull: false,
-				type: DataType.STRING,
+				type: DataTypes.STRING,
+			},
+			contact_name: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			contact_phone: {
+				allowNull: false,
+				type: DataTypes.STRING,
 			},
 			street_address: {
 				allowNull: false,
-				type: DataType.STRING,
+				type: DataTypes.STRING,
 			},
 			latitude: {
 				allowNull: false,
-				type: DataType.FLOAT,
+				type: DataTypes.FLOAT,
 			},
 			longitude: {
 				allowNull: false,
-				type: DataType.FLOAT,
+				type: DataTypes.FLOAT,
 			},
 			province_id: {
 				allowNull: false,
-				type: DataType.STRING,
+				type: DataTypes.STRING,
 				references: {
 					model: 'provinces',
 					key: 'id',
@@ -36,7 +48,7 @@ module.exports = {
 			},
 			city_id: {
 				allowNull: false,
-				type: DataType.STRING,
+				type: DataTypes.STRING,
 				references: {
 					model: 'cities',
 					key: 'id',
@@ -46,7 +58,7 @@ module.exports = {
 			},
 			district_id: {
 				allowNull: false,
-				type: DataType.STRING,
+				type: DataTypes.STRING,
 				references: {
 					model: 'districts',
 					key: 'id',
@@ -56,20 +68,20 @@ module.exports = {
 			},
 			zipcode: {
 				allowNull: false,
-				type: DataType.STRING,
+				type: DataTypes.STRING,
 			},
 			note: {
 				allowNull: true,
-				type: DataType.STRING,
+				type: DataTypes.STRING,
 			},
 			is_default: {
 				allowNull: false,
-				type: DataType.BOOLEAN,
+				type: DataTypes.BOOLEAN,
 				defaultValue: false,
 			},
 			user_id: {
 				allowNull: false,
-				type: DataType.INTEGER,
+				type: DataTypes.INTEGER,
 				references: {
 					model: 'users',
 					key: 'id',
@@ -79,13 +91,13 @@ module.exports = {
 			},
 			created_at: {
 				allowNull: false,
-				type: DataType.DATE,
-				defaultValue: DataType.NOW,
+				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW,
 			},
 			updated_at: {
 				allowNull: false,
-				type: DataType.DATE,
-				defaultValue: DataType.NOW,
+				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW,
 			},
 		});
 	},

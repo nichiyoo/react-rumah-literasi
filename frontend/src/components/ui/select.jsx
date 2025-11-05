@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { forwardRef } from 'react';
 
 import { cn } from '@/libs/utils';
 
-const Select = forwardRef(({ className, children, ...props }, ref) => {
+const Select = React.forwardRef(({ className, children, ...props }, ref) => {
 	return (
 		<select
 			className={cn(

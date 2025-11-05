@@ -14,11 +14,13 @@ import { useConfirm } from '@/hooks/use-confirm';
 import { useLocation } from '@/hooks/use-location';
 
 const AddressSchema = z.object({
-	name: z.string().min(1, 'Address name is required'),
-	street_address: z.string().min(3, 'Street address is required'),
-	province_id: z.string().min(1, 'Province is required'),
-	city_id: z.string().min(1, 'City is required'),
-	district_id: z.string().min(1, 'District is required'),
+	name: z.string().min(1),
+	contact_name: z.string().min(1),
+	contact_phone: z.string().min(1),
+	street_address: z.string().min(3),
+	province_id: z.string().min(1),
+	city_id: z.string().min(1),
+	district_id: z.string().min(1),
 	latitude: z.coerce.number(),
 	longitude: z.coerce.number(),
 	zipcode: z
@@ -100,8 +102,30 @@ const AddressForm = ({ initial, action, label }) => {
 	return (
 		<form onSubmit={handleSubmit(action)} className='grid gap-6 lg:grid-cols-2'>
 			<div>
+				<Label htmlFor='contact_name'>Contact Name</Label>
+				<Input
+					placeholder='Enter your contact name'
+					{...register('contact_name')}
+				/>
+				{errors.contact_name && (
+					<span className='text-red-500'>{errors.contact_name.message}</span>
+				)}
+			</div>
+
+			<div>
+				<Label htmlFor='contact_phone'>Contact Phone</Label>
+				<Input
+					placeholder='Enter your contact phone'
+					{...register('contact_phone')}
+				/>
+				{errors.contact_phone && (
+					<span className='text-red-500'>{errors.contact_phone.message}</span>
+				)}
+			</div>
+
+			<div>
 				<Label htmlFor='name'>Address Name</Label>
-				<Input placeholder='e.g., Home, Office, etc.' {...register('name')} />
+				<Input placeholder='Enter your address name' {...register('name')} />
 				{errors.name && (
 					<span className='text-red-500'>{errors.name.message}</span>
 				)}

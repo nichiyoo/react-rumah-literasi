@@ -1,7 +1,6 @@
 import { X } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { STEPS } from '@/libs/constant';
 import { useConfirm } from '@/hooks/use-confirm';
 import { useTransaction } from '@/stores/use-transaction';
 
@@ -13,10 +12,13 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 import { Empty } from '@/components/empty';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 const CreateBookDonation = () => {
+	const navigate = useNavigate();
 	const { confirm } = useConfirm();
-	const { items, route, remove, purge } = useTransaction();
+	const { items, remove, reset } = useTransaction();
 
 	const handleReset = () => {
 		confirm({
@@ -25,7 +27,7 @@ const CreateBookDonation = () => {
 			description: 'Are you sure you want to reset this form?',
 		})
 			.then(async () => {
-				purge();
+				reset();
 			})
 			.catch(() => {
 				// pass
@@ -64,10 +66,21 @@ const CreateBookDonation = () => {
 
 			<div className='col-span-full'>
 				<div className='flex items-center gap-2'>
-					<Button onClick={() => route(STEPS.DETAIL)}>Continue</Button>
+					<Button
+						onClick={() => {
+							if (!items.length)
+								return toast.error('Please add items first', {
+									description: 'You need to add at least one item',
+								});
+							navigate('/dashboard/book-donations/create/detail');
+						}}>
+						Add Donation Detail
+					</Button>
+
 					<Link to='/dashboard/book-donations/create/append'>
 						<Button variant='outline'>Add item</Button>
 					</Link>
+
 					<Button variant='destructive' onClick={() => handleReset()}>
 						Remove
 					</Button>

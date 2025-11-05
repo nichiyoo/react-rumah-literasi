@@ -140,6 +140,9 @@ const MerchantForm = ({ initial, action, label }) => {
 					placeholder='Enter area ID'
 					{...register('area_id')}
 				/>
+				<p className='mt-1 text-sm text-zinc-500'>
+					Do not edit this field unless you change the area ID.
+				</p>
 				{errors.area_id && (
 					<span className='text-red-500'>{errors.area_id.message}</span>
 				)}

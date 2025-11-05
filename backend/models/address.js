@@ -36,7 +36,25 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
+			area_id: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
 			name: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			contact_name: {
+				allowNull: false,
+				type: DataTypes.STRING,
+				validate: {
+					notEmpty: true,
+				},
+			},
+			contact_phone: {
 				allowNull: false,
 				type: DataTypes.STRING,
 				validate: {

@@ -3,6 +3,7 @@ const ApiError = require('../libs/error');
 
 const errorHandler = (err, req, res, next) => {
 	if (err instanceof AxiosError) {
+		console.log(err);
 		err = new ApiError(
 			err.response.status || 500,
 			err.response.data.message || err.response.data.error || err.message,

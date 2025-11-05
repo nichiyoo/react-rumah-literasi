@@ -75,6 +75,34 @@ const ShowAddress = () => {
 			{result && (
 				<div className='grid gap-6 lg:grid-cols-2'>
 					<div>
+						<Label htmlFor='id'>Area ID</Label>
+						<Input
+							disabled
+							type='text'
+							className='uppercase'
+							defaultValue={result.data.area_id}
+						/>
+					</div>
+
+					<div>
+						<Label htmlFor='area_id'>Contact Name</Label>
+						<Input
+							disabled
+							type='text'
+							defaultValue={result.data.contact_name}
+						/>
+					</div>
+
+					<div>
+						<Label htmlFor='area_id'>Contact Phone</Label>
+						<Input
+							disabled
+							type='text'
+							defaultValue={result.data.contact_phone}
+						/>
+					</div>
+
+					<div className='col-span-full'>
 						<Label htmlFor='name'>Address Name</Label>
 						<Input disabled type='text' defaultValue={result.data.name} />
 					</div>

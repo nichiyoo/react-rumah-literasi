@@ -4,6 +4,7 @@ const ApiResponse = require('../libs/response');
 const { Address } = require('../models');
 const { ROLES } = require('../libs/constant');
 const { Op } = require('sequelize');
+const biteship = require('../libs/biteship');
 
 const AddressController = {
 	async index(req, res, next) {
@@ -35,11 +36,23 @@ const AddressController = {
 				);
 			}
 
-			const is_default = addresses.length === 0;
+			const { data } = await biteship.post('/v1/locations', {
+				name: req.body.name,
+				contact_name: req.body.contact_name,
+				contact_phone: req.body.contact_phone,
+				address: req.body.street_address,
+				note: req.body.note,
+				postal_code: req.body.zipcode,
+				latitude: req.body.latitude,
+				longitude: req.body.longitude,
+				type: 'origin',
+			});
+
 			const address = await Address.create({
 				...req.body,
 				user_id: req.user.id,
-				is_default,
+				area_id: data.id,
+				is_default: addresses.length === 0,
 			});
 
 			return res.json(new ApiResponse('Address created successfully', address));
@@ -71,7 +84,6 @@ const AddressController = {
 					},
 				}
 			);
-
 			await address.update({ is_default: true });
 			await address.save();
 
@@ -117,6 +129,16 @@ const AddressController = {
 
 			if (!address) throw new ApiError(404, 'Address not found');
 			await address.update(req.body);
+			await biteship.put('/v1/locations/' + address.area_id, {
+				name: req.body.name,
+				contact_name: req.body.contact_name,
+				contact_phone: req.body.contact_phone,
+				address: req.body.street_address,
+				note: req.body.note,
+				postal_code: req.body.zipcode,
+				latitude: req.body.latitude,
+				longitude: req.body.longitude,
+			});
 			await address.save();
 
 			return res.json(new ApiResponse('Address updated successfully', address));
@@ -137,8 +159,9 @@ const AddressController = {
 			});
 
 			if (!address) throw new ApiError(404, 'Address not found');
-
 			await address.destroy();
+			await biteship.delete('/v1/locations/' + address.area_id);
+
 			return res.json(new ApiResponse('Address deleted successfully', address));
 		} catch (error) {
 			next(error);

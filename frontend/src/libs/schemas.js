@@ -14,10 +14,10 @@ export const detailSchema = z.object({
 	address_id: z.string().nonempty(),
 	package_size: z.enum(['small', 'medium', 'large']),
 	estimated_value: z.coerce.number().min(1),
-	weight: z.coerce.number().min(1),
-	height: z.coerce.number().min(1),
+	length: z.coerce.number().min(1),
 	width: z.coerce.number().min(1),
-	depth: z.coerce.number().min(1),
+	height: z.coerce.number().min(1),
+	weight: z.coerce.number().min(1),
 });
 
 export const courierSchema = z.object({

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, Navigate } from 'react-router';
 
 import DonationItemForm from '@/components/book-donations/donation-item-form';
 import {
@@ -22,6 +22,10 @@ const CreateBook = () => {
 			console.error(error);
 		}
 	};
+
+	if (!id || !items.find((item) => item.id === Number(id))) {
+		return <Navigate to='/dashboard/book-donations/create' />;
+	}
 
 	return (
 		<div className='grid gap-8'>

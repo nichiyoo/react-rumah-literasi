@@ -105,27 +105,9 @@ export const useTransaction = create(
 			detail: null,
 			courier: null,
 
-			route: (step) => {
-				return set({
-					step: step,
-				});
-			},
-
-			setDetail: (detail) => {
-				return set((state) => {
-					return {
-						detail: { ...state.detail, ...detail },
-					};
-				});
-			},
-
-			setCourier: (courier) => {
-				return set((state) => {
-					return {
-						courier: { ...state.courier, ...courier },
-					};
-				});
-			},
+			route: (step) => set({ step: step }),
+			setDetail: (detail) => set({ detail }),
+			setCourier: (courier) => set({ courier }),
 
 			append: (item) => {
 				return set((state) => {

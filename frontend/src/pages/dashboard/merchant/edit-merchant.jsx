@@ -23,13 +23,12 @@ const EditMerchant = () => {
 	const onSubmit = async (data) => {
 		try {
 			await axios.put('/merchant', data);
-
 			toast('Merchant updated', {
 				description: 'Successfully updated merchant details',
 			});
 
 			mutate('/merchant');
-			navigate('/setting');
+			navigate('/dashboard/merchant');
 		} catch (error) {
 			toast.error('Failed to update merchant', {
 				description: error.response?.data?.message || error.message,
