@@ -1,4 +1,5 @@
 import { Store } from 'lucide-react';
+
 import {
 	Gift,
 	MapPin,
@@ -20,6 +21,12 @@ export const ROLES = {
 	ADMIN: 'admin',
 	LIBRARIAN: 'librarian',
 	SUPERADMIN: 'superadmin',
+};
+
+export const STEPS = {
+	ITEMS: 0,
+	DETAIL: 1,
+	COURIER: 2,
 };
 
 export const SIDEBAR_MENUS = [

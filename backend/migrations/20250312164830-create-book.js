@@ -9,6 +9,10 @@ module.exports = {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
+			isbn: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
 			title: {
 				allowNull: false,
 				type: DataTypes.STRING,

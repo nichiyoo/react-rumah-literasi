@@ -18,6 +18,13 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Book.init(
 		{
+			isbn: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notEmpty: true,
+				},
+			},
 			title: {
 				type: DataTypes.STRING,
 				allowNull: false,
@@ -58,18 +65,6 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: false,
 				validate: {
 					notEmpty: true,
-				},
-			},
-			cover: {
-				type: DataTypes.STRING,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
-				get() {
-					const value = this.getDataValue('cover');
-					const check = value.startsWith('http');
-					return check ? value : process.env.APP_URL + '/' + value;
 				},
 			},
 		},

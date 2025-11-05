@@ -1,6 +1,5 @@
-import { useParams, useNavigate } from 'react-router';
-
 import DonationItemForm from '@/components/book-donations/donation-item-form';
+import BookDonationForm from '@/components/book-donations/donation-item-form';
 import {
 	Heading,
 	HeadingDescription,
@@ -8,15 +7,15 @@ import {
 } from '@/components/ui/heading';
 
 import { useTransaction } from '@/stores/use-transaction';
+import { useNavigate } from 'react-router';
 
 const CreateBook = () => {
-	const { id } = useParams();
+	const { append } = useTransaction();
 	const navigate = useNavigate();
-	const { items, update } = useTransaction();
 
 	const onSubmit = async (data) => {
 		try {
-			update(Number(id), data);
+			append(data);
 			navigate('/dashboard/book-donations/create');
 		} catch (error) {
 			console.error(error);
@@ -26,7 +25,7 @@ const CreateBook = () => {
 	return (
 		<div className='grid gap-8'>
 			<Heading>
-				<HeadingTitle>Edit Donation Item</HeadingTitle>
+				<HeadingTitle>Add Donation Item</HeadingTitle>
 				<HeadingDescription>
 					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
 					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
@@ -34,11 +33,7 @@ const CreateBook = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<DonationItemForm
-				initial={items.find((item) => item.id === Number(id))}
-				action={onSubmit}
-				label='Update Item'
-			/>
+			<DonationItemForm action={onSubmit} label='Append Item' />
 		</div>
 	);
 };
