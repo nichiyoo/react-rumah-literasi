@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Hint } from '@/components/ui/hint';
 
 const DonationSchema = z.object({
 	amount: z.coerce.number().min(1),
@@ -41,6 +42,7 @@ const DonationForm = ({ initial, action, label }) => {
 					placeholder='Enter the amount of donation'
 					{...register('amount')}
 				/>
+				<Hint>Amount of the financial donation in rupiah.</Hint>
 				{errors.amount && (
 					<span className='text-red-500'>{errors.amount.message}</span>
 				)}
@@ -53,6 +55,7 @@ const DonationForm = ({ initial, action, label }) => {
 					placeholder='Enter your notes'
 					{...register('notes')}
 				/>
+				<Hint>Additional notes about the financial donation.</Hint>
 				{errors.notes && (
 					<span className='text-red-500'>{errors.notes.message}</span>
 				)}
@@ -69,6 +72,7 @@ const DonationForm = ({ initial, action, label }) => {
 						<option value='success'>Success</option>
 						<option value='failed'>Failed</option>
 					</select>
+					<Hint>Status of the financial donation process.</Hint>
 
 					{errors.status && (
 						<span className='text-red-500'>{errors.status.message}</span>

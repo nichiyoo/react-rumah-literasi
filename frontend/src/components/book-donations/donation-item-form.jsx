@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router';
 import { itemSchema } from '@/libs/schemas';
+import { Hint } from '@/components/ui/hint';
 
 const DonationItemForm = ({ initial, action, label }) => {
 	const {
@@ -34,6 +35,7 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your ISBN'
 					{...register('isbn')}
 				/>
+				<Hint>International Standard Book Number uniquely identifying this publication.</Hint>
 				{errors.isbn && (
 					<span className='text-red-500'>{errors.isbn.message}</span>
 				)}
@@ -46,6 +48,7 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your title'
 					{...register('title')}
 				/>
+				<Hint>Name of the publication you wish to donate.</Hint>
 				{errors.title && (
 					<span className='text-red-500'>{errors.title.message}</span>
 				)}
@@ -58,6 +61,7 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your author'
 					{...register('author')}
 				/>
+				<Hint>Writer or creator of this publication.</Hint>
 				{errors.author && (
 					<span className='text-red-500'>{errors.author.message}</span>
 				)}
@@ -70,6 +74,7 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your publisher'
 					{...register('publisher')}
 				/>
+				<Hint>Company responsible for publishing this work.</Hint>
 				{errors.publisher && (
 					<span className='text-red-500'>{errors.publisher.message}</span>
 				)}
@@ -82,6 +87,7 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your year'
 					{...register('year')}
 				/>
+				<Hint>Year when this publication was released.</Hint>
 				{errors.year && (
 					<span className='text-red-500'>{errors.year.message}</span>
 				)}
@@ -94,6 +100,7 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your language'
 					{...register('language')}
 				/>
+				<Hint>Primary language used in this publication.</Hint>
 				{errors.language && (
 					<span className='text-red-500'>{errors.language.message}</span>
 				)}
@@ -106,6 +113,7 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your amount'
 					{...register('amount')}
 				/>
+				<Hint>Quantity of books you are contributing to the donation.</Hint>
 				{errors.amount && (
 					<span className='text-red-500'>{errors.amount.message}</span>
 				)}

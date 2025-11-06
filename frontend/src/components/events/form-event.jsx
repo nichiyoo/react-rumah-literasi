@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ImageUpload } from '@/components/ui/image-upload';
+import { Hint } from '@/components/ui/hint';
 import { cn, formatByte } from '@/libs/utils';
 
 const EventSchema = z.object({
@@ -64,6 +65,7 @@ const EventForm = ({ initial, action, label }) => {
 					placeholder='Enter your title'
 					{...register('title')}
 				/>
+				<Hint>Title of the event to be organized.</Hint>
 				{errors.title && (
 					<span className='text-red-500'>{errors.title.message}</span>
 				)}
@@ -75,6 +77,7 @@ const EventForm = ({ initial, action, label }) => {
 					placeholder='Enter your description'
 					{...register('description')}
 				/>
+				<Hint>Detailed description of the event, including objectives and activities.</Hint>
 				{errors.description && (
 					<span className='text-red-500'>{errors.description.message}</span>
 				)}
@@ -83,6 +86,7 @@ const EventForm = ({ initial, action, label }) => {
 			<div>
 				<Label htmlFor='date'>Date</Label>
 				<Input type='date' {...register('date')} />
+				<Hint>Scheduled date for the event.</Hint>
 				{errors.date && (
 					<span className='text-red-500'>{errors.date.message}</span>
 				)}
@@ -91,6 +95,7 @@ const EventForm = ({ initial, action, label }) => {
 			<div>
 				<Label htmlFor='time'>Time</Label>
 				<Input type='time' {...register('time')} />
+				<Hint>Scheduled time for the event.</Hint>
 				{errors.time && (
 					<span className='text-red-500'>{errors.time.message}</span>
 				)}
@@ -103,6 +108,7 @@ const EventForm = ({ initial, action, label }) => {
 					placeholder='Enter event location'
 					{...register('location')}
 				/>
+				<Hint>Complete address or location details where the event will be held.</Hint>
 				{errors.location && (
 					<span className='text-red-500'>{errors.location.message}</span>
 				)}
@@ -124,6 +130,7 @@ const EventForm = ({ initial, action, label }) => {
 					defaultValue={media}
 					{...register('media')}
 				/>
+				<Hint>Upload an image that represents the event (max 2MB).</Hint>
 				{errors.media && (
 					<span className='text-red-500'>{errors.media.message}</span>
 				)}

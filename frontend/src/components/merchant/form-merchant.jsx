@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Map } from '@/components/map';
+import { Hint } from '@/components/ui/hint';
 import { useConfirm } from '@/hooks/use-confirm';
 
 const MerchantSchema = z.object({
@@ -81,6 +82,7 @@ const MerchantForm = ({ initial, action, label }) => {
 					placeholder='Enter merchant name'
 					{...register('name')}
 				/>
+				<Hint>Name of the merchant or business.</Hint>
 				{errors.name && (
 					<span className='text-red-500'>{errors.name.message}</span>
 				)}
@@ -93,6 +95,7 @@ const MerchantForm = ({ initial, action, label }) => {
 					placeholder='Enter phone number'
 					{...register('phone')}
 				/>
+				<Hint>Contact phone number for the merchant.</Hint>
 				{errors.phone && (
 					<span className='text-red-500'>{errors.phone.message}</span>
 				)}
@@ -105,6 +108,7 @@ const MerchantForm = ({ initial, action, label }) => {
 					placeholder='Enter email address'
 					{...register('email')}
 				/>
+				<Hint>Email address for the merchant.</Hint>
 				{errors.email && (
 					<span className='text-red-500'>{errors.email.message}</span>
 				)}
@@ -116,6 +120,7 @@ const MerchantForm = ({ initial, action, label }) => {
 					placeholder='Enter merchant address'
 					{...register('address')}
 				/>
+				<Hint>Complete address of the merchant location.</Hint>
 				{errors.address && (
 					<span className='text-red-500'>{errors.address.message}</span>
 				)}
@@ -128,6 +133,7 @@ const MerchantForm = ({ initial, action, label }) => {
 					placeholder='Enter zipcode'
 					{...register('zipcode')}
 				/>
+				<Hint>Postal code for the merchant's location.</Hint>
 				{errors.zipcode && (
 					<span className='text-red-500'>{errors.zipcode.message}</span>
 				)}
@@ -140,9 +146,7 @@ const MerchantForm = ({ initial, action, label }) => {
 					placeholder='Enter area ID'
 					{...register('area_id')}
 				/>
-				<p className='mt-1 text-sm text-zinc-500'>
-					Do not edit this field unless you change the area ID.
-				</p>
+				<Hint>Do not edit this field unless you change the area ID.</Hint>
 				{errors.area_id && (
 					<span className='text-red-500'>{errors.area_id.message}</span>
 				)}

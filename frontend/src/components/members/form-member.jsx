@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Hint } from '@/components/ui/hint';
 import { ROLES } from '@/libs/constant';
 
 const ROLE_LIST = Object.values(ROLES);
@@ -43,6 +44,7 @@ const MemberForm = ({ initial, action, label }) => {
 					placeholder='Enter your name'
 					{...register('name')}
 				/>
+				<Hint>Full name of the member.</Hint>
 				{errors.name && (
 					<span className='text-red-500'>{errors.name.message}</span>
 				)}
@@ -55,6 +57,7 @@ const MemberForm = ({ initial, action, label }) => {
 					placeholder='Enter your email'
 					{...register('email')}
 				/>
+				<Hint>Email address for the member account.</Hint>
 				{errors.email && (
 					<span className='text-red-500'>{errors.email.message}</span>
 				)}
@@ -67,6 +70,7 @@ const MemberForm = ({ initial, action, label }) => {
 					placeholder='Enter your password'
 					{...register('password')}
 				/>
+				<Hint>Password for the member account (leave empty to keep current password).</Hint>
 				{errors.password && (
 					<span className='text-red-500'>{errors.password.message}</span>
 				)}
@@ -83,6 +87,7 @@ const MemberForm = ({ initial, action, label }) => {
 						</option>
 					))}
 				</select>
+				<Hint>Role assigned to the member in the system.</Hint>
 				{errors.role && (
 					<span className='text-red-500'>{errors.role.message}</span>
 				)}
@@ -97,6 +102,7 @@ const MemberForm = ({ initial, action, label }) => {
 					<option value='true'>Yes</option>
 					<option value='false'>No</option>
 				</select>
+				<Hint>Indicates whether the member's account has been verified.</Hint>
 
 				{errors.is_verified && (
 					<span className='text-red-500'>{errors.is_verified.message}</span>

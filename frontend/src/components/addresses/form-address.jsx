@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
+import { Hint } from '@/components/ui/hint';
 import { DEFAULT_LOCATION } from '@/libs/constant';
 import { useConfirm } from '@/hooks/use-confirm';
 import { useLocation } from '@/hooks/use-location';
@@ -107,6 +108,7 @@ const AddressForm = ({ initial, action, label }) => {
 					placeholder='Enter your contact name'
 					{...register('contact_name')}
 				/>
+				<Hint>Name of the person who will be contacted at this address.</Hint>
 				{errors.contact_name && (
 					<span className='text-red-500'>{errors.contact_name.message}</span>
 				)}
@@ -118,6 +120,7 @@ const AddressForm = ({ initial, action, label }) => {
 					placeholder='Enter your contact phone'
 					{...register('contact_phone')}
 				/>
+				<Hint>Phone number of the contact person at this address.</Hint>
 				{errors.contact_phone && (
 					<span className='text-red-500'>{errors.contact_phone.message}</span>
 				)}
@@ -126,6 +129,7 @@ const AddressForm = ({ initial, action, label }) => {
 			<div>
 				<Label htmlFor='name'>Address Name</Label>
 				<Input placeholder='Enter your address name' {...register('name')} />
+				<Hint>Descriptive name for this location (e.g., Home, Office, etc.).</Hint>
 				{errors.name && (
 					<span className='text-red-500'>{errors.name.message}</span>
 				)}
@@ -137,6 +141,7 @@ const AddressForm = ({ initial, action, label }) => {
 					placeholder='Enter your street address'
 					{...register('street_address')}
 				/>
+				<Hint>Complete street address including building number, street name, and any apartment/unit numbers.</Hint>
 				{errors.street_address && (
 					<span className='text-red-500'>{errors.street_address.message}</span>
 				)}
@@ -164,6 +169,7 @@ const AddressForm = ({ initial, action, label }) => {
 						</Select>
 					)}
 				/>
+				<Hint>Select the province where this address is located.</Hint>
 				{errors.province_id && (
 					<span className='text-red-500'>{errors.province_id.message}</span>
 				)}
@@ -191,6 +197,7 @@ const AddressForm = ({ initial, action, label }) => {
 						</Select>
 					)}
 				/>
+				<Hint>Select the city where this address is located.</Hint>
 				{errors.city_id && (
 					<span className='text-red-500'>{errors.city_id.message}</span>
 				)}
@@ -217,6 +224,7 @@ const AddressForm = ({ initial, action, label }) => {
 						</Select>
 					)}
 				/>
+				<Hint>Select the district where this address is located.</Hint>
 				{errors.district_id && (
 					<span className='text-red-500'>{errors.district_id.message}</span>
 				)}
@@ -231,6 +239,7 @@ const AddressForm = ({ initial, action, label }) => {
 					pattern='[0-9]*'
 					{...register('zipcode')}
 				/>
+				<Hint>5-digit postal code for this address.</Hint>
 				{errors.zipcode && (
 					<span className='text-red-500'>{errors.zipcode.message}</span>
 				)}
@@ -242,9 +251,7 @@ const AddressForm = ({ initial, action, label }) => {
 					placeholder='Add a note for this address'
 					{...register('note')}
 				/>
-				<p className='mt-1 text-sm text-zinc-500'>
-					This note will help the driver navigate to your destination correctly.
-				</p>
+				<Hint>This note will help the driver navigate to your destination correctly.</Hint>
 				{errors.note && (
 					<span className='text-red-500'>{errors.note.message}</span>
 				)}
