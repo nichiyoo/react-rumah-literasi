@@ -26,6 +26,7 @@ import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { Badge } from '@/components/ui/badge';
+import { Avatar } from '@/components/ui/avatar';
 
 const ListAddresses = () => {
 	const { confirm } = useConfirm();
@@ -65,7 +66,6 @@ const ListAddresses = () => {
 			.then(async () => {
 				try {
 					await axios.patch('/addresses/' + id + '/default');
-
 					mutate('/addresses');
 					mutate('/addresses/' + id);
 					toast('Address set as default', {
@@ -102,6 +102,7 @@ const ListAddresses = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
+							<TableHead>Member</TableHead>
 							<TableHead>Name</TableHead>
 							<TableHead>Default</TableHead>
 							<TableHead>Address</TableHead>
@@ -112,6 +113,12 @@ const ListAddresses = () => {
 					<TableBody>
 						{result.map((address) => (
 							<TableRow key={address.id}>
+								<TableCell>
+									<div className='flex items-center gap-4'>
+										<Avatar name={address.user.name} className='flex-none' />
+										<span className='font-medium'>{address.user.name}</span>
+									</div>
+								</TableCell>
 								<TableCell>{address.name}</TableCell>
 								<TableCell>
 									{address.is_default ? (

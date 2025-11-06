@@ -129,7 +129,7 @@ const AddressController = {
 
 			if (!address) throw new ApiError(404, 'Address not found');
 			await address.update(req.body);
-			await biteship.put('/v1/locations/' + address.area_id, {
+			await biteship.post('/v1/locations/' + address.area_id, {
 				name: req.body.name,
 				contact_name: req.body.contact_name,
 				contact_phone: req.body.contact_phone,

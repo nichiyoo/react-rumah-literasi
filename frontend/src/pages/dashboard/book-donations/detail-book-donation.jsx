@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { useTransaction } from '@/stores/use-transaction';
 
@@ -13,12 +14,8 @@ const DetailBookDonation = () => {
 	const { items, detail, setDetail } = useTransaction();
 
 	const onSubmit = async (data) => {
-		try {
-			setDetail(data);
-			navigate('/dashboard/book-donations/create/courier');
-		} catch (error) {
-			console.error(error);
-		}
+		setDetail(data);
+		navigate('/dashboard/book-donations/create/courier');
 	};
 
 	const onPrevious = () => {
@@ -32,9 +29,7 @@ const DetailBookDonation = () => {
 			<Heading>
 				<HeadingTitle>Add Donation Detail</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Enter the details for your book donation.
 				</HeadingDescription>
 			</Heading>
 
@@ -42,7 +37,7 @@ const DetailBookDonation = () => {
 				initial={detail}
 				action={onSubmit}
 				previous={onPrevious}
-				label='Choose courier'
+				label='Continue to Courier Selection'
 			/>
 		</div>
 	);

@@ -13,6 +13,18 @@ const HeadingTitle = React.forwardRef(
 
 HeadingTitle.displayName = 'HeadingTitle';
 
+const HeadingSubtitle = React.forwardRef(
+	({ className, children, ...props }, ref) => {
+		return (
+			<h2 className={cn('text-2xl font-bold', className)} ref={ref} {...props}>
+				{children}
+			</h2>
+		);
+	}
+);
+
+HeadingSubtitle.displayName = 'HeadingSubtitle';
+
 const HeadingDescription = React.forwardRef(
 	({ className, children, ...props }, ref) => {
 		return (
@@ -35,4 +47,4 @@ const Heading = React.forwardRef(({ className, children, ...props }, ref) => {
 
 Heading.displayName = 'Heading';
 
-export { HeadingTitle, HeadingDescription, Heading };
+export { HeadingTitle, HeadingSubtitle, HeadingDescription, Heading };

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import {
 	Heading,
@@ -5,30 +6,21 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import { useConfirm } from '@/hooks/use-confirm';
 import { useTransaction } from '@/stores/use-transaction';
 import DonationCourierForm from '@/components/book-donations/donation-courier-form';
 
-const DetailBookDonation = () => {
+const CourierBookDonation = () => {
 	const navigate = useNavigate();
-	const { confirm } = useConfirm();
 	const { detail, setCourier } = useTransaction();
 
 	const onSubmit = (courier) => {
-		confirm({
-			title: 'Confirm Action',
-			description: 'Are you sure you want to finish this book donation?',
-		})
-			.then(async () => {
-				setCourier({
-					zipcode: courier.zipcode,
-					courier_company: courier.courier_code,
-					courier_type: courier.courier_service_code,
-				});
-			})
-			.catch(() => {
-				// pass
-			});
+		setCourier({
+			zipcode: courier.zipcode.toString(),
+			courier_company: courier.courier_code,
+			courier_type: courier.courier_service_code,
+			price: courier.price,
+		});
+		navigate('/dashboard/book-donations/create/review');
 	};
 
 	const onPrevious = () => {
@@ -42,9 +34,7 @@ const DetailBookDonation = () => {
 			<Heading>
 				<HeadingTitle>Choose Courier</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Select the courier service for your book donation delivery.
 				</HeadingDescription>
 			</Heading>
 
@@ -52,10 +42,10 @@ const DetailBookDonation = () => {
 				detail={detail}
 				action={onSubmit}
 				previous={onPrevious}
-				label='Choose courier'
+				label='Choose Courier'
 			/>
 		</div>
 	);
 };
 
-export default DetailBookDonation;
+export default CourierBookDonation;

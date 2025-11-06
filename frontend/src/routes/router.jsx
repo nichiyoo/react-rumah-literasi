@@ -59,6 +59,9 @@ const DetailBookDonation = load(() =>
 const CourierBookDonation = load(() =>
 	import('@/pages/dashboard/book-donations/courier-book-donation')
 );
+const ReviewBookDonation = load(() =>
+	import('@/pages/dashboard/book-donations/review-book-donation')
+);
 
 const ListDonations = load(() =>
 	import('@/pages/dashboard/financial-donations/list-financial-donations')
@@ -146,6 +149,7 @@ const Router = () => {
 						<Route path='create/append' element={<AppendBookDonation />} />
 						<Route path='create/detail' element={<DetailBookDonation />} />
 						<Route path='create/courier' element={<CourierBookDonation />} />
+						<Route path='create/review' element={<ReviewBookDonation />} />
 						<Route path='create/:id/edit' element={<EditBookDonation />} />
 					</Route>
 

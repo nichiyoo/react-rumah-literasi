@@ -27,6 +27,7 @@ export const STEPS = {
 	ITEMS: 0,
 	DETAIL: 1,
 	COURIER: 2,
+	REVIEW: 3,
 };
 
 export const SIDEBAR_MENUS = [

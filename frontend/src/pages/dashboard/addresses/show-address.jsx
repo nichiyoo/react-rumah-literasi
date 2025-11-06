@@ -150,16 +150,14 @@ const ShowAddress = () => {
 
 					<div className='col-span-full'>
 						<Label htmlFor='location'>Location</Label>
-						<div className='mt-2'>
-							<Map
-								location={{
-									latitude: result.data.latitude,
-									longitude: result.data.longitude,
-								}}
-								className='w-full aspect-video'
-								readonly
-							/>
-						</div>
+						<Map
+							location={{
+								latitude: result.data.latitude,
+								longitude: result.data.longitude,
+							}}
+							className='w-full aspect-video'
+							readonly
+						/>
 					</div>
 
 					<div className='col-span-full'>

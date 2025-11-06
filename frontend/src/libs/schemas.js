@@ -24,6 +24,7 @@ export const courierSchema = z.object({
 	zipcode: z.string().nonempty(),
 	courier_company: z.string().nonempty(),
 	courier_type: z.string().nonempty(),
+	price: z.number(),
 });
 
 export const transactionSchema = z.object({

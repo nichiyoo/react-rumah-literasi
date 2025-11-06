@@ -158,7 +158,6 @@ export const useTransaction = create(
 				return set({
 					step: STEPS.ITEMS,
 					items: [],
-					address: null,
 					detail: null,
 					courier: null,
 				});

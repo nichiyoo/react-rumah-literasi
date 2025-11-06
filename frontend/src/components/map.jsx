@@ -19,7 +19,7 @@ const MapEvent = ({ handleClick, handleLocationFound }) => {
 	return null;
 };
 
-export const Map = ({ location, setLocation, className }) => {
+export const Map = ({ location, setLocation = () => {}, className }) => {
 	const [mapRef, setMapRef] = React.useState(null);
 
 	const handleClick = (latlng) => {
