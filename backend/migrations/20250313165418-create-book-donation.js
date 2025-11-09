@@ -1,4 +1,6 @@
 'use strict';
+const { PAYMENT_STATUS } = require('../libs/constant');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, DataTypes) {
@@ -9,27 +11,38 @@ module.exports = {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			title: {
+			uuid: {
 				allowNull: false,
 				type: DataTypes.STRING,
-			},
-			genre: {
-				allowNull: false,
-				type: DataTypes.STRING,
+				defaultValue: DataTypes.UUIDV4,
 			},
 			amount: {
 				allowNull: false,
-				type: DataTypes.STRING,
+				type: DataTypes.INTEGER,
 			},
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: ['pending', 'ongoing', 'approved', 'rejected'],
-				defaultValue: 'pending',
+				values: [
+					PAYMENT_STATUS.PENDING,
+					PAYMENT_STATUS.SUCCESS,
+					PAYMENT_STATUS.FAILED,
+				],
+				defaultValue: PAYMENT_STATUS.PENDING,
+			},
+			payment_url: {
+				allowNull: true,
+				type: DataTypes.STRING,
 			},
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				references: {
+					model: 'users',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 			},
 			address_id: {
 				allowNull: false,
@@ -41,9 +54,17 @@ module.exports = {
 				onUpdate: 'CASCADE',
 				onDelete: 'CASCADE',
 			},
-			dimension: {
+			length: {
 				allowNull: true,
-				type: DataTypes.STRING,
+				type: DataTypes.FLOAT,
+			},
+			width: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
+			},
+			height: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
 			},
 			weight: {
 				allowNull: true,
@@ -56,10 +77,12 @@ module.exports = {
 			created_at: {
 				allowNull: false,
 				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW,
 			},
 			updated_at: {
 				allowNull: false,
 				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW,
 			},
 		});
 	},

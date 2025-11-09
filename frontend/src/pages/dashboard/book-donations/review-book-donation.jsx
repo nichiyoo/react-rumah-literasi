@@ -77,17 +77,16 @@ const ReviewBookDonation = () => {
 						throw new Error('Failed to submit donation');
 					}
 				} catch (error) {
-					console.error('Error submitting donation:', error);
 					toast.error('Failed to submit book donation', {
-						description:
-							error.response?.data?.message || 'An unexpected error occurred',
+						description: error.response.data.message || error.message,
 					});
+					console.error(error);
 				} finally {
 					setLoading(false);
 				}
 			})
 			.catch(() => {
-				// User cancelled the confirmation
+				// pass
 			});
 	};
 

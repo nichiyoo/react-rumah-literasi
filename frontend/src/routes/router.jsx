@@ -48,39 +48,40 @@ const AddBookDonation = load(() =>
 	import('~/book-donations/create-book-donation')
 );
 const AppendBookDonation = load(() =>
-	import('@/pages/dashboard/book-donations/append-book-donation')
+	import('~/book-donations/append-book-donation')
 );
 const EditBookDonation = load(() =>
 	import('~/book-donations/edit-book-donation')
 );
 const DetailBookDonation = load(() =>
-	import('@/pages/dashboard/book-donations/detail-book-donation')
+	import('~/book-donations/detail-book-donation')
+);
+const ShowBookDonation = load(() =>
+	import('~/book-donations/show-book-donation')
 );
 const CourierBookDonation = load(() =>
-	import('@/pages/dashboard/book-donations/courier-book-donation')
+	import('~/book-donations/courier-book-donation')
 );
 const ReviewBookDonation = load(() =>
-	import('@/pages/dashboard/book-donations/review-book-donation')
+	import('~/book-donations/review-book-donation')
 );
-
 const ListDonations = load(() =>
-	import('@/pages/dashboard/financial-donations/list-financial-donations')
+	import('~/financial-donations/list-financial-donations')
 );
 const AddDonation = load(() =>
-	import('@/pages/dashboard/financial-donations/create-financial-donation')
+	import('~/financial-donations/create-financial-donation')
 );
 const EditDonation = load(() =>
-	import('@/pages/dashboard/financial-donations/edit-financial-donation')
+	import('~/financial-donations/edit-financial-donation')
 );
 const ShowDonation = load(() =>
-	import('@/pages/dashboard/financial-donations/show-financial-donation')
+	import('~/financial-donations/show-financial-donation')
 );
 
 const ListAddresses = load(() => import('~/addresses/list-addresses'));
 const AddAddress = load(() => import('~/addresses/create-address'));
 const EditAddress = load(() => import('~/addresses/edit-address'));
 const ShowAddress = load(() => import('~/addresses/show-address'));
-
 const ShowMerchant = load(() => import('~/merchant/show-merchant'));
 const EditMerchant = load(() => import('~/merchant/edit-merchant'));
 
@@ -150,7 +151,7 @@ const Router = () => {
 						<Route path='create/detail' element={<DetailBookDonation />} />
 						<Route path='create/courier' element={<CourierBookDonation />} />
 						<Route path='create/review' element={<ReviewBookDonation />} />
-						<Route path='create/:id/edit' element={<EditBookDonation />} />
+						<Route path=':id/detail' element={<ShowBookDonation />} />
 					</Route>
 
 					<Route

@@ -49,7 +49,7 @@ const ShowAddress = () => {
 					toast.error('Failed to set address as default', {
 						description: error.response.data.message || error.message,
 					});
-					console.log(error);
+					console.error(error);
 				}
 			})
 			.catch(() => {

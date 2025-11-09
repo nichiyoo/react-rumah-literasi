@@ -50,7 +50,7 @@ const ListEvents = () => {
 					toast.error('Failed to delete event', {
 						description: error.response.data.message || error.message,
 					});
-					console.log(error);
+					console.error(error);
 				}
 			})
 			.catch(() => {

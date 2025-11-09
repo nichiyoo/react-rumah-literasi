@@ -28,6 +28,8 @@ import { Avatar } from '@/components/ui/avatar';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
+import { currency } from '@/libs/utils';
+import { PAYMENT_STATUS } from '@/libs/constant';
 
 const ListDonations = () => {
 	const { confirm } = useConfirm();
@@ -57,7 +59,7 @@ const ListDonations = () => {
 					toast.error('Failed to delete donation', {
 						description: error.response.data.message || error.message,
 					});
-					console.log(error);
+					console.error(error);
 				}
 			})
 			.catch(() => {
@@ -88,9 +90,9 @@ const ListDonations = () => {
 						<TableRow>
 							<TableHead>Member</TableHead>
 							<TableHead>Amount</TableHead>
-							<TableHead>Notes</TableHead>
 							<TableHead>Status</TableHead>
 							<TableHead>Payment Link</TableHead>
+							<TableHead>Notes</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -108,13 +110,12 @@ const ListDonations = () => {
 										</span>
 									</div>
 								</TableCell>
-								<TableCell>{financialDonation.amount}</TableCell>
-								<TableCell>{financialDonation.notes}</TableCell>
+								<TableCell>{currency(financialDonation.amount)}</TableCell>
 								<TableCell>
 									<Badge>{financialDonation.status}</Badge>
 								</TableCell>
 								<TableCell>
-									{financialDonation.status === 'pending' && (
+									{financialDonation.status === PAYMENT_STATUS.PENDING && (
 										<a
 											href={financialDonation.payment_url}
 											target='_blank'
@@ -123,6 +124,7 @@ const ListDonations = () => {
 										</a>
 									)}
 								</TableCell>
+								<TableCell>{financialDonation.notes}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
 										<Link to={financialDonation.id + '/detail'} relative='path'>

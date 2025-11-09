@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Hint } from '@/components/ui/hint';
+import { PAYMENT_STATUS } from '@/libs/constant';
 
 const DonationSchema = z.object({
 	amount: z.coerce.number().min(1),
@@ -16,7 +17,11 @@ const DonationSchema = z.object({
 
 const EditSchema = DonationSchema.merge(
 	z.object({
-		status: z.enum(['pending', 'success', 'failed']),
+		status: z.enum([
+			PAYMENT_STATUS.PENDING,
+			PAYMENT_STATUS.SUCCESS,
+			PAYMENT_STATUS.FAILED,
+		]),
 	})
 );
 
@@ -30,6 +35,7 @@ const DonationForm = ({ initial, action, label }) => {
 		defaultValues: initial || {
 			amount: 0,
 			notes: '',
+			status: PAYMENT_STATUS.PENDING,
 		},
 	});
 
@@ -64,19 +70,19 @@ const DonationForm = ({ initial, action, label }) => {
 			{initial && (
 				<div>
 					<Label htmlFor='status'>Status</Label>
-
 					<select
 						className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 						{...register('status')}>
-						<option value='pending'>Pending</option>
-						<option value='success'>Success</option>
-						<option value='failed'>Failed</option>
+						<option value={PAYMENT_STATUS.PENDING}>
+							{PAYMENT_STATUS.PENDING}
+						</option>
+						<option value={PAYMENT_STATUS.SUCCESS}>
+							{PAYMENT_STATUS.SUCCESS}
+						</option>
+						<option value={PAYMENT_STATUS.FAILED}>
+							{PAYMENT_STATUS.FAILED}
+						</option>
 					</select>
-					<Hint>Status of the financial donation process.</Hint>
-
-					{errors.status && (
-						<span className='text-red-500'>{errors.status.message}</span>
-					)}
 				</div>
 			)}
 

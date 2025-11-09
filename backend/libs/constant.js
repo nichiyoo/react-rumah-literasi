@@ -5,6 +5,13 @@ const ROLES = {
 	SUPERADMIN: 'superadmin',
 };
 
+const PAYMENT_STATUS = {
+	PENDING: 'Pending',
+	SUCCESS: 'Success',
+	FAILED: 'Failed',
+};
+
 module.exports = {
 	ROLES,
+	PAYMENT_STATUS,
 };

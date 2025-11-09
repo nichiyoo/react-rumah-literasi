@@ -11,7 +11,7 @@ router.post('/', guest, BookDonationController.store);
 router.get('/:id', guest, BookDonationController.show);
 router.delete('/:id', guest, BookDonationController.destroy);
 
-const librarian = authorize([ROLES.LIBRARIAN]);
+const librarian = authorize([ROLES.LIBRARIAN, ROLES.SUPERADMIN]);
 router.put('/:id', librarian, BookDonationController.update);
 
 module.exports = router;

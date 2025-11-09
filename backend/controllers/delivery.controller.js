@@ -31,7 +31,7 @@ const DeliveryController = {
 					name: 'Book',
 					description: 'Book donation for ' + merchant.name,
 					value: Number(detail.estimated_value),
-					length: Number(detail.width),
+					length: Number(detail.length),
 					width: Number(detail.width),
 					height: Number(detail.height),
 					weight: Number(detail.weight),
@@ -75,8 +75,6 @@ const DeliveryController = {
 			})),
 		});
 
-		console.log(data);
-
 		return {
 			delivery_fee: data.price,
 			delivery_eta: data.delivery.datetime,
@@ -116,6 +114,32 @@ const DeliveryController = {
 				)
 			);
 		}
+	},
+
+	async validatePrice(detail, courier, user) {
+		const { pricings } = await DeliveryController.calculate(detail, user);
+		const { courier_company, courier_type } = courier;
+
+		const selected = pricings.find(
+			(item) =>
+				item.courier_code &&
+				item.courier_service_code &&
+				item.courier_code.toLowerCase() === courier_company.toLowerCase() &&
+				item.courier_service_code.toLowerCase() === courier_type.toLowerCase()
+		);
+
+		if (!selected) throw new ApiError(400, 'Invalid courier selection');
+		const server = Math.round(selected.price);
+		const client = Math.round(courier.price);
+
+		if (server !== client) {
+			throw new ApiError(
+				400,
+				'There seems to be a change in the courier price.'
+			);
+		}
+
+		return selected;
 	},
 };
 

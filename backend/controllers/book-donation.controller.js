@@ -1,8 +1,16 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
+const { transactionSchema } = require('../libs/schemas');
 
-const { BookDonation, Address } = require('../models');
-const { ROLES } = require('../libs/constant');
+const {
+	BookDonation,
+	Address,
+	BookDonationItem,
+	sequelize,
+} = require('../models');
+const DeliveryController = require('./delivery.controller');
+const PaymentController = require('./payment.controller');
+const { ROLES, PAYMENT_STATUS } = require('../libs/constant');
 
 const BookDonationController = {
 	async index(req, res, next) {
@@ -23,25 +31,64 @@ const BookDonationController = {
 
 	async store(req, res, next) {
 		try {
-			const { address_id, ...data } = req.body;
+			const validated = transactionSchema.parse(req.body.transaction);
 
-			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
+			const addr = await Address.scope({
+				method: ['authorize', req.user],
 			}).findOne({
-				where: { id: address_id },
+				where: { id: validated.detail.address_id },
 			});
-			if (!address) throw new ApiError(404, 'Address not found');
+			if (!addr) throw new ApiError(404, 'Address not found');
 
-			const bookDonation = await BookDonation.create({
-				...data,
-				address_id,
-				user_id: req.user.id,
-			});
-
-			return res.json(
-				new ApiResponse('Book donation created successfully', bookDonation)
+			await DeliveryController.validatePrice(
+				validated.detail,
+				validated.courier,
+				req.user
 			);
+
+			const result = await sequelize.transaction(async (t) => {
+				const donation = await BookDonation.create(
+					{
+						amount: validated.courier.price,
+						address_id: validated.detail.address_id,
+						user_id: req.user.id,
+						length: validated.detail.length,
+						width: validated.detail.width,
+						height: validated.detail.height,
+						weight: validated.detail.weight,
+						status: PAYMENT_STATUS.PENDING,
+					},
+					{ transaction: t }
+				);
+
+				await BookDonationItem.bulkCreate(
+					validated.items.map((item) => ({
+						...item,
+						book_donation_id: donation.id,
+					})),
+					{ transaction: t }
+				);
+
+				const { data } = await PaymentController.midtrans(donation, req.user);
+				await donation.update(
+					{
+						payment_url: data.redirect_url,
+						status: PAYMENT_STATUS.PENDING,
+					},
+					{ transaction: t }
+				);
+
+				return donation;
+			});
+
+			return res
+				.status(201)
+				.json(new ApiResponse('Book donation submitted successfully', result));
 		} catch (error) {
+			if (error && error.issues) {
+				const message = error.issues.map((issue) => issue.message).join(', ');
+				return next(new ApiError(400, message));
+			}
 			next(error);
 		}
 	},
@@ -55,7 +102,7 @@ const BookDonationController = {
 				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
-				include: ['user', 'address'],
+				include: ['user', 'address', 'book_donation_items'],
 			});
 			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
 
@@ -80,17 +127,16 @@ const BookDonationController = {
 			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
 
 			const { address_id, ...data } = req.body;
+			if (address_id) {
+				const addr = await Address.scope({
+					method: ['authorize', req.user],
+				}).findOne({
+					where: { id: address_id },
+				});
+				if (!addr) throw new ApiError(404, 'Address not found');
+			}
 
-			const address = await Address.scope({
-				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
-			}).findOne({
-				where: { id: address_id },
-			});
-			if (!address) throw new ApiError(404, 'Address not found');
-
-			bookDonation.address_id = address_id;
-			await bookDonation.update(data);
-			await bookDonation.save();
+			await bookDonation.update({ ...data, address_id });
 
 			return res.json(
 				new ApiResponse('Book donation updated successfully', bookDonation)
@@ -112,8 +158,7 @@ const BookDonationController = {
 			});
 			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
 
-			const validateStatus = bookDonation.status === 'pending';
-			if (!validateStatus) {
+			if (bookDonation.status !== PAYMENT_STATUS.PENDING) {
 				throw new ApiError(
 					400,
 					'Cannot delete bookDonation unless the status is pending'

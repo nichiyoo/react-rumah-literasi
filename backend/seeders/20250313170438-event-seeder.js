@@ -72,7 +72,7 @@ module.exports = {
 			);
 		} catch (error) {
 			console.log('Error seeding events:', error);
-			throw error; // Re-throw the error to fail the migration
+			throw error;
 		}
 	},
 

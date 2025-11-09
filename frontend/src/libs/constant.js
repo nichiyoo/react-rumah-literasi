@@ -154,6 +154,12 @@ export const ERROR_MESSAGES = {
 	500: 'Internal server error, try again later',
 };
 
+export const PAYMENT_STATUS = {
+	PENDING: 'Pending',
+	SUCCESS: 'Success',
+	FAILED: 'Failed',
+};
+
 export const DEFAULT_LOCATION = {
 	latitude: -6.1741855,
 	longitude: 106.8283465,

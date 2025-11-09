@@ -1,6 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 const { scope } = require('../middleware/authorize');
+const { PAYMENT_STATUS } = require('../libs/constant');
 
 module.exports = (sequelize, DataTypes) => {
 	class FinancialDonation extends Model {
@@ -36,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: ['pending', 'success', 'failed'],
-				defaultValue: 'pending',
+				values: [PAYMENT_STATUS.PENDING, PAYMENT_STATUS.SUCCESS, PAYMENT_STATUS.FAILED],
+				defaultValue: PAYMENT_STATUS.PENDING,
 				validate: {
 					notEmpty: true,
 				},

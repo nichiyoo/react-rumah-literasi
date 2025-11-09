@@ -2,25 +2,29 @@ import * as React from 'react';
 import useSWR from 'swr';
 import { Link, useParams } from 'react-router';
 
+import { currency } from '@/libs/utils';
+import { useAuth } from '@/hooks/use-auth';
+import { ROLES } from '@/libs/constant';
+
 import {
 	Heading,
 	HeadingDescription,
+	HeadingSubtitle,
 	HeadingTitle,
 } from '@/components/ui/heading';
-
-import { Loading } from '@/components/loading';
-import { Error } from '@/components/error';
-import { Label } from '@/components/ui/label';
+import { TransactionItem } from '@/components/book-donations/donation-item-card';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { Map } from '@/components/map';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/use-auth';
-import { ROLES } from '@/libs/constant';
+import { Loading } from '@/components/loading';
+import { Error } from '@/components/error';
 
 const ShowBookDonation = () => {
 	const { id } = useParams();
 	const { user, loading } = useAuth();
+
 	const {
 		error,
 		data: result,
@@ -29,7 +33,7 @@ const ShowBookDonation = () => {
 
 	const allowed = React.useMemo(() => {
 		if (loading) return false;
-		return [ROLES.ADMIN, ROLES.SUPERADMIN].includes(user.role);
+		return [ROLES.LIBRARIAN, ROLES.SUPERADMIN].includes(user.role);
 	}, [user, loading]);
 
 	return (
@@ -37,9 +41,7 @@ const ShowBookDonation = () => {
 			<Heading>
 				<HeadingTitle>Detail Book Donation</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					View and manage the details of this book donation.
 				</HeadingDescription>
 			</Heading>
 
@@ -47,69 +49,110 @@ const ShowBookDonation = () => {
 			<Loading loading={fetching} />
 
 			{result && (
-				<div className='grid gap-6 lg:grid-cols-2'>
-					<div className='col-span-full'>
-						<Label htmlFor='title'>Title</Label>
-						<Input disabled type='text' defaultValue={result.data.title} />
+				<>
+					<HeadingSubtitle>Donation Items</HeadingSubtitle>
+
+					<div className='grid items-start grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+						{result.data.book_donation_items.map((item) => (
+							<div key={item.id} className='relative group'>
+								<TransactionItem item={item} />
+							</div>
+						))}
 					</div>
 
-					<div>
-						<Label htmlFor='genre'>Genre</Label>
-						<Input disabled type='text' defaultValue={result.data.genre} />
+					<HeadingSubtitle>Donation Details</HeadingSubtitle>
+
+					<div className='grid gap-6 lg:grid-cols-2'>
+						<div>
+							<Label htmlFor='member'>Member</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.user.name}
+							/>
+						</div>
+						<div>
+							<Label htmlFor='amount'>Amount</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={currency(result.data.amount)}
+							/>
+						</div>
+
+						<div>
+							<Label htmlFor='weight'>Total Weight</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.weight + ' kg'}
+							/>
+						</div>
+
+						<div>
+							<Label htmlFor='length'>Length</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.length + ' cm'}
+							/>
+						</div>
+
+						<div>
+							<Label htmlFor='width'>Width</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.width + ' cm'}
+							/>
+						</div>
+
+						<div>
+							<Label htmlFor='height'>Height</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.height + ' cm'}
+							/>
+						</div>
+
+						<div className='col-span-full'>
+							<Label htmlFor='delivery_address'>Delivery Address</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.address.name}
+							/>
+						</div>
+
+						<div className='col-span-full'>
+							<Label htmlFor='street_address'>Street Address</Label>
+							<Textarea
+								disabled
+								defaultValue={result.data.address.street_address}
+							/>
+						</div>
+
+						<div className='col-span-full'>
+							<Label htmlFor='location'>Location</Label>
+							<Map
+								location={{
+									latitude: result.data.address.latitude,
+									longitude: result.data.address.longitude,
+								}}
+								className='w-full aspect-banner'
+								readonly
+							/>
+						</div>
 					</div>
 
-					<div>
-						<Label htmlFor='amount'>Amount</Label>
-						<Input disabled type='number' defaultValue={result.data.amount} />
-					</div>
+					<HeadingSubtitle>Status Information</HeadingSubtitle>
 
-					<div>
-						<Label htmlFor='province'>Province</Label>
-						<Input
-							disabled
-							type='text'
-							defaultValue={result.data.province?.name}
-						/>
-					</div>
-
-					<div>
-						<Label htmlFor='city'>City</Label>
-						<Input disabled type='text' defaultValue={result.data.city?.name} />
-					</div>
-
-					<div>
-						<Label htmlFor='district'>District</Label>
-						<Input
-							disabled
-							type='text'
-							defaultValue={result.data.district?.name}
-						/>
-					</div>
-
-					<div>
-						<Label htmlFor='zipcode'>Zipcode</Label>
-						<Input disabled type='text' defaultValue={result.data.zipcode} />
-					</div>
-
-					<div className='col-span-full'>
-						<Label htmlFor='address'>Address</Label>
-						<Textarea disabled defaultValue={result.data.address} />
-					</div>
-
-					<div className='col-span-full'>
-						<Label htmlFor='location'>Location</Label>
-						<Map
-							location={{
-								latitude: result.data.latitude,
-								longitude: result.data.longitude,
-							}}
-							className='aspect-banner'
-						/>
-					</div>
-
-					<div>
-						<Label htmlFor='status'>Status</Label>
-						<Input disabled type='text' defaultValue={result.data.status} />
+					<div className='grid gap-6 lg:grid-cols-2'>
+						<div>
+							<Label htmlFor='status'>Current Status</Label>
+							<Input disabled type='text' defaultValue={result.data.status} />
+						</div>
 					</div>
 
 					<div className='col-span-full'>
@@ -118,6 +161,15 @@ const ShowBookDonation = () => {
 								<Button variant='outline'>Back</Button>
 							</Link>
 
+							{result.data.status === 'pending ' && (
+								<Link
+									to={result.data.payment_url}
+									target='_blank'
+									rel='noreferrer'>
+									<Button variant='primary'>Complete Payment</Button>
+								</Link>
+							)}
+
 							{allowed && (
 								<Link to='../edit' relative='path'>
 									<Button>Edit Donation</Button>
@@ -125,7 +177,7 @@ const ShowBookDonation = () => {
 							)}
 						</div>
 					</div>
-				</div>
+				</>
 			)}
 		</div>
 	);

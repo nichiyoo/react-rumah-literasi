@@ -28,7 +28,6 @@ const EditDonation = () => {
 	const onSubmit = async (data) => {
 		try {
 			await axios.put('/financial-donations/' + result.data.id, data);
-
 			toast('Financial donation updated', {
 				description: 'Successfully updated donation',
 			});

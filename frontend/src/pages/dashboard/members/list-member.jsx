@@ -52,7 +52,7 @@ const ListMembers = () => {
 					toast.error('Failed to delete member', {
 						description: error.response.data.message || error.message,
 					});
-					console.log(error);
+					console.error(error);
 				}
 			})
 			.catch(() => {

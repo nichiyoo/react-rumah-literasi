@@ -1,7 +1,7 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
-const { ROLES } = require('../libs/constant');
+const { ROLES, PAYMENT_STATUS } = require('../libs/constant');
 const { FinancialDonation } = require('../models');
 const PaymentController = require('./payment.controller');
 
@@ -36,9 +36,11 @@ const FinancialDonationController = {
 				financialDonation,
 				req.user
 			);
-			financialDonation.payment_url = data.redirect_url;
-			financialDonation.status = 'pending';
-			await financialDonation.save();
+
+			await financialDonation.update({
+				payment_url: data.redirect_url,
+				status: PAYMENT_STATUS.PENDING
+			});
 
 			return res.json(
 				new ApiResponse(
@@ -92,7 +94,6 @@ const FinancialDonationController = {
 			if (!financialDonation)
 				throw new ApiError(404, 'Financial donation not found');
 			await financialDonation.update(req.body);
-			await financialDonation.save();
 
 			return res.json(
 				new ApiResponse(
@@ -120,7 +121,7 @@ const FinancialDonationController = {
 				throw new ApiError(404, 'Financial donation not found');
 			}
 
-			const pending = financialDonation.status === 'pending';
+			const pending = financialDonation.status === PAYMENT_STATUS.PENDING;
 			if (!pending) {
 				throw new ApiError(
 					400,

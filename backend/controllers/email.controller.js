@@ -25,6 +25,7 @@ const EmailController = {
 				subject: 'Your verification code for secure access',
 				html: html,
 			});
+			return;
 		}
 
 		console.log(otp);
@@ -48,6 +49,7 @@ const EmailController = {
 				subject: 'One more step to complete your registration',
 				html: html,
 			});
+			return;
 		}
 
 		console.log(href);
@@ -71,6 +73,7 @@ const EmailController = {
 				subject: 'Password reset link',
 				html: html,
 			});
+			return;
 		}
 
 		console.log(href);

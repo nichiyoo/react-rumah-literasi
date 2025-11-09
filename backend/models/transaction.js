@@ -152,7 +152,6 @@ module.exports = (sequelize, DataTypes) => {
 						await book.update({
 							amount: book.amount + amount,
 						});
-						await book.save();
 					});
 				},
 				beforeDestroy: async (transaction) => {
@@ -170,7 +169,6 @@ module.exports = (sequelize, DataTypes) => {
 						await book.update({
 							amount: book.amount + amount,
 						});
-						await book.save();
 					});
 				},
 			},

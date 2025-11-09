@@ -50,7 +50,7 @@ const ListAddresses = () => {
 					toast.error('Failed to delete address', {
 						description: error.response.data.message || error.message,
 					});
-					console.log(error);
+					console.error(error);
 				}
 			})
 			.catch(() => {
@@ -75,7 +75,7 @@ const ListAddresses = () => {
 					toast.error('Failed to set address as default', {
 						description: error.response.data.message || error.message,
 					});
-					console.log(error);
+					console.error(error);
 				}
 			})
 			.catch(() => {

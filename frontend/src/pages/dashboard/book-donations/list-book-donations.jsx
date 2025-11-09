@@ -29,6 +29,8 @@ import { Badge } from '@/components/ui/badge';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { Avatar } from '@/components/ui/avatar';
+import { currency } from '@/libs/utils';
+import { PAYMENT_STATUS } from '@/libs/constant';
 
 const ListBookDonations = () => {
 	const { confirm } = useConfirm();
@@ -52,7 +54,7 @@ const ListBookDonations = () => {
 					toast.error('Failed to delete book donation', {
 						description: error.response.data.message || error.message,
 					});
-					console.log(error);
+					console.error(error);
 				}
 			})
 			.catch(() => {
@@ -82,11 +84,10 @@ const ListBookDonations = () => {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Member</TableHead>
-							<TableHead>Title</TableHead>
-							<TableHead>Genre</TableHead>
-							<TableHead>Amount</TableHead>
 							<TableHead>Address</TableHead>
+							<TableHead>Shipping</TableHead>
 							<TableHead>Status</TableHead>
+							<TableHead>Payment Link</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -104,12 +105,20 @@ const ListBookDonations = () => {
 										</span>
 									</div>
 								</TableCell>
-								<TableCell>{bookDonation.title}</TableCell>
-								<TableCell>{bookDonation.genre}</TableCell>
-								<TableCell>{bookDonation.amount}</TableCell>
-								<TableCell>{bookDonation.address}</TableCell>
+								<TableCell>{bookDonation.address.street_address}</TableCell>
+								<TableCell>{currency(bookDonation.amount)}</TableCell>
 								<TableCell>
 									<Badge>{bookDonation.status}</Badge>
+								</TableCell>{' '}
+								<TableCell>
+									{bookDonation.status === PAYMENT_STATUS.PENDING && (
+										<a
+											href={bookDonation.payment_url}
+											target='_blank'
+											rel='noreferrer'>
+											<span className='text-primary-500'>Complete Payment</span>
+										</a>
+									)}
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>

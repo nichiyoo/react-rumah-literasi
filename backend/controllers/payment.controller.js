@@ -3,7 +3,8 @@ const crypto = require('crypto');
 const midtrans = require('../libs/midtrans');
 const ApiError = require('../libs/error');
 
-const { Donation } = require('../models');
+const { FinancialDonation } = require('../models');
+const { PAYMENT_STATUS } = require('../libs/constant');
 
 const IGNORE = 204;
 const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
@@ -51,30 +52,40 @@ const PaymentController = {
 			const statuses = ['settlement', 'cancel', 'failure', 'expire'];
 			if (!statuses.includes(transaction_status)) return res.sendStatus(IGNORE);
 
-			const financialDonation = await FinancialDonation.findOne({
+			let donation = await FinancialDonation.findOne({
 				where: { uuid: order_id },
-				include: ['user'],
 			});
 
-			if (!financialDonation) return res.sendStatus(IGNORE);
-			if (financialDonation.amount !== Number(gross_amount)) {
+			if (!donation) {
+				const BookDonation = require('../models').BookDonation;
+				donation = await BookDonation.findOne({
+					where: { uuid: order_id },
+				});
+			}
+
+			if (!donation) return res.sendStatus(IGNORE);
+
+			const donationAmount = donation.amount;
+			if (donationAmount !== Number(gross_amount)) {
 				return res.sendStatus(IGNORE);
 			}
 
-			if (financialDonation.status === 'success') return res.sendStatus(200);
+			const current = donation.status;
+			if (current === PAYMENT_STATUS.SUCCESS) return res.sendStatus(200);
 
+			const updateData = {};
 			switch (transaction_status) {
 				case 'settlement':
-					financialDonation.status = 'success';
+					updateData.status = PAYMENT_STATUS.SUCCESS;
 					break;
 				case 'cancel':
 				case 'failure':
 				case 'expire':
-					financialDonation.status = 'failed';
+					updateData.status = PAYMENT_STATUS.FAILED;
 					break;
 			}
 
-			await financialDonation.save();
+			await donation.update(updateData);
 			return res.sendStatus(200);
 		} catch (error) {
 			if (error instanceof ApiError) return next(error);

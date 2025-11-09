@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import useSWR from 'swr';
 import { Link, useParams } from 'react-router';
 

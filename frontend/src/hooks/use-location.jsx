@@ -33,7 +33,6 @@ export const useLocation = (
 	);
 
 	const handleProvinceChange = (provinceId) => {
-		console.log(provinceId);
 		setProvince(provinceId);
 		setCity(null);
 	};

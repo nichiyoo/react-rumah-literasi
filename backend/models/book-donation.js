@@ -1,6 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 const { scope } = require('../middleware/authorize');
+const { PAYMENT_STATUS } = require('../libs/constant');
 
 module.exports = (sequelize, DataTypes) => {
 	class BookDonation extends Model {
@@ -18,27 +19,25 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'address_id',
 				as: 'address',
 			});
+			this.hasMany(models.BookDonationItem, {
+				foreignKey: 'book_donation_id',
+				as: 'book_donation_items',
+			});
 		}
 	}
 	BookDonation.init(
 		{
-			title: {
+			uuid: {
 				allowNull: false,
 				type: DataTypes.STRING,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			genre: {
-				allowNull: false,
-				type: DataTypes.STRING,
+				defaultValue: DataTypes.UUIDV4,
 				validate: {
 					notEmpty: true,
 				},
 			},
 			amount: {
 				allowNull: false,
-				type: DataTypes.STRING,
+				type: DataTypes.INTEGER,
 				validate: {
 					notEmpty: true,
 				},
@@ -46,15 +45,29 @@ module.exports = (sequelize, DataTypes) => {
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: ['pending', 'ongoing', 'approved', 'rejected'],
-				defaultValue: 'pending',
+				values: [
+					PAYMENT_STATUS.PENDING,
+					PAYMENT_STATUS.SUCCESS,
+					PAYMENT_STATUS.FAILED,
+				],
+				defaultValue: PAYMENT_STATUS.PENDING,
 				validate: {
 					notEmpty: true,
 				},
 			},
+			payment_url: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				references: {
+					model: 'users',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 				validate: {
 					notEmpty: true,
 				},
@@ -62,13 +75,27 @@ module.exports = (sequelize, DataTypes) => {
 			address_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				references: {
+					model: 'addresses',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 				validate: {
 					notEmpty: true,
 				},
 			},
-			dimension: {
+			length: {
 				allowNull: true,
-				type: DataTypes.STRING,
+				type: DataTypes.FLOAT,
+			},
+			width: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
+			},
+			height: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
 			},
 			weight: {
 				allowNull: true,
