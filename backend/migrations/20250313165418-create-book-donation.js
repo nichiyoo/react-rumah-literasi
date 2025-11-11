@@ -74,6 +74,11 @@ module.exports = {
 				allowNull: true,
 				type: DataTypes.STRING,
 			},
+			acceptance_notes: {
+				allowNull: true,
+				type: DataTypes.STRING,
+				defaultValue: '',
+			},
 			created_at: {
 				allowNull: false,
 				type: DataTypes.DATE,

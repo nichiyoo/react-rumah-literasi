@@ -146,13 +146,18 @@ const ShowBookDonation = () => {
 						</div>
 					</div>
 
-					<HeadingSubtitle>Status Information</HeadingSubtitle>
+					<div>
+						<Label htmlFor='status'>Current Status</Label>
+						<Input disabled type='text' defaultValue={result.data.status} />
+					</div>
 
-					<div className='grid gap-6 lg:grid-cols-2'>
-						<div>
-							<Label htmlFor='status'>Current Status</Label>
-							<Input disabled type='text' defaultValue={result.data.status} />
-						</div>
+					<div className='col-span-full'>
+						<Label htmlFor='acceptance-notes'>Acceptance Notes</Label>
+						<Textarea
+							disabled
+							type='text'
+							defaultValue={result.data.acceptance_notes}
+						/>
 					</div>
 
 					<div className='col-span-full'>

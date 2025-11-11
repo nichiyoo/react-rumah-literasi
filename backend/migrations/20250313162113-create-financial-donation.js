@@ -23,7 +23,11 @@ module.exports = {
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: [PAYMENT_STATUS.PENDING, PAYMENT_STATUS.SUCCESS, PAYMENT_STATUS.FAILED],
+				values: [
+					PAYMENT_STATUS.PENDING,
+					PAYMENT_STATUS.SUCCESS,
+					PAYMENT_STATUS.FAILED,
+				],
 				defaultValue: PAYMENT_STATUS.PENDING,
 			},
 			notes: {
@@ -37,6 +41,17 @@ module.exports = {
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				references: {
+					model: 'users',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
+			},
+			acceptance_notes: {
+				allowNull: true,
+				type: DataTypes.STRING,
+				defaultValue: '',
 			},
 			created_at: {
 				allowNull: false,

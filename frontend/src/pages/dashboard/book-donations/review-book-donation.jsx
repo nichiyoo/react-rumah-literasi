@@ -1,10 +1,10 @@
 import * as React from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
 
 import axios from '@/libs/axios';
-import { currency } from '@/libs/utils';
+import { animate, currency } from '@/libs/utils';
 import { transactionSchema } from '@/libs/schemas';
 import { useTransaction } from '@/stores/use-transaction';
 import { useConfirm } from '@/hooks/use-confirm';
@@ -27,6 +27,7 @@ import { Error } from '@/components/error';
 const ReviewBookDonation = () => {
 	const navigate = useNavigate();
 	const { confirm } = useConfirm();
+	const { mutate } = useSWRConfig();
 	const [loading, setLoading] = React.useState(false);
 	const { items, detail, courier, reset } = useTransaction();
 
@@ -59,23 +60,22 @@ const ReviewBookDonation = () => {
 			.then(async () => {
 				setLoading(true);
 				try {
-					const response = await axios.post('/book-donations', {
+					const { data: result } = await axios.post('/book-donations', {
 						transaction: {
 							items,
 							detail,
 							courier,
 						},
 					});
+					toast.success('Book donation submitted successfully', {
+						description: 'Your book donation has been successfully submitted',
+					});
+					reset();
 
-					if (response.status === 201) {
-						toast.success('Book donation submitted successfully', {
-							description: 'Your book donation has been successfully submitted',
-						});
-						reset();
-						navigate('/dashboard/book-donations');
-					} else {
-						throw new Error('Failed to submit donation');
-					}
+					mutate('/book-donations');
+					window.open(result.data.payment_url, '_blank');
+					animate();
+					navigate('/dashboard/financial-donations');
 				} catch (error) {
 					toast.error('Failed to submit book donation', {
 						description: error.response.data.message || error.message,

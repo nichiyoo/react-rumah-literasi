@@ -64,6 +64,15 @@ const ShowDonation = () => {
 					</div>
 
 					<div className='col-span-full'>
+						<Label htmlFor='acceptance-notes'>Acceptance Notes</Label>
+						<Textarea
+							disabled
+							type='text'
+							defaultValue={result.data.acceptance_notes}
+						/>
+					</div>
+
+					<div className='col-span-full'>
 						<div className='flex items-center gap-2'>
 							<Link to='/dashboard/financial-donations'>
 								<Button variant='outline'>Back</Button>

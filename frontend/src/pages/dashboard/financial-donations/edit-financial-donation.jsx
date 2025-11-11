@@ -10,7 +10,7 @@ import {
 	HeadingDescription,
 	HeadingTitle,
 } from '@/components/ui/heading';
-import DonationForm from '@/components/financial-donations/form-financial-donation';
+import FinancialDonationForm from '@/components/financial-donations/form-financial-donation';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
 
@@ -34,7 +34,7 @@ const EditDonation = () => {
 
 			mutate('/financial-donations');
 			mutate('/financial-donations/' + id);
-			navigate('/dashboard/financial-donations');
+			navigate('/dashboard/financial-donations/' + id + '/detail');
 		} catch (error) {
 			toast.error('Failed to update donation', {
 				description: error.response.data.message || error.message,
@@ -58,7 +58,7 @@ const EditDonation = () => {
 			<Loading loading={loading} />
 
 			{result && (
-				<DonationForm
+				<FinancialDonationForm
 					initial={result.data}
 					action={onSubmit}
 					label='Update Donation'

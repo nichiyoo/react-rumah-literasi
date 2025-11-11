@@ -62,12 +62,6 @@ module.exports = (sequelize, DataTypes) => {
 			user_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
-				references: {
-					model: 'users',
-					key: 'id',
-				},
-				onUpdate: 'CASCADE',
-				onDelete: 'CASCADE',
 				validate: {
 					notEmpty: true,
 				},
@@ -75,12 +69,6 @@ module.exports = (sequelize, DataTypes) => {
 			address_id: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
-				references: {
-					model: 'addresses',
-					key: 'id',
-				},
-				onUpdate: 'CASCADE',
-				onDelete: 'CASCADE',
 				validate: {
 					notEmpty: true,
 				},
@@ -104,6 +92,11 @@ module.exports = (sequelize, DataTypes) => {
 			media: {
 				allowNull: true,
 				type: DataTypes.STRING,
+			},
+			acceptance_notes: {
+				allowNull: true,
+				type: DataTypes.STRING,
+				defaultValue: '',
 			},
 		},
 		{

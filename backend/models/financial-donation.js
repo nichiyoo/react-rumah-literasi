@@ -37,7 +37,11 @@ module.exports = (sequelize, DataTypes) => {
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
-				values: [PAYMENT_STATUS.PENDING, PAYMENT_STATUS.SUCCESS, PAYMENT_STATUS.FAILED],
+				values: [
+					PAYMENT_STATUS.PENDING,
+					PAYMENT_STATUS.SUCCESS,
+					PAYMENT_STATUS.FAILED,
+				],
 				defaultValue: PAYMENT_STATUS.PENDING,
 				validate: {
 					notEmpty: true,
@@ -60,6 +64,11 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					notEmpty: true,
 				},
+			},
+			acceptance_notes: {
+				allowNull: true,
+				type: DataTypes.STRING,
+				defaultValue: '',
 			},
 		},
 		{

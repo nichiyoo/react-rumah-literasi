@@ -10,8 +10,9 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import DonationForm from '@/components/financial-donations/form-financial-donation';
+import FinancialDonationForm from '@/components/financial-donations/form-financial-donation';
 import { useNavigate } from 'react-router';
+import { animate } from '@/libs/utils';
 
 const CreateDonation = () => {
 	const { mutate } = useSWRConfig();
@@ -25,6 +26,7 @@ const CreateDonation = () => {
 			});
 			mutate('/financial-donations');
 			window.open(result.data.payment_url, '_blank');
+			animate();
 			navigate('/dashboard/financial-donations');
 		} catch (error) {
 			toast.error('Failed to create donation', {
@@ -45,7 +47,7 @@ const CreateDonation = () => {
 				</HeadingDescription>
 			</Heading>
 
-			<DonationForm action={onSubmit} label='Create Donation' />
+			<FinancialDonationForm action={onSubmit} label='Create Donation' />
 		</div>
 	);
 };

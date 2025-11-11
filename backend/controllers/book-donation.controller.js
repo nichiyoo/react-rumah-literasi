@@ -137,7 +137,6 @@ const BookDonationController = {
 			}
 
 			await bookDonation.update({ ...data, address_id });
-
 			return res.json(
 				new ApiResponse('Book donation updated successfully', bookDonation)
 			);

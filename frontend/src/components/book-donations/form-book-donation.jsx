@@ -3,29 +3,35 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { TransactionItem } from '@/components/book-donations/donation-item-card';
-import { Map } from '@/components/map';
-import { HeadingSubtitle } from '@/components/ui/heading';
 import { currency } from '@/libs/utils';
 import { PAYMENT_STATUS } from '@/libs/constant';
 
-const StatusSchema = z.object({
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Map } from '@/components/map';
+import { TransactionItem } from '@/components/book-donations/donation-item-card';
+import { HeadingSubtitle } from '@/components/ui/heading';
+import { Hint } from '@/components/ui/hint';
+
+const BookDonationSchema = z.object({
 	status: z.enum([
 		PAYMENT_STATUS.PENDING,
 		PAYMENT_STATUS.SUCCESS,
 		PAYMENT_STATUS.FAILED,
 	]),
+	acceptance_notes: z.string().optional(),
 });
 
 const BookDonationForm = ({ initial, action, label }) => {
-	const { register, handleSubmit } = useForm({
-		resolver: zodResolver(StatusSchema),
-		defaultValues: initial || {
-			status: PAYMENT_STATUS.PENDING,
-		},
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(BookDonationSchema),
+		defaultValues: initial,
 	});
 
 	return (
@@ -104,14 +110,29 @@ const BookDonationForm = ({ initial, action, label }) => {
 				<select
 					className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 					{...register('status')}>
-					<option value={PAYMENT_STATUS.PENDING}>
-						{PAYMENT_STATUS.PENDING}
-					</option>
-					<option value={PAYMENT_STATUS.SUCCESS}>
-						{PAYMENT_STATUS.SUCCESS}
-					</option>
-					<option value={PAYMENT_STATUS.FAILED}>{PAYMENT_STATUS.FAILED}</option>
+					<option value={PAYMENT_STATUS.PENDING}>Pending</option>
+					<option value={PAYMENT_STATUS.SUCCESS}>Success</option>
+					<option value={PAYMENT_STATUS.FAILED}>Failed</option>
 				</select>
+				<Hint>Status of the book donation process.</Hint>
+				{errors.status && (
+					<span className='text-red-500'>{errors.status.message}</span>
+				)}
+			</div>
+
+			<div className='col-span-full'>
+				<Label htmlFor='acceptance-notes'>Acceptance Notes</Label>
+				<Textarea
+					type='text'
+					placeholder='Enter acceptance notes'
+					{...register('acceptance_notes')}
+				/>
+				<Hint>Notes about the acceptance of this donation.</Hint>
+				{errors.acceptance_notes && (
+					<span className='text-red-500'>
+						{errors.acceptance_notes.message}
+					</span>
+				)}
 			</div>
 
 			<div className='col-span-full'>
