@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router';
 
 import axios from '@/libs/axios';
 import { animate, currency } from '@/libs/utils';
-import { transactionSchema } from '@/libs/schemas';
-import { useTransaction } from '@/stores/use-transaction';
+import { bookDonationSchema } from '@/libs/schemas';
+import { useDonation } from '@/stores/use-donation';
 import { useConfirm } from '@/hooks/use-confirm';
 
 import {
@@ -15,7 +15,7 @@ import {
 	HeadingSubtitle,
 	HeadingTitle,
 } from '@/components/ui/heading';
-import { TransactionItem } from '@/components/book-donations/donation-item-card';
+import { DonationItem } from '@/components/book-donations/donation-item-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,7 +29,7 @@ const ReviewBookDonation = () => {
 	const { confirm } = useConfirm();
 	const { mutate } = useSWRConfig();
 	const [loading, setLoading] = React.useState(false);
-	const { items, detail, courier, reset } = useTransaction();
+	const { items, detail, courier, reset } = useDonation();
 
 	const {
 		data: selected,
@@ -39,7 +39,7 @@ const ReviewBookDonation = () => {
 
 	const onSubmit = async () => {
 		try {
-			transactionSchema.parse({
+			bookDonationSchema.parse({
 				items,
 				detail,
 				courier,
@@ -109,7 +109,7 @@ const ReviewBookDonation = () => {
 			<div className='grid items-start grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
 				{items.map((item) => (
 					<div key={item.id} className='relative group'>
-						<TransactionItem item={item} />
+						<DonationItem item={item} />
 					</div>
 				))}
 			</div>

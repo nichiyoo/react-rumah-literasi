@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Map } from '@/components/map';
-import { TransactionItem } from '@/components/book-donations/donation-item-card';
+import { DonationItem } from '@/components/book-donations/donation-item-card';
 import { HeadingSubtitle } from '@/components/ui/heading';
 import { Hint } from '@/components/ui/hint';
 
@@ -41,7 +41,7 @@ const BookDonationForm = ({ initial, action, label }) => {
 			<div className='grid items-start grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
 				{initial.book_donation_items.map((item) => (
 					<div key={item.id} className='relative group'>
-						<TransactionItem item={item} />
+						<DonationItem item={item} />
 					</div>
 				))}
 			</div>

@@ -27,7 +27,7 @@ export const courierSchema = z.object({
 	price: z.number(),
 });
 
-export const transactionSchema = z.object({
+export const bookDonationSchema = z.object({
 	items: z.array(itemSchema),
 	detail: detailSchema,
 	courier: courierSchema,

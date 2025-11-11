@@ -6,12 +6,12 @@ import {
 	HeadingTitle,
 } from '@/components/ui/heading';
 
-import { useTransaction } from '@/stores/use-transaction';
+import { useDonation } from '@/stores/use-donation';
 import DonationCourierForm from '@/components/book-donations/donation-courier-form';
 
 const CourierBookDonation = () => {
 	const navigate = useNavigate();
-	const { detail, setCourier } = useTransaction();
+	const { detail, setCourier } = useDonation();
 
 	const onSubmit = (courier) => {
 		setCourier({

@@ -4,9 +4,9 @@ import { X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 
 import { useConfirm } from '@/hooks/use-confirm';
-import { useTransaction } from '@/stores/use-transaction';
+import { useDonation } from '@/stores/use-donation';
 
-import { TransactionItem } from '@/components/book-donations/donation-item-card';
+import { DonationItem } from '@/components/book-donations/donation-item-card';
 import { Button } from '@/components/ui/button';
 import {
 	Heading,
@@ -18,7 +18,7 @@ import { Empty } from '@/components/empty';
 const CreateBookDonation = () => {
 	const navigate = useNavigate();
 	const { confirm } = useConfirm();
-	const { items, remove, reset } = useTransaction();
+	const { items, remove, reset } = useDonation();
 
 	const handleReset = () => {
 		confirm({
@@ -49,7 +49,7 @@ const CreateBookDonation = () => {
 				{items.map((item) => (
 					<div className='relative group' key={item.id}>
 						<Link to={'/dashboard/book-donations/create/' + item.id + '/edit'}>
-							<TransactionItem item={item} />
+							<DonationItem item={item} />
 						</Link>
 						<div className='absolute top-0 right-0 m-4'>
 							<button

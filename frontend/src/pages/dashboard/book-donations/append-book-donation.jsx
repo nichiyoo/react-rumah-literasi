@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { useTransaction } from '@/stores/use-transaction';
+import { useDonation } from '@/stores/use-donation';
 
 import {
 	Heading,
@@ -10,7 +10,7 @@ import {
 import DonationItemForm from '@/components/book-donations/donation-item-form';
 
 const CreateBook = () => {
-	const { append } = useTransaction();
+	const { append } = useDonation();
 	const navigate = useNavigate();
 
 	const onSubmit = async (data) => {

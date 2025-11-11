@@ -11,12 +11,12 @@ const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
 const ACTIVATE_PAYMENT = process.env.ACTIVATE_PAYMENT == 'true';
 
 const PaymentController = {
-	async midtrans(financialDonation, user) {
+	async midtrans(donation, user) {
 		if (ACTIVATE_PAYMENT) {
 			return await midtrans.post('/transactions', {
 				transaction_details: {
-					order_id: financialDonation.uuid,
-					gross_amount: financialDonation.amount,
+					order_id: donation.uuid,
+					gross_amount: donation.amount,
 					customer_details: {
 						email: user.email,
 					},
@@ -43,11 +43,12 @@ const PaymentController = {
 				transaction_status,
 			} = req.body;
 
-			const calculated_signature = crypto
+			const calculated = crypto
 				.createHash('sha512')
 				.update(order_id + status_code + gross_amount + MIDTRANS_SERVER_KEY)
 				.digest('hex');
-			if (calculated_signature !== signature_key) return res.sendStatus(IGNORE);
+
+			if (calculated !== signature_key) return res.sendStatus(IGNORE);
 
 			const statuses = ['settlement', 'cancel', 'failure', 'expire'];
 			if (!statuses.includes(transaction_status)) return res.sendStatus(IGNORE);
@@ -65,27 +66,25 @@ const PaymentController = {
 
 			if (!donation) return res.sendStatus(IGNORE);
 
-			const donationAmount = donation.amount;
-			if (donationAmount !== Number(gross_amount)) {
-				return res.sendStatus(IGNORE);
-			}
-
+			const amount = donation.amount;
 			const current = donation.status;
+
+			if (amount !== Number(gross_amount)) return res.sendStatus(IGNORE);
 			if (current === PAYMENT_STATUS.SUCCESS) return res.sendStatus(200);
 
-			const updateData = {};
+			const updated = {};
 			switch (transaction_status) {
 				case 'settlement':
-					updateData.status = PAYMENT_STATUS.SUCCESS;
+					updated.status = PAYMENT_STATUS.SUCCESS;
 					break;
 				case 'cancel':
 				case 'failure':
 				case 'expire':
-					updateData.status = PAYMENT_STATUS.FAILED;
+					updated.status = PAYMENT_STATUS.FAILED;
 					break;
 			}
 
-			await donation.update(updateData);
+			await donation.update(updated);
 			return res.sendStatus(200);
 		} catch (error) {
 			if (error instanceof ApiError) return next(error);

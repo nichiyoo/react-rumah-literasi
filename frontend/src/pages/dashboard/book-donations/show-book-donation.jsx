@@ -12,7 +12,7 @@ import {
 	HeadingSubtitle,
 	HeadingTitle,
 } from '@/components/ui/heading';
-import { TransactionItem } from '@/components/book-donations/donation-item-card';
+import { DonationItem } from '@/components/book-donations/donation-item-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -55,7 +55,7 @@ const ShowBookDonation = () => {
 					<div className='grid items-start grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
 						{result.data.book_donation_items.map((item) => (
 							<div key={item.id} className='relative group'>
-								<TransactionItem item={item} />
+								<DonationItem item={item} />
 							</div>
 						))}
 					</div>

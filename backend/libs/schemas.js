@@ -27,7 +27,7 @@ const courierSchema = z.object({
 	price: z.number(),
 });
 
-const transactionSchema = z.object({
+const bookDonationSchema = z.object({
 	items: z.array(itemSchema),
 	detail: detailSchema,
 	courier: courierSchema,
@@ -37,5 +37,5 @@ module.exports = {
 	itemSchema,
 	detailSchema,
 	courierSchema,
-	transactionSchema,
+	bookDonationSchema,
 };

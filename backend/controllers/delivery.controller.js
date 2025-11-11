@@ -46,7 +46,7 @@ const DeliveryController = {
 		};
 	},
 
-	async order(transaction) {
+	async order(detail) {
 		const merchant = await Merchant.findOne();
 		if (!merchant) throw new Error('Merchant data not found in database');
 
@@ -59,15 +59,15 @@ const DeliveryController = {
 			origin_contact_phone: merchant.phone,
 			origin_address: merchant.address,
 			origin_postal_code: merchant.zipcode,
-			destination_contact_name: transaction.name,
-			destination_contact_phone: transaction.phone,
-			destination_address: transaction.address,
-			destination_postal_code: transaction.zipcode,
-			destination_note: transaction.note,
-			courier_company: transaction.courier_company,
-			courier_type: transaction.courier_type,
+			destination_contact_name: detail.name,
+			destination_contact_phone: detail.phone,
+			destination_address: detail.address,
+			destination_postal_code: detail.zipcode,
+			destination_note: detail.note,
+			courier_company: detail.courier_company,
+			courier_type: detail.courier_type,
 			delivery_type: 'now',
-			items: transaction.transaction_items.map((item) => ({
+			items: detail.transaction_items.map((item) => ({
 				name: item.book.title,
 				quantity: item.amount,
 				weight: 200,

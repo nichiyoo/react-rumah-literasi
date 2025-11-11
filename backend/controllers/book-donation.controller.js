@@ -1,6 +1,6 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
-const { transactionSchema } = require('../libs/schemas');
+const { bookDonationSchema } = require('../libs/schemas');
 
 const {
 	BookDonation,
@@ -31,7 +31,7 @@ const BookDonationController = {
 
 	async store(req, res, next) {
 		try {
-			const validated = transactionSchema.parse(req.body.transaction);
+			const validated = bookDonationSchema.parse(req.body.transaction);
 
 			const addr = await Address.scope({
 				method: ['authorize', req.user],

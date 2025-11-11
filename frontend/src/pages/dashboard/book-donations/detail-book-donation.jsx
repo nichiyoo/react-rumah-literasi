@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Navigate, useNavigate } from 'react-router';
-import { useTransaction } from '@/stores/use-transaction';
+import { useDonation } from '@/stores/use-donation';
 
 import {
 	Heading,
@@ -11,7 +11,7 @@ import DonationDetailForm from '@/components/book-donations/donation-detail-form
 
 const DetailBookDonation = () => {
 	const navigate = useNavigate();
-	const { items, detail, setDetail } = useTransaction();
+	const { items, detail, setDetail } = useDonation();
 
 	const onSubmit = async (data) => {
 		setDetail(data);
