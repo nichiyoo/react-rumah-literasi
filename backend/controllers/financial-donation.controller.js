@@ -1,7 +1,7 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 
-const { ROLES, PAYMENT_STATUS } = require('../libs/constant');
+const { ROLES, PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
 const { FinancialDonation } = require('../models');
 const PaymentController = require('./payment.controller');
 
@@ -34,12 +34,13 @@ const FinancialDonationController = {
 
 			const { data } = await PaymentController.midtrans(
 				financialDonation,
-				req.user
+				req.user,
+				DONATION_TYPES.FINANCIAL
 			);
 
 			await financialDonation.update({
 				payment_url: data.redirect_url,
-				status: PAYMENT_STATUS.PENDING
+				status: PAYMENT_STATUS.PENDING,
 			});
 
 			return res.json(

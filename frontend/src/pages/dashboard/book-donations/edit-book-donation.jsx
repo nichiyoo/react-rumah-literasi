@@ -3,8 +3,6 @@ import useSWR, { useSWRConfig } from 'swr';
 import { useParams, useNavigate } from 'react-router';
 
 import axios from '@/libs/axios';
-import { useAuth } from '@/hooks/use-auth';
-import { ROLES } from '@/libs/constant';
 
 import {
 	Heading,
@@ -18,7 +16,6 @@ import BookDonationForm from '@/components/book-donations/form-book-donation';
 const EditBookDonationMain = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const { user } = useAuth();
 	const { mutate } = useSWRConfig();
 
 	const {
@@ -27,16 +24,7 @@ const EditBookDonationMain = () => {
 		isLoading: loading,
 	} = useSWR('/book-donations/' + id);
 
-	const allowed = [ROLES.LIBRARIAN, ROLES.SUPERADMIN].includes(user.role);
-
 	const onSubmit = async (data) => {
-		if (!allowed) {
-			toast.error('Permission Denied', {
-				description: 'You do not have permission to update this book donation',
-			});
-			return;
-		}
-
 		try {
 			await axios.put('/book-donations/' + result.data.id, data);
 			toast('Book donation updated', {

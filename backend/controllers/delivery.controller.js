@@ -21,7 +21,7 @@ const DeliveryController = {
 		if (!address) throw new ApiError(404, 'Address data not found');
 		if (!address.area_id) throw new ApiError(404, 'Address area not found');
 
-		const { data } = await biteship.post('/v1/rates/couriers', {
+		return await biteship.post('/v1/rates/couriers', {
 			origin_postal_code: address.zipcode,
 			destination_latitude: merchant.latitude,
 			destination_longitude: merchant.longitude,
@@ -39,16 +39,38 @@ const DeliveryController = {
 				},
 			],
 		});
-
-		return {
-			destination: data.destination,
-			pricings: data.pricing,
-		};
 	},
 
-	async order(detail) {
+	async order(bookDonation) {
 		const merchant = await Merchant.findOne();
 		if (!merchant) throw new Error('Merchant data not found in database');
+
+		// Book donation should have all relationships loaded (user, address, book_donation_items)
+		const destinationDetails = {
+			destination_contact_name: bookDonation.user.name,
+			destination_contact_phone: bookDonation.user.phone || 'N/A',
+			destination_address: bookDonation.address.street_address,
+			destination_postal_code: bookDonation.address.zipcode,
+			destination_note: 'Book donation for ' + bookDonation.user.name,
+		};
+
+		const bookDonationItems = bookDonation.book_donation_items || [];
+		const items =
+			bookDonationItems.length > 0
+				? bookDonationItems.map((item) => ({
+						name: item.title,
+						quantity: item.amount,
+						weight: item.weight || 200,
+						value: Math.floor(bookDonation.amount / bookDonationItems.length),
+				  }))
+				: [
+						{
+							name: 'Book Donation',
+							quantity: 1,
+							weight: bookDonation.weight || 200,
+							value: bookDonation.amount,
+						},
+				  ];
 
 		const { data } = await biteship.post('/v1/orders', {
 			shipper_contact_name: merchant.name,
@@ -59,23 +81,15 @@ const DeliveryController = {
 			origin_contact_phone: merchant.phone,
 			origin_address: merchant.address,
 			origin_postal_code: merchant.zipcode,
-			destination_contact_name: detail.name,
-			destination_contact_phone: detail.phone,
-			destination_address: detail.address,
-			destination_postal_code: detail.zipcode,
-			destination_note: detail.note,
-			courier_company: detail.courier_company,
-			courier_type: detail.courier_type,
+			...destinationDetails,
+			courier_company: bookDonation.courier_company || 'jne',
+			courier_type: bookDonation.courier_type || 'REG',
 			delivery_type: 'now',
-			items: detail.transaction_items.map((item) => ({
-				name: item.book.title,
-				quantity: item.amount,
-				weight: 200,
-				value: 50000,
-			})),
+			items: items,
 		});
 
 		return {
+			order_id: data.id,
 			delivery_fee: data.price,
 			delivery_eta: data.delivery.datetime,
 			tracking_id: data.courier.tracking_id,
@@ -87,22 +101,19 @@ const DeliveryController = {
 		return data;
 	},
 
-	async couriers(req, res, next) {
+	async rates(req, res, next) {
 		try {
 			const { detail } = req.body;
-			const { destination, pricings } = await DeliveryController.calculate(
-				detail,
-				req.user
-			);
+			const { data } = await DeliveryController.calculate(detail, req.user);
 
 			return res.send(
-				new ApiResponse('Couriers fetched successfully', {
-					destination,
-					pricings: pricings.map((pricing) => ({
+				new ApiResponse(
+					'Couriers fetched successfully',
+					data.pricing.map((pricing) => ({
 						...pricing,
 						id: crypto.randomUUID(),
-					})),
-				})
+					}))
+				)
 			);
 		} catch (error) {
 			if (error instanceof ApiError) return next(error);
@@ -116,30 +127,15 @@ const DeliveryController = {
 		}
 	},
 
-	async validatePrice(detail, courier, user) {
-		const { pricings } = await DeliveryController.calculate(detail, user);
-		const { courier_company, courier_type } = courier;
+	async courier(detail, courier, user) {
+		const { data } = await DeliveryController.calculate(detail, user);
+		const { courier_code, courier_service_code } = courier;
 
-		const selected = pricings.find(
+		return data.pricing.find(
 			(item) =>
-				item.courier_code &&
-				item.courier_service_code &&
-				item.courier_code.toLowerCase() === courier_company.toLowerCase() &&
-				item.courier_service_code.toLowerCase() === courier_type.toLowerCase()
+				item.courier_code === courier_code &&
+				item.courier_service_code === courier_service_code
 		);
-
-		if (!selected) throw new ApiError(400, 'Invalid courier selection');
-		const server = Math.round(selected.price);
-		const client = Math.round(courier.price);
-
-		if (server !== client) {
-			throw new ApiError(
-				400,
-				'There seems to be a change in the courier price.'
-			);
-		}
-
-		return selected;
 	},
 };
 

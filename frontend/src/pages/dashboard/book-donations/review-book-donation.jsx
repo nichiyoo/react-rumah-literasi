@@ -75,7 +75,7 @@ const ReviewBookDonation = () => {
 					mutate('/book-donations');
 					window.open(result.data.payment_url, '_blank');
 					animate();
-					navigate('/dashboard/financial-donations');
+					navigate('/dashboard/book-donations');
 				} catch (error) {
 					toast.error('Failed to submit book donation', {
 						description: error.response.data.message || error.message,
@@ -186,28 +186,37 @@ const ReviewBookDonation = () => {
 
 			<div className='grid gap-6 lg:grid-cols-2'>
 				<div>
-					<Label htmlFor='courier_company'>Courier Company</Label>
+					<Label htmlFor='company'>Courier Company</Label>
 					<Input
 						disabled
 						type='text'
 						className='uppercase'
-						defaultValue={courier.courier_company}
+						defaultValue={courier.company}
 					/>
 				</div>
 
 				<div>
-					<Label htmlFor='courier_type'>Courier Type</Label>
+					<Label htmlFor='type'>Courier Type</Label>
 					<Input
 						disabled
 						type='text'
 						className='uppercase'
-						defaultValue={courier.courier_type}
+						defaultValue={courier.type}
 					/>
 				</div>
 
 				<div>
-					<Label htmlFor='courier_price'>Courier Price</Label>
-					<Input disabled type='text' defaultValue={currency(courier.price)} />
+					<Label htmlFor='shipping_fee'>Shipping Fee</Label>
+					<Input
+						disabled
+						type='text'
+						defaultValue={currency(courier.shipping_fee)}
+					/>
+				</div>
+
+				<div>
+					<Label htmlFor='duration'>Shipping Duration</Label>
+					<Input disabled type='text' defaultValue={courier.duration} />
 				</div>
 			</div>
 

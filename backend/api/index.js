@@ -57,21 +57,18 @@ app.use(
 );
 
 const errorHandler = require('../middleware/errors');
+const { authenticate } = require('../middleware/authenticate');
+
 const authRoutes = require('../routes/auth.routes');
 const paymentRoutes = require('../routes/payment.routes');
-
-const { authenticate } = require('../middleware/authenticate');
-const { authorize } = require('../middleware/authorize');
-
-const userRoutes = require('../routes/user.routes');
-const bookRoutes = require('../routes/book.routes');
-const eventRoutes = require('../routes/event.routes');
+const teritoriesRoutes = require('../routes/teritory.route');
+const publicRoutes = require('../routes/public.routes');
 const bookDonationRoutes = require('../routes/book-donation.routes');
 const financialDonationRoutes = require('../routes/financial-donation.routes');
 const deliveryRoutes = require('../routes/delivery.routes');
 const addressRoutes = require('../routes/address.routes');
-const teritoriesRoutes = require('../routes/teritory.route');
-const publicRoutes = require('../routes/public.routes');
+const eventRoutes = require('../routes/event.routes');
+const userRoutes = require('../routes/user.routes');
 const merchantRoutes = require('../routes/merchant.routes');
 
 app.use('/api/_healthcheck', (req, res) => {
@@ -90,7 +87,6 @@ app.use('/api/book-donations', bookDonationRoutes);
 app.use('/api/financial-donations', financialDonationRoutes);
 app.use('/api/deliveries', deliveryRoutes);
 app.use('/api/addresses', addressRoutes);
-app.use('/api/books', bookRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/members', userRoutes);
 app.use('/api/merchant', merchantRoutes);

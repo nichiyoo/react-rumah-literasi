@@ -15,10 +15,12 @@ const CourierBookDonation = () => {
 
 	const onSubmit = (courier) => {
 		setCourier({
-			zipcode: courier.zipcode.toString(),
-			courier_company: courier.courier_code,
-			courier_type: courier.courier_service_code,
-			price: courier.price,
+			company: courier.company,
+			courier_code: courier.courier_code,
+			courier_service_code: courier.courier_service_code,
+			shipping_fee: courier.shipping_fee,
+			duration: courier.duration,
+			type: courier.type,
 		});
 		navigate('/dashboard/book-donations/create/review');
 	};

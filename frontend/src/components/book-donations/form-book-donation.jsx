@@ -54,8 +54,12 @@ const BookDonationForm = ({ initial, action, label }) => {
 					<Input disabled type='text' defaultValue={initial.user.name} />
 				</div>
 				<div>
-					<Label htmlFor='amount'>Amount (Rp)</Label>
-					<Input disabled type='text' defaultValue={currency(initial.amount)} />
+					<Label htmlFor='estimated_value'>Estimated Value (Rp)</Label>
+					<Input
+						disabled
+						type='text'
+						defaultValue={currency(initial.estimated_value)}
+					/>
 				</div>
 
 				<div>
@@ -105,8 +109,69 @@ const BookDonationForm = ({ initial, action, label }) => {
 				</div>
 			</div>
 
+			<HeadingSubtitle>Courier Information</HeadingSubtitle>
+
+			<div className='grid gap-6 lg:grid-cols-2'>
+				<div>
+					<Label htmlFor='courier_code'>Courier Company</Label>
+					<Input
+						disabled
+						type='text'
+						className='uppercase'
+						defaultValue={initial.courier_code}
+					/>
+				</div>
+
+				<div>
+					<Label htmlFor='courier_service_code'>Courier Type</Label>
+					<Input
+						disabled
+						type='text'
+						className='uppercase'
+						defaultValue={initial.courier_service_code}
+					/>
+				</div>
+
+				<div>
+					<Label htmlFor='shipping_fee'>Shipping Fee</Label>
+					<Input
+						disabled
+						type='text'
+						defaultValue={currency(initial.shipping_fee)}
+					/>
+				</div>
+
+				<div>
+					<Label htmlFor='shipping_eta'>Shipping Duration</Label>
+					<Input disabled type='text' defaultValue={initial.shipping_eta} />
+				</div>
+			</div>
+
+			<HeadingSubtitle>Tracking Information</HeadingSubtitle>
+
+			<div className='grid gap-6 lg:grid-cols-2'>
+				<div>
+					<Label htmlFor='order-id'>Order ID</Label>
+					<Input
+						disabled
+						type='text'
+						defaultValue={initial.order_id || 'Not available'}
+					/>
+				</div>
+				<div>
+					<Label htmlFor='tracking-id'>Tracking ID</Label>
+					<Input
+						disabled
+						type='text'
+						defaultValue={initial.tracking_id || 'Not available'}
+					/>
+				</div>
+			</div>
+
+			<HeadingSubtitle>Status Management</HeadingSubtitle>
+
 			<div>
-				<Label htmlFor='status'>Status</Label>
+				<Label htmlFor='status'>Update Status</Label>
 				<select
 					className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
 					{...register('status')}>

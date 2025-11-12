@@ -106,7 +106,7 @@ const ListBookDonations = () => {
 									</div>
 								</TableCell>
 								<TableCell>{bookDonation.address.street_address}</TableCell>
-								<TableCell>{currency(bookDonation.amount)}</TableCell>
+								<TableCell>{currency(bookDonation.shipping_fee)}</TableCell>
 								<TableCell>
 									<Badge>{bookDonation.status}</Badge>
 								</TableCell>{' '}

@@ -16,10 +16,6 @@ module.exports = {
 				type: DataTypes.STRING,
 				defaultValue: DataTypes.UUIDV4,
 			},
-			amount: {
-				allowNull: false,
-				type: DataTypes.INTEGER,
-			},
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
@@ -54,6 +50,13 @@ module.exports = {
 				onUpdate: 'CASCADE',
 				onDelete: 'CASCADE',
 			},
+			estimated_value: {
+				allowNull: false,
+				type: DataTypes.INTEGER,
+				validate: {
+					notEmpty: true,
+				},
+			},
 			length: {
 				allowNull: true,
 				type: DataTypes.FLOAT,
@@ -78,6 +81,30 @@ module.exports = {
 				allowNull: true,
 				type: DataTypes.STRING,
 				defaultValue: '',
+			},
+			order_id: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			tracking_id: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			shipping_fee: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
+			},
+			shipping_eta: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			courier_code: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			courier_service_code: {
+				allowNull: true,
+				type: DataTypes.STRING,
 			},
 			created_at: {
 				allowNull: false,

@@ -21,10 +21,12 @@ export const detailSchema = z.object({
 });
 
 export const courierSchema = z.object({
-	zipcode: z.string().nonempty(),
-	courier_company: z.string().nonempty(),
-	courier_type: z.string().nonempty(),
-	price: z.number(),
+	company: z.string().nonempty(),
+	courier_code: z.string().nonempty(),
+	courier_service_code: z.string().nonempty(),
+	shipping_fee: z.number(),
+	duration: z.string().nonempty(),
+	type: z.string().nonempty(),
 });
 
 export const bookDonationSchema = z.object({

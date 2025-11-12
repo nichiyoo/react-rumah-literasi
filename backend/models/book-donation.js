@@ -35,13 +35,6 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
-			amount: {
-				allowNull: false,
-				type: DataTypes.INTEGER,
-				validate: {
-					notEmpty: true,
-				},
-			},
 			status: {
 				allowNull: false,
 				type: DataTypes.ENUM,
@@ -73,6 +66,13 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
+			estimated_value: {
+				allowNull: false,
+				type: DataTypes.INTEGER,
+				validate: {
+					notEmpty: true,
+				},
+			},
 			length: {
 				allowNull: true,
 				type: DataTypes.FLOAT,
@@ -97,6 +97,30 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: true,
 				type: DataTypes.STRING,
 				defaultValue: '',
+			},
+			order_id: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			tracking_id: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			shipping_fee: {
+				allowNull: true,
+				type: DataTypes.FLOAT,
+			},
+			shipping_eta: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			courier_code: {
+				allowNull: true,
+				type: DataTypes.STRING,
+			},
+			courier_service_code: {
+				allowNull: true,
+				type: DataTypes.STRING,
 			},
 		},
 		{

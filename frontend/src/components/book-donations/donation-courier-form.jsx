@@ -21,14 +21,7 @@ const DonationCourierForm = ({ detail, action, previous, label }) => {
 		[detail],
 		{
 			initial: [],
-			onSuccess: (data) => {
-				const { destination, pricings: result } = data.data.data;
-				return result.map((courier) => ({
-					...courier,
-					zipcode: destination.postal_code,
-					selected: false,
-				}));
-			},
+			onSuccess: ({ data: result }) => result.data,
 			onError: (error) => {
 				toast.error('Failed to fetch couriers', {
 					description: error.response.data.message || error.message,

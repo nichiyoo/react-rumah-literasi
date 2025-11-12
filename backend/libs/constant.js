@@ -11,7 +11,13 @@ const PAYMENT_STATUS = {
 	FAILED: 'Failed',
 };
 
+const DONATION_TYPES = {
+	FINANCIAL: 'financial',
+	BOOK: 'book',
+};
+
 module.exports = {
 	ROLES,
 	PAYMENT_STATUS,
+	DONATION_TYPES,
 };

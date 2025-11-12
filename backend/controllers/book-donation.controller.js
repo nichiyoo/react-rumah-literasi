@@ -8,9 +8,9 @@ const {
 	BookDonationItem,
 	sequelize,
 } = require('../models');
-const DeliveryController = require('./delivery.controller');
 const PaymentController = require('./payment.controller');
-const { ROLES, PAYMENT_STATUS } = require('../libs/constant');
+const { ROLES, PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
+const DeliveryController = require('./delivery.controller');
 
 const BookDonationController = {
 	async index(req, res, next) {
@@ -32,44 +32,57 @@ const BookDonationController = {
 	async store(req, res, next) {
 		try {
 			const validated = bookDonationSchema.parse(req.body.transaction);
-
-			const addr = await Address.scope({
+			const address = await Address.scope({
 				method: ['authorize', req.user],
 			}).findOne({
-				where: { id: validated.detail.address_id },
+				where: {
+					id: validated.detail.address_id,
+				},
 			});
-			if (!addr) throw new ApiError(404, 'Address not found');
 
-			await DeliveryController.validatePrice(
+			if (!address) throw new ApiError(404, 'Address not found');
+			const courier = await DeliveryController.courier(
 				validated.detail,
 				validated.courier,
 				req.user
 			);
 
+			if (!courier) throw new ApiError(400, 'Invalid courier selection');
+			if (courier.shipping_fee !== validated.courier.shipping_fee) {
+				throw new ApiError(400, "There's a change in the courier price.");
+			}
+
 			const result = await sequelize.transaction(async (t) => {
 				const donation = await BookDonation.create(
 					{
-						amount: validated.courier.price,
 						address_id: validated.detail.address_id,
 						user_id: req.user.id,
+						estimated_value: validated.detail.estimated_value,
 						length: validated.detail.length,
 						width: validated.detail.width,
 						height: validated.detail.height,
 						weight: validated.detail.weight,
+						order_id: null,
+						tracking_id: null,
+						shipping_fee: courier.shipping_fee,
+						shipping_eta: courier.duration,
+						courier_code: courier.courier_code,
+						courier_service_code: courier.courier_service_code,
 						status: PAYMENT_STATUS.PENDING,
+						book_donation_items: validated.items,
 					},
-					{ transaction: t }
+					{
+						include: ['book_donation_items'],
+						transaction: t,
+					}
 				);
 
-				await BookDonationItem.bulkCreate(
-					validated.items.map((item) => ({
-						...item,
-						book_donation_id: donation.id,
-					})),
-					{ transaction: t }
+				const { data } = await PaymentController.midtrans(
+					donation,
+					req.user,
+					DONATION_TYPES.BOOK
 				);
 
-				const { data } = await PaymentController.midtrans(donation, req.user);
 				await donation.update(
 					{
 						payment_url: data.redirect_url,
@@ -81,9 +94,9 @@ const BookDonationController = {
 				return donation;
 			});
 
-			return res
-				.status(201)
-				.json(new ApiResponse('Book donation submitted successfully', result));
+			return res.json(
+				new ApiResponse('Book donation submitted successfully', result)
+			);
 		} catch (error) {
 			if (error && error.issues) {
 				const message = error.issues.map((issue) => issue.message).join(', ');
@@ -167,6 +180,36 @@ const BookDonationController = {
 			await bookDonation.destroy();
 			return res.json(
 				new ApiResponse('Book donation deleted successfully', bookDonation)
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	async track(req, res, next) {
+		try {
+			const { id } = req.params;
+			if (!id) throw new ApiError(400, 'ID is required');
+
+			const bookDonation = await BookDonation.scope({
+				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
+			}).findOne({
+				where: { id },
+			});
+
+			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
+			if (!bookDonation.tracking_id)
+				throw new ApiError(404, 'Tracking ID not available');
+
+			const trackingResult = await DeliveryController.track(
+				bookDonation.tracking_id
+			);
+
+			return res.json(
+				new ApiResponse(
+					'Book donation tracking retrieved successfully',
+					trackingResult
+				)
 			);
 		} catch (error) {
 			next(error);

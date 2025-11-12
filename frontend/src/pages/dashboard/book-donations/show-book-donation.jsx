@@ -72,11 +72,11 @@ const ShowBookDonation = () => {
 							/>
 						</div>
 						<div>
-							<Label htmlFor='amount'>Amount</Label>
+							<Label htmlFor='amount'>Estimated Value</Label>
 							<Input
 								disabled
 								type='text'
-								defaultValue={currency(result.data.amount)}
+								defaultValue={currency(result.data.estimated_value)}
 							/>
 						</div>
 
@@ -145,6 +145,78 @@ const ShowBookDonation = () => {
 							/>
 						</div>
 					</div>
+
+					<HeadingSubtitle>Courier Information</HeadingSubtitle>
+
+					<div className='grid gap-6 lg:grid-cols-2'>
+						<div>
+							<Label htmlFor='courier_code'>Courier Company</Label>
+							<Input
+								disabled
+								type='text'
+								className='uppercase'
+								defaultValue={result.data.courier_code}
+							/>
+						</div>
+
+						<div>
+							<Label htmlFor='courier_service_code'>Courier Type</Label>
+							<Input
+								disabled
+								type='text'
+								className='uppercase'
+								defaultValue={result.data.courier_service_code}
+							/>
+						</div>
+
+						<div>
+							<Label htmlFor='shipping_fee'>Shipping Fee</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={currency(result.data.shipping_fee)}
+							/>
+						</div>
+
+						<div>
+							<Label htmlFor='shipping_eta'>Shipping Duration</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.shipping_eta}
+							/>
+						</div>
+					</div>
+
+					<HeadingSubtitle>Tracking Information</HeadingSubtitle>
+
+					<div className='grid gap-6 lg:grid-cols-2'>
+						<div>
+							<Label htmlFor='order-id'>Order ID</Label>
+							<Input disabled type='text' defaultValue={result.data.order_id} />
+						</div>
+						<div>
+							<Label htmlFor='tracking-id'>Tracking ID</Label>
+							<Input
+								disabled
+								type='text'
+								defaultValue={result.data.tracking_id}
+							/>
+						</div>
+					</div>
+
+					{result.data.tracking_id && (
+						<div className='flex items-center gap-2 mt-4'>
+							<Link
+								to={`https://biteship.com/track/${result.data.tracking_id}`}
+								target='_blank'
+								rel='noreferrer'>
+								<Button variant='outline'>View Tracking on Biteship</Button>
+							</Link>
+						</div>
+					)}
+
+					<HeadingSubtitle>Status Management</HeadingSubtitle>
 
 					<div>
 						<Label htmlFor='status'>Current Status</Label>
