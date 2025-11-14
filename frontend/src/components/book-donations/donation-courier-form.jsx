@@ -24,7 +24,7 @@ const DonationCourierForm = ({ detail, action, previous, label }) => {
 			onSuccess: ({ data: result }) => result.data,
 			onError: (error) => {
 				toast.error('Failed to fetch couriers', {
-					description: error.response.data.message || error.message,
+					description: error.response?.data?.message || error.message,
 				});
 			},
 		}

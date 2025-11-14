@@ -24,7 +24,7 @@ createRoot(document.getElementById('root')).render(
 					if (key === '/auth/profile') return;
 					const message = ERROR_MESSAGES[error.response.status];
 					toast.error('Failed to load resource', {
-						description: error.response.data.message || message,
+						description: error.response?.data?.message || message,
 					});
 				},
 			}}>

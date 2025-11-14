@@ -40,7 +40,7 @@ const EditMember = () => {
 			navigate('/dashboard/members');
 		} catch (error) {
 			toast.error('Failed to update member', {
-				description: error.response.data.message || error.message,
+				description: error.response?.data?.message || error.message,
 			});
 			console.error(error);
 		}

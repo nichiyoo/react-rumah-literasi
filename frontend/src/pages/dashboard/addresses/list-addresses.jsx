@@ -48,7 +48,7 @@ const ListAddresses = () => {
 					});
 				} catch (error) {
 					toast.error('Failed to delete address', {
-						description: error.response.data.message || error.message,
+						description: error.response?.data?.message || error.message,
 					});
 					console.error(error);
 				}
@@ -73,7 +73,7 @@ const ListAddresses = () => {
 					});
 				} catch (error) {
 					toast.error('Failed to set address as default', {
-						description: error.response.data.message || error.message,
+						description: error.response?.data?.message || error.message,
 					});
 					console.error(error);
 				}

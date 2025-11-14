@@ -48,7 +48,7 @@ const ListEvents = () => {
 					});
 				} catch (error) {
 					toast.error('Failed to delete event', {
-						description: error.response.data.message || error.message,
+						description: error.response?.data?.message || error.message,
 					});
 					console.error(error);
 				}

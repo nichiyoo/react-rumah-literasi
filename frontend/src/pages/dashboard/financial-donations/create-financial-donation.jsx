@@ -30,7 +30,7 @@ const CreateDonation = () => {
 			navigate('/dashboard/financial-donations');
 		} catch (error) {
 			toast.error('Failed to create donation', {
-				description: error.response.data.message || error.message,
+				description: error.response?.data?.message || error.message,
 			});
 			console.error(error);
 		}

@@ -48,7 +48,7 @@ const OneTimePassword = () => {
 			navigate('/dashboard');
 		} catch (error) {
 			toast.error('Failed to login', {
-				description: error.response.data.message || error.message,
+				description: error.response?.data?.message || error.message,
 			});
 			console.error(error);
 		}
@@ -60,7 +60,7 @@ const OneTimePassword = () => {
 			navigate('/auth/signin');
 		} catch (error) {
 			toast.error('Failed to logout', {
-				description: error.response.data.message || error.message,
+				description: error.response?.data?.message || error.message,
 			});
 		}
 	};

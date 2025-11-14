@@ -47,7 +47,7 @@ const ShowAddress = () => {
 					});
 				} catch (error) {
 					toast.error('Failed to set address as default', {
-						description: error.response.data.message || error.message,
+						description: error.response?.data?.message || error.message,
 					});
 					console.error(error);
 				}

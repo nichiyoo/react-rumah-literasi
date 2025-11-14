@@ -78,7 +78,7 @@ const ReviewBookDonation = () => {
 					navigate('/dashboard/book-donations');
 				} catch (error) {
 					toast.error('Failed to submit book donation', {
-						description: error.response.data.message || error.message,
+						description: error.response?.data?.message || error.message,
 					});
 					console.error(error);
 				} finally {

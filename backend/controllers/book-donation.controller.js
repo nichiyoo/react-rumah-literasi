@@ -1,16 +1,13 @@
+const { ValidationError } = require('sequelize');
+
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
 const { bookDonationSchema } = require('../libs/schemas');
-
-const {
-	BookDonation,
-	Address,
-	BookDonationItem,
-	sequelize,
-} = require('../models');
-const PaymentController = require('./payment.controller');
 const { ROLES, PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
+
+const PaymentController = require('./payment.controller');
 const DeliveryController = require('./delivery.controller');
+const { BookDonation, Address, sequelize } = require('../models');
 
 const BookDonationController = {
 	async index(req, res, next) {
@@ -98,11 +95,23 @@ const BookDonationController = {
 				new ApiResponse('Book donation submitted successfully', result)
 			);
 		} catch (error) {
-			if (error && error.issues) {
-				const message = error.issues.map((issue) => issue.message).join(', ');
-				return next(new ApiError(400, message));
+			if (error instanceof ApiError) return next(error);
+			if (error instanceof ValidationError) {
+				return next(
+					new ApiError(
+						400,
+						'Failed to submit book donation',
+						error.issues.map((issue) => issue.message).join(', ')
+					)
+				);
 			}
-			next(error);
+			return next(
+				new ApiError(
+					error.response?.status || 500,
+					error.response?.data.message || error.message,
+					error.response?.data
+				)
+			);
 		}
 	},
 
@@ -111,16 +120,16 @@ const BookDonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const bookDonation = await BookDonation.scope({
+			const donation = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
 				include: ['user', 'address', 'book_donation_items'],
 			});
-			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
+			if (!donation) throw new ApiError(404, 'Book donation not found');
 
 			return res.json(
-				new ApiResponse('Book donation retrieved successfully', bookDonation)
+				new ApiResponse('Book donation retrieved successfully', donation)
 			);
 		} catch (error) {
 			next(error);
@@ -132,26 +141,26 @@ const BookDonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const bookDonation = await BookDonation.scope({
+			const donation = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
 			});
-			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
+			if (!donation) throw new ApiError(404, 'Book donation not found');
 
-			const { address_id, ...data } = req.body;
-			if (address_id) {
-				const addr = await Address.scope({
-					method: ['authorize', req.user],
-				}).findOne({
-					where: { id: address_id },
-				});
-				if (!addr) throw new ApiError(404, 'Address not found');
-			}
+			const { address_id } = req.body;
+			const addr = await Address.scope({
+				method: ['authorize', req.user],
+			}).findOne({
+				where: { id: address_id },
+			});
+			if (!addr) throw new ApiError(404, 'Address not found');
 
-			await bookDonation.update({ ...data, address_id });
+			await donation.update({
+				...req.body,
+			});
 			return res.json(
-				new ApiResponse('Book donation updated successfully', bookDonation)
+				new ApiResponse('Book donation updated successfully', donation)
 			);
 		} catch (error) {
 			next(error);

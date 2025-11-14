@@ -50,7 +50,7 @@ const ListMembers = () => {
 					});
 				} catch (error) {
 					toast.error('Failed to delete member', {
-						description: error.response.data.message || error.message,
+						description: error.response?.data?.message || error.message,
 					});
 					console.error(error);
 				}

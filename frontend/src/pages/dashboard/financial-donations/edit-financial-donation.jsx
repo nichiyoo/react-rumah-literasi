@@ -37,7 +37,7 @@ const EditDonation = () => {
 			navigate('/dashboard/financial-donations/' + id + '/detail');
 		} catch (error) {
 			toast.error('Failed to update donation', {
-				description: error.response.data.message || error.message,
+				description: error.response?.data?.message || error.message,
 			});
 			console.error(error);
 		}
