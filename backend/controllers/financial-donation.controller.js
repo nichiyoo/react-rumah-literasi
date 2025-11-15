@@ -1,24 +1,43 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
-
+const SearchService = require('../libs/search-service');
 const { ROLES, PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
-const { FinancialDonation } = require('../models');
+const { FinancialDonation, sequelize } = require('../models');
+const { Op } = require('sequelize');
 const PaymentController = require('./payment.controller');
+
+const searchService = new SearchService(sequelize);
 
 const FinancialDonationController = {
 	async index(req, res, next) {
 		try {
-			const financialDonations = await FinancialDonation.scope({
-				method: ['authorize', req.user, [ROLES.ADMIN]],
-			}).findAll({
-				include: 'user',
+			const { search, page, limit, status } = req.query;
+
+			const fd = FinancialDonation.scope({
+				method: ['authorize', req.user, ROLES.ADMIN],
 			});
 
+			const filters = {};
+			if (status) filters.status = status;
+			const result = await searchService.search(
+				fd,
+				search,
+				filters,
+				{ page, limit },
+				['user'],
+				['$user.name$', 'notes', 'acceptance_notes']
+			);
+
 			return res.json(
-				new ApiResponse(
-					'Financial donations retrieved successfully',
-					financialDonations
-				)
+				new ApiResponse('Financial donations retrieved successfully', {
+					rows: result.rows,
+					pagination: {
+						total: result.count,
+						page: result.page,
+						limit: result.limit,
+						pages: Math.ceil(result.count / result.limit),
+					},
+				})
 			);
 		} catch (error) {
 			next(error);

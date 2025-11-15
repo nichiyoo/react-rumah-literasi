@@ -27,11 +27,29 @@ import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { useResultState } from '@/hooks/use-result-state';
+import { usePagination } from '@/hooks/use-pagination';
+import { Pagination } from '@/components/pagination';
 
 const ListEvents = () => {
 	const { confirm } = useConfirm();
-	const { error, mutate, data, isLoading: loading } = useSWR('/events');
-	const { result, empty } = useResultState(error, loading, data);
+	const { page, limit } = usePagination();
+
+	const {
+		error,
+		mutate,
+		data,
+		isLoading: loading,
+	} = useSWR([
+		'events',
+		{
+			params: {
+				page: page,
+				limit: limit,
+			},
+		},
+	]);
+
+	const { result, pagination, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -116,6 +134,8 @@ const ListEvents = () => {
 				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
+
+			{pagination && <Pagination pagination={pagination} />}
 		</div>
 	);
 };

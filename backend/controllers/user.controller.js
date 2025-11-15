@@ -1,13 +1,40 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
+const SearchService = require('../libs/search-service');
 
-const { User } = require('../models');
+const { User, sequelize } = require('../models');
+
+const searchService = new SearchService(sequelize);
 
 const UserController = {
 	async index(req, res, next) {
 		try {
-			const users = await User.findAll();
-			return res.json(new ApiResponse('Users retrieved successfully', users));
+			const { search, page, limit, status } = req.query;
+
+			const filters = {};
+			if (status) filters.role = status;
+
+			const paginate = searchService.paginate({ page, limit });
+			const result = await searchService.search(
+				User,
+				search,
+				filters,
+				{ page, limit },
+				[],
+				['name', 'email', 'phone']
+			);
+
+			return res.json(
+				new ApiResponse('Users retrieved successfully', {
+					rows: result.rows,
+					pagination: {
+						total: result.count,
+						page: paginate.page,
+						limit: paginate.limit,
+						pages: Math.ceil(result.count / paginate.limit),
+					},
+				})
+			);
 		} catch (error) {
 			next(error);
 		}

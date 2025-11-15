@@ -2,24 +2,67 @@ const { ValidationError } = require('sequelize');
 
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
+const SearchService = require('../libs/search-service');
 const { bookDonationSchema } = require('../libs/schemas');
 const { ROLES, PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
+const { Op } = require('sequelize');
 
 const PaymentController = require('./payment.controller');
 const DeliveryController = require('./delivery.controller');
 const { BookDonation, Address, sequelize } = require('../models');
 
+const searchService = new SearchService(sequelize);
+
 const BookDonationController = {
 	async index(req, res, next) {
 		try {
-			const bookDonations = await BookDonation.scope({
-				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
-			}).findAll({
-				include: ['user', 'address'],
+			const { search, page, limit, status } = req.query;
+
+			const donations = BookDonation.scope({
+				method: ['authorize', req.user, ROLES.LIBRARIAN],
 			});
 
+			const filters = {};
+			if (status) filters.status = status;
+
+			const paginate = searchService.paginate({ page, limit });
+			const result = await searchService.search(
+				donations,
+				search,
+				filters,
+				{ page, limit },
+				[
+					{
+						association: 'user',
+						attributes: ['id', 'name', 'email'],
+					},
+					{
+						association: 'address',
+						attributes: ['id', 'name', 'street_address'],
+					},
+					{
+						association: 'book_donation_items',
+						attributes: ['id', 'title', 'author'],
+					},
+				],
+				[
+					'$user.name$',
+					'$address.name$',
+					'$book_donation_items.title$',
+					'acceptance_notes',
+				]
+			);
+
 			return res.json(
-				new ApiResponse('Book donations retrieved successfully', bookDonations)
+				new ApiResponse('Book donations retrieved successfully', {
+					rows: result.rows,
+					pagination: {
+						total: result.count,
+						page: paginate.page,
+						limit: paginate.limit,
+						pages: Math.ceil(result.count / paginate.limit),
+					},
+				})
 			);
 		} catch (error) {
 			next(error);
@@ -147,14 +190,6 @@ const BookDonationController = {
 				where: { id },
 			});
 			if (!donation) throw new ApiError(404, 'Book donation not found');
-
-			const { address_id } = req.body;
-			const addr = await Address.scope({
-				method: ['authorize', req.user],
-			}).findOne({
-				where: { id: address_id },
-			});
-			if (!addr) throw new ApiError(404, 'Address not found');
 
 			await donation.update({
 				...req.body,

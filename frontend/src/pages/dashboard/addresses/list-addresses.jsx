@@ -27,11 +27,29 @@ import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
+import { usePagination } from '@/hooks/use-pagination';
+import { Pagination } from '@/components/pagination';
 
 const ListAddresses = () => {
 	const { confirm } = useConfirm();
-	const { error, mutate, data, isLoading: loading } = useSWR('/addresses');
-	const { result, empty } = useResultState(error, loading, data);
+	const { page, limit } = usePagination();
+
+	const {
+		error,
+		mutate,
+		data,
+		isLoading: loading,
+	} = useSWR([
+		'addresses',
+		{
+			params: {
+				page: page,
+				limit: limit,
+			},
+		},
+	]);
+
+	const { result, pagination, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -161,6 +179,8 @@ const ListAddresses = () => {
 				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
+
+			{pagination && <Pagination pagination={pagination} />}
 		</div>
 	);
 };

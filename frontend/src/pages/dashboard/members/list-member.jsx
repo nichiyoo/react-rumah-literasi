@@ -1,12 +1,10 @@
-import * as React from 'react';
-
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
+import { usePagination } from '@/hooks/use-pagination';
 
 import axios from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
-import { useResultState } from '@/hooks/use-result-state';
 
 import {
 	Heading,
@@ -29,11 +27,29 @@ import { Badge } from '@/components/ui/badge';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
+import { useResultState } from '@/hooks/use-result-state';
+import { Pagination } from '@/components/pagination';
 
 const ListMembers = () => {
 	const { confirm } = useConfirm();
-	const { error, mutate, data, isLoading: loading } = useSWR('/members');
-	const { result, empty } = useResultState(error, loading, data);
+	const { page, limit } = usePagination();
+
+	const {
+		error,
+		mutate,
+		data,
+		isLoading: loading,
+	} = useSWR([
+		'members',
+		{
+			params: {
+				page: page,
+				limit: limit,
+			},
+		},
+	]);
+
+	const { result, pagination, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (uuid) => {
 		confirm({
@@ -65,9 +81,7 @@ const ListMembers = () => {
 			<Heading>
 				<HeadingTitle>Member List</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Manage all members with pagination functionality.
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
@@ -125,6 +139,8 @@ const ListMembers = () => {
 				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
+
+			{pagination && <Pagination pagination={pagination} />}
 		</div>
 	);
 };

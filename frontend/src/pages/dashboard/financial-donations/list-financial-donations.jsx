@@ -3,11 +3,11 @@ import * as React from 'react';
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
+import { usePagination } from '@/hooks/use-pagination';
 
 import axios from '@/libs/axios';
 import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
-import { useResultState } from '@/hooks/use-result-state';
 
 import {
 	Heading,
@@ -30,17 +30,29 @@ import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { currency } from '@/libs/utils';
 import { PAYMENT_STATUS } from '@/libs/constant';
+import { useResultState } from '@/hooks/use-result-state';
+import { Pagination } from '@/components/pagination';
 
 const ListDonations = () => {
 	const { confirm } = useConfirm();
+	const { page, limit } = usePagination();
 
 	const {
 		error,
 		mutate,
 		data,
 		isLoading: loading,
-	} = useSWR('/financial-donations');
-	const { result, empty } = useResultState(error, loading, data);
+	} = useSWR([
+		'financial-donations',
+		{
+			params: {
+				page: page,
+				limit: limit,
+			},
+		},
+	]);
+
+	const { result, pagination, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -72,9 +84,7 @@ const ListDonations = () => {
 			<Heading>
 				<HeadingTitle>Financial Donations List</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Manage all financial donations with pagination functionality.
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
@@ -91,7 +101,6 @@ const ListDonations = () => {
 							<TableHead>Member</TableHead>
 							<TableHead>Amount</TableHead>
 							<TableHead>Status</TableHead>
-							<TableHead>Payment Link</TableHead>
 							<TableHead>Notes</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
@@ -102,11 +111,11 @@ const ListDonations = () => {
 								<TableCell>
 									<div className='flex items-center gap-4'>
 										<Avatar
-											name={financialDonation.user.name}
+											name={financialDonation.user?.name}
 											className='flex-none'
 										/>
 										<span className='font-medium'>
-											{financialDonation.user.name}
+											{financialDonation.user?.name}
 										</span>
 									</div>
 								</TableCell>
@@ -114,20 +123,20 @@ const ListDonations = () => {
 								<TableCell>
 									<Badge>{financialDonation.status}</Badge>
 								</TableCell>
-								<TableCell>
-									{financialDonation.status === PAYMENT_STATUS.PENDING && (
-										<a
-											href={financialDonation.payment_url}
-											target='_blank'
-											rel='noreferrer'>
-											<span className='text-primary-500'>Complete Payment</span>
-										</a>
-									)}
-								</TableCell>
 								<TableCell>{financialDonation.notes}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={financialDonation.id + '/detail'} relative='path'>
+										{financialDonation.status === PAYMENT_STATUS.PENDING && (
+											<a
+												href={financialDonation.payment_url}
+												target='_blank'
+												rel='noreferrer'>
+												<button className='bg-transparent hover:text-blue-500'>
+													Complete Payment
+												</button>
+											</a>
+										)}
+										<Link to={financialDonation.id.toString()} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
 											</button>
@@ -148,6 +157,8 @@ const ListDonations = () => {
 				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
+
+			{pagination && <Pagination pagination={pagination} />}
 		</div>
 	);
 };

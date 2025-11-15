@@ -10,7 +10,21 @@ import { Error } from '@/components/error';
 
 const Home = () => {
 	const ref = React.useRef(null);
-	const { error, data, isLoading: loading } = useSWR('/public/events?limit=3');
+
+	const {
+		error,
+		data,
+		isLoading: loading,
+	} = useSWR([
+		'events',
+		{
+			params: {
+				page: 1,
+				limit: 3,
+			},
+		},
+	]);
+
 	const { result, empty } = useResultState(error, loading, data);
 
 	return (

@@ -1,12 +1,10 @@
-import * as React from 'react';
-
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
+import { usePagination } from '@/hooks/use-pagination';
 
 import axios from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
-import { useResultState } from '@/hooks/use-result-state';
 
 import {
 	Heading,
@@ -31,11 +29,29 @@ import { Error } from '@/components/error';
 import { Avatar } from '@/components/ui/avatar';
 import { currency } from '@/libs/utils';
 import { PAYMENT_STATUS } from '@/libs/constant';
+import { useResultState } from '@/hooks/use-result-state';
+import { Pagination } from '@/components/pagination';
 
 const ListBookDonations = () => {
 	const { confirm } = useConfirm();
-	const { error, mutate, data, isLoading: loading } = useSWR('/book-donations');
-	const { result, empty } = useResultState(error, loading, data);
+	const { page, limit } = usePagination();
+
+	const {
+		error,
+		mutate,
+		data,
+		isLoading: loading,
+	} = useSWR([
+		'book-donations',
+		{
+			params: {
+				page: page,
+				limit: limit,
+			},
+		},
+	]);
+
+	const { result, pagination, empty } = useResultState(error, loading, data);
 
 	const handleDelete = async (id) => {
 		confirm({
@@ -67,9 +83,7 @@ const ListBookDonations = () => {
 			<Heading>
 				<HeadingTitle>Book Donations List</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Manage all book donations with pagination functionality.
 				</HeadingDescription>
 
 				<div className='flex items-center justify-end'>
@@ -85,9 +99,8 @@ const ListBookDonations = () => {
 						<TableRow>
 							<TableHead>Member</TableHead>
 							<TableHead>Address</TableHead>
-							<TableHead>Shipping</TableHead>
+							<TableHead>Shipping Fee</TableHead>
 							<TableHead>Status</TableHead>
-							<TableHead>Payment Link</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -109,19 +122,19 @@ const ListBookDonations = () => {
 								<TableCell>{currency(bookDonation.shipping_fee)}</TableCell>
 								<TableCell>
 									<Badge>{bookDonation.status}</Badge>
-								</TableCell>{' '}
-								<TableCell>
-									{bookDonation.status === PAYMENT_STATUS.PENDING && (
-										<a
-											href={bookDonation.payment_url}
-											target='_blank'
-											rel='noreferrer'>
-											<span className='text-primary-500'>Complete Payment</span>
-										</a>
-									)}
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
+										{bookDonation.status === PAYMENT_STATUS.PENDING && (
+											<a
+												href={bookDonation.payment_url}
+												target='_blank'
+												rel='noreferrer'>
+												<button className='bg-transparent hover:text-blue-500'>
+													Complete Payment
+												</button>
+											</a>
+										)}
 										<Link to={bookDonation.id + '/detail'} relative='path'>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
@@ -143,6 +156,8 @@ const ListBookDonations = () => {
 				<Empty empty={!loading && empty} />
 				<Loading loading={loading} />
 			</div>
+
+			{pagination && <Pagination pagination={pagination} />}
 		</div>
 	);
 };

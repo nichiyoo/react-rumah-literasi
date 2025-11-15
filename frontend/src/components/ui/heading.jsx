@@ -1,6 +1,18 @@
 import * as React from 'react';
 import { cn } from '@/libs/utils';
 
+const Supertitle = React.forwardRef(
+	({ className, children, ...props }, ref) => {
+		return (
+			<h1 className={cn('text-6xl font-bold', className)} ref={ref} {...props}>
+				{children}
+			</h1>
+		);
+	}
+);
+
+Supertitle.displayName = 'Supertitle';
+
 const HeadingTitle = React.forwardRef(
 	({ className, children, ...props }, ref) => {
 		return (
@@ -47,4 +59,10 @@ const Heading = React.forwardRef(({ className, children, ...props }, ref) => {
 
 Heading.displayName = 'Heading';
 
-export { HeadingTitle, HeadingSubtitle, HeadingDescription, Heading };
+export {
+	Supertitle,
+	HeadingTitle,
+	HeadingSubtitle,
+	HeadingDescription,
+	Heading,
+};

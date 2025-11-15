@@ -155,7 +155,7 @@ const ShowAddress = () => {
 								latitude: result.data.latitude,
 								longitude: result.data.longitude,
 							}}
-							className='w-full aspect-video'
+							className='w-full aspect-banner'
 							readonly
 						/>
 					</div>

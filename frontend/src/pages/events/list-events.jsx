@@ -1,10 +1,9 @@
-import * as React from 'react';
 import useSWR from 'swr';
 
 import {
 	Heading,
 	HeadingDescription,
-	HeadingTitle,
+	Supertitle,
 } from '@/components/ui/heading';
 
 import { Loading } from '@/components/loading';
@@ -13,20 +12,38 @@ import { Empty } from '@/components/empty';
 import { EventCard } from '@/components/events/event-card';
 import { useResultState } from '@/hooks/use-result-state';
 import { Link } from 'react-router';
+import { usePagination } from '@/hooks/use-pagination';
+import { Pagination } from '@/components/pagination';
 
 const ListEvents = () => {
-	const { error, data, isLoading: loading } = useSWR('/public/events');
-	const { result, empty } = useResultState(error, loading, data);
+	const { page, limit } = usePagination();
+
+	const {
+		error,
+		data,
+		isLoading: loading,
+	} = useSWR([
+		'events',
+		{
+			params: {
+				page: page,
+				limit: limit,
+			},
+		},
+	]);
+
+	const { result, pagination, empty } = useResultState(error, loading, data);
 
 	return (
 		<div className='container flex flex-col min-h-screen gap-8 py-24 max-w-7xl'>
-			<div className='gap-4'>
-				<h1 className='text-6xl font-bold'>Our Events</h1>
-				<p className='text-zinc-600'>
-					Discover our upcoming and past events that make an impact in our
-					community, and join us for a fun-filled experience.
-				</p>
-			</div>
+			<Heading>
+				<Supertitle>Events List</Supertitle>
+				<HeadingDescription>
+					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
+					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
+					reprehenderit ea tempore.
+				</HeadingDescription>
+			</Heading>
 
 			<Error error={!loading && error} />
 			<Empty empty={!loading && empty} />
@@ -39,6 +56,8 @@ const ListEvents = () => {
 					</Link>
 				))}
 			</div>
+
+			{pagination && <Pagination pagination={pagination} />}
 		</div>
 	);
 };

@@ -1,22 +1,43 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
+const SearchService = require('../libs/search-service');
 
-const { Address } = require('../models');
+const { Address, sequelize } = require('../models');
 const { ROLES } = require('../libs/constant');
 const { Op } = require('sequelize');
 const biteship = require('../libs/biteship');
 
+const searchService = new SearchService(sequelize);
+
 const AddressController = {
 	async index(req, res, next) {
 		try {
-			const addresses = await Address.scope({
-				method: ['authorize', req.user],
-			}).findAll({
-				include: ['user', 'province', 'city', 'district'],
-			});
+			const { search, page, limit, status } = req.query;
+			const address = Address.scope({ method: ['authorize', req.user] });
+
+			const filters = {};
+			if (status) filters.is_default = status === 'default';
+
+			const paginate = searchService.paginate({ page, limit });
+			const result = await searchService.search(
+				address,
+				search,
+				filters,
+				{ page, limit },
+				['user', 'province', 'city', 'district'],
+				['name', 'contact_name', 'contact_phone', 'street_address', 'zipcode']
+			);
 
 			return res.json(
-				new ApiResponse('Addresses retrieved successfully', addresses)
+				new ApiResponse('Addresses retrieved successfully', {
+					rows: result.rows,
+					pagination: {
+						total: result.count,
+						page: paginate.page,
+						limit: paginate.limit,
+						pages: Math.ceil(result.count / paginate.limit),
+					},
+				})
 			);
 		} catch (error) {
 			next(error);
