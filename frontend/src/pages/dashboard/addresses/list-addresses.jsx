@@ -1,10 +1,12 @@
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
+import { Input } from '@/components/ui/input';
 
 import axios from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
 import { useResultState } from '@/hooks/use-result-state';
+import { usePagination } from '@/hooks/use-pagination';
 
 import {
 	Heading,
@@ -27,12 +29,11 @@ import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
-import { usePagination } from '@/hooks/use-pagination';
 import { Pagination } from '@/components/pagination';
 
 const ListAddresses = () => {
 	const { confirm } = useConfirm();
-	const { page, limit } = usePagination();
+	const { page, limit, search, setSearch, debounced } = usePagination();
 
 	const {
 		error,
@@ -45,6 +46,7 @@ const ListAddresses = () => {
 			params: {
 				page: page,
 				limit: limit,
+				search: debounced,
 			},
 		},
 	]);
@@ -106,15 +108,21 @@ const ListAddresses = () => {
 			<Heading>
 				<HeadingTitle>Addresses List</HeadingTitle>
 				<HeadingDescription>
-					Manage your saved addresses for book donations and other activities.
+					Manage all addresses with pagination and search functionality.
 				</HeadingDescription>
-
-				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/addresses/create'>
-						<Button>Create Address</Button>
-					</Link>
-				</div>
 			</Heading>
+
+			<div className='flex items-center justify-between'>
+				<Input
+					type='search'
+					value={search}
+					placeholder='Search by name, address...'
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+				<Link to='/dashboard/addresses/create' className='flex-none'>
+					<Button>Create Address</Button>
+				</Link>
+			</div>
 
 			<div className='w-full overflow-x-auto border rounded-xl border-zinc-200'>
 				<Table>

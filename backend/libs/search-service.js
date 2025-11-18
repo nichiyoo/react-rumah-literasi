@@ -7,11 +7,13 @@ class SearchService {
 
 	async search(model, search, filters, pagination, include = [], fields = []) {
 		const where = {};
+		const dialect = this.sequelize.getDialect();
 
 		if (search && fields.length > 0) {
+			const operator = dialect === 'sqlite' ? Op.like : Op.iLike;
 			where[Op.or] = fields.map((field) => ({
 				[field]: {
-					[Op.iLike]: `%${search}%`,
+					[operator]: `%${search}%`,
 				},
 			}));
 		}

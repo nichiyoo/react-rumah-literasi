@@ -21,7 +21,7 @@ const UserController = {
 				filters,
 				{ page, limit },
 				[],
-				['name', 'email', 'phone']
+				['name', 'email']
 			);
 
 			return res.json(

@@ -21,7 +21,7 @@ const EventController = {
 				filters,
 				{ page, limit },
 				['user'],
-				['title', 'description']
+				['title', 'description', 'location']
 			);
 
 			return res.json(

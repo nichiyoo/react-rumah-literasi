@@ -3,6 +3,8 @@ import * as React from 'react';
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
+import { usePagination } from '@/hooks/use-pagination';
+import { Input } from '@/components/ui/input';
 
 import { Button } from '@/components/ui/button';
 import { useConfirm } from '@/hooks/use-confirm';
@@ -27,12 +29,11 @@ import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { useResultState } from '@/hooks/use-result-state';
-import { usePagination } from '@/hooks/use-pagination';
 import { Pagination } from '@/components/pagination';
 
 const ListEvents = () => {
 	const { confirm } = useConfirm();
-	const { page, limit } = usePagination();
+	const { page, limit, search, setSearch, debounced } = usePagination();
 
 	const {
 		error,
@@ -45,6 +46,7 @@ const ListEvents = () => {
 			params: {
 				page: page,
 				limit: limit,
+				search: debounced,
 			},
 		},
 	]);
@@ -81,17 +83,22 @@ const ListEvents = () => {
 			<Heading>
 				<HeadingTitle>Events List</HeadingTitle>
 				<HeadingDescription>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-					temporibus laudantium nesciunt voluptas iure, blanditiis quisquam
-					reprehenderit ea tempore.
+					Manage all events with pagination and search functionality.
 				</HeadingDescription>
-
-				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/events/create'>
-						<Button>Create Event</Button>
-					</Link>
-				</div>
 			</Heading>
+
+			<div className='flex items-center justify-between'>
+				<Input
+					value={search}
+					type='search'
+					placeholder='Search by title, description...'
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+
+				<Link to='/dashboard/events/create'>
+					<Button>Create Event</Button>
+				</Link>
+			</div>
 
 			<div className='w-full overflow-x-auto border rounded-xl border-zinc-200'>
 				<Table>

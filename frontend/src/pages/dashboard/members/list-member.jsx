@@ -5,6 +5,7 @@ import { usePagination } from '@/hooks/use-pagination';
 
 import axios from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
+import { Input } from '@/components/ui/input';
 
 import {
 	Heading,
@@ -32,7 +33,7 @@ import { Pagination } from '@/components/pagination';
 
 const ListMembers = () => {
 	const { confirm } = useConfirm();
-	const { page, limit } = usePagination();
+	const { page, limit, search, setSearch, debounced } = usePagination();
 
 	const {
 		error,
@@ -45,6 +46,7 @@ const ListMembers = () => {
 			params: {
 				page: page,
 				limit: limit,
+				search: debounced,
 			},
 		},
 	]);
@@ -81,15 +83,21 @@ const ListMembers = () => {
 			<Heading>
 				<HeadingTitle>Member List</HeadingTitle>
 				<HeadingDescription>
-					Manage all members with pagination functionality.
+					Manage all members with pagination and search functionality.
 				</HeadingDescription>
-
-				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/members/create'>
-						<Button>Create Member</Button>
-					</Link>
-				</div>
 			</Heading>
+
+			<div className='flex items-center justify-between'>
+				<Input
+					type='search'
+					value={search}
+					placeholder='Search by name, email...'
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+				<Link to='/dashboard/members/create'>
+					<Button>Create Member</Button>
+				</Link>
+			</div>
 
 			<div className='w-full overflow-x-auto border rounded-xl border-zinc-200'>
 				<Table>

@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
 import { usePagination } from '@/hooks/use-pagination';
+import { Input } from '@/components/ui/input';
 
 import axios from '@/libs/axios';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,7 @@ import { Pagination } from '@/components/pagination';
 
 const ListDonations = () => {
 	const { confirm } = useConfirm();
-	const { page, limit } = usePagination();
+	const { page, limit, search, setSearch, debounced } = usePagination();
 
 	const {
 		error,
@@ -48,6 +49,7 @@ const ListDonations = () => {
 			params: {
 				page: page,
 				limit: limit,
+				search: debounced,
 			},
 		},
 	]);
@@ -84,15 +86,22 @@ const ListDonations = () => {
 			<Heading>
 				<HeadingTitle>Financial Donations List</HeadingTitle>
 				<HeadingDescription>
-					Manage all financial donations with pagination functionality.
+					Manage all financial donations with pagination and search
+					functionality.
 				</HeadingDescription>
-
-				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/financial-donations/create'>
-						<Button>Create Financial Donation</Button>
-					</Link>
-				</div>
 			</Heading>
+
+			<div className='flex items-center justify-between'>
+				<Input
+					value={search}
+					type='search'
+					placeholder='Search by member, notes...'
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+				<Link to='/dashboard/financial-donations/create'>
+					<Button>Create Financial Donation</Button>
+				</Link>
+			</div>
 
 			<div className='w-full overflow-x-auto border rounded-xl border-zinc-200'>
 				<Table>

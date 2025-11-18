@@ -32,9 +32,11 @@ import { PAYMENT_STATUS } from '@/libs/constant';
 import { useResultState } from '@/hooks/use-result-state';
 import { Pagination } from '@/components/pagination';
 
+import { Input } from '@/components/ui/input';
+
 const ListBookDonations = () => {
 	const { confirm } = useConfirm();
-	const { page, limit } = usePagination();
+	const { page, limit, search, setSearch, debounced } = usePagination();
 
 	const {
 		error,
@@ -47,6 +49,7 @@ const ListBookDonations = () => {
 			params: {
 				page: page,
 				limit: limit,
+				search: debounced,
 			},
 		},
 	]);
@@ -83,15 +86,21 @@ const ListBookDonations = () => {
 			<Heading>
 				<HeadingTitle>Book Donations List</HeadingTitle>
 				<HeadingDescription>
-					Manage all book donations with pagination functionality.
+					Manage all book donations with pagination and search functionality.
 				</HeadingDescription>
-
-				<div className='flex items-center justify-end'>
-					<Link to='/dashboard/book-donations/create'>
-						<Button>Create Book Donation</Button>
-					</Link>
-				</div>
 			</Heading>
+
+			<div className='flex items-center justify-between'>
+				<Input
+					value={search}
+					type='search'
+					placeholder='Search by member name, address...'
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+				<Link to='/dashboard/book-donations/create'>
+					<Button>Create Book Donation</Button>
+				</Link>
+			</div>
 
 			<div className='w-full overflow-x-auto border rounded-xl border-zinc-200'>
 				<Table>
