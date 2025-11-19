@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import { Link } from 'react-router';
 
 import {
 	Heading,
@@ -11,7 +12,6 @@ import { Error } from '@/components/error';
 import { Empty } from '@/components/empty';
 import { EventCard } from '@/components/events/event-card';
 import { useResultState } from '@/hooks/use-result-state';
-import { Link } from 'react-router';
 import { usePagination } from '@/hooks/use-pagination';
 import { Pagination } from '@/components/pagination';
 
@@ -23,7 +23,7 @@ const ListEvents = () => {
 		data,
 		isLoading: loading,
 	} = useSWR([
-		'events',
+		'public/events',
 		{
 			params: {
 				page: page,

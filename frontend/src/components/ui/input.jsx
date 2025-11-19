@@ -20,7 +20,7 @@ const Input = React.forwardRef(({ type, className, ...props }, ref) => {
 					'focus:border-primary-500 focus:ring-primary-500',
 					{
 						'pl-12 max-w-sm': type === 'search',
-						'pr-12': type === 'search',
+						'pr-12': type === 'password',
 					},
 					className
 				)}

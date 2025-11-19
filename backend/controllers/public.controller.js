@@ -1,19 +1,38 @@
 const ApiError = require('../libs/error');
 const ApiResponse = require('../libs/response');
+const SearchService = require('../libs/search-service');
 
-const { Event } = require('../models');
+const { Event, sequelize } = require('../models');
+
+const searchService = new SearchService(sequelize);
 
 const PublicController = {
 	async events(req, res, next) {
 		try {
-			const { limit } = req.query;
+			const { search, page, limit } = req.query;
 
-			const events = await Event.findAll({
-				include: ['user'],
-				limit: req.query.limit ? parseInt(limit) : undefined,
-			});
+			const filters = {};
+			const paginate = searchService.paginate({ page, limit });
+			const result = await searchService.search(
+				Event,
+				search,
+				filters,
+				{ page, limit },
+				['user'],
+				['title', 'description', 'location']
+			);
 
-			return res.json(new ApiResponse('Events retrieved successfully', events));
+			return res.json(
+				new ApiResponse('Events retrieved successfully', {
+					rows: result.rows,
+					pagination: {
+						total: result.count,
+						page: paginate.page,
+						limit: paginate.limit,
+						pages: Math.ceil(result.count / paginate.limit),
+					},
+				})
+			);
 		} catch (error) {
 			next(error);
 		}

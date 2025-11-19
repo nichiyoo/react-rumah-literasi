@@ -7,19 +7,21 @@ import { useResultState } from '@/hooks/use-result-state';
 import { Empty } from '@/components/empty';
 import { Loading } from '@/components/loading';
 import { Error } from '@/components/error';
+import { usePagination } from '@/hooks/use-pagination';
 
 const Home = () => {
 	const ref = React.useRef(null);
+	const { page } = usePagination();
 
 	const {
 		error,
 		data,
 		isLoading: loading,
 	} = useSWR([
-		'events',
+		'public/events',
 		{
 			params: {
-				page: 1,
+				page: page,
 				limit: 3,
 			},
 		},
