@@ -24,9 +24,10 @@ const CreateDonation = () => {
 			toast('Financial donation created', {
 				description: 'Successfully created donation',
 			});
-			mutate('/financial-donations');
+
 			window.open(result.data.payment_url, '_blank');
 			animate();
+			mutate('/financial-donations');
 			navigate('/dashboard/financial-donations');
 		} catch (error) {
 			toast.error('Failed to create donation', {

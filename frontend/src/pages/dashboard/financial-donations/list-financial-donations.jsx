@@ -25,7 +25,7 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarGroup } from '@/components/ui/avatar';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
@@ -98,7 +98,7 @@ const ListDonations = () => {
 					placeholder='Search by member, notes...'
 					onChange={(e) => setSearch(e.target.value)}
 				/>
-				<Link to='/dashboard/financial-donations/create'>
+				<Link to='/dashboard/financial-donations/create' className='flex-none'>
 					<Button>Create Financial Donation</Button>
 				</Link>
 			</div>
@@ -118,15 +118,7 @@ const ListDonations = () => {
 						{result.map((financialDonation) => (
 							<TableRow key={financialDonation.id}>
 								<TableCell>
-									<div className='flex items-center gap-4'>
-										<Avatar
-											name={financialDonation.user?.name}
-											className='flex-none'
-										/>
-										<span className='font-medium'>
-											{financialDonation.user?.name}
-										</span>
-									</div>
+									<AvatarGroup user={financialDonation.user} />
 								</TableCell>
 								<TableCell>{currency(financialDonation.amount)}</TableCell>
 								<TableCell>

@@ -26,7 +26,7 @@ import { Loading } from '@/components/loading';
 import { Badge } from '@/components/ui/badge';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarGroup } from '@/components/ui/avatar';
 import { currency } from '@/libs/utils';
 import { PAYMENT_STATUS } from '@/libs/constant';
 import { useResultState } from '@/hooks/use-result-state';
@@ -97,7 +97,7 @@ const ListBookDonations = () => {
 					placeholder='Search by member name, address...'
 					onChange={(e) => setSearch(e.target.value)}
 				/>
-				<Link to='/dashboard/book-donations/create'>
+				<Link to='/dashboard/book-donations/create' className='flex-none'>
 					<Button>Create Book Donation</Button>
 				</Link>
 			</div>
@@ -117,15 +117,7 @@ const ListBookDonations = () => {
 						{result.map((bookDonation) => (
 							<TableRow key={bookDonation.id}>
 								<TableCell>
-									<div className='flex items-center gap-4'>
-										<Avatar
-											name={bookDonation.user.name}
-											className='flex-none'
-										/>
-										<span className='font-medium'>
-											{bookDonation.user.name}
-										</span>
-									</div>
+									<AvatarGroup user={bookDonation.user} />
 								</TableCell>
 								<TableCell>{bookDonation.address.street_address}</TableCell>
 								<TableCell>{currency(bookDonation.shipping_fee)}</TableCell>

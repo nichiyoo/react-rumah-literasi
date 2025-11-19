@@ -9,6 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Hint } from '@/components/ui/hint';
 import { PAYMENT_STATUS } from '@/libs/constant';
+import { Select } from '@/components/ui/select';
+
+const STATUS_LIST = Object.values(PAYMENT_STATUS);
 
 const FinancialDonationSchema = z.object({
 	amount: z.coerce.number().min(1),
@@ -17,11 +20,7 @@ const FinancialDonationSchema = z.object({
 
 const EditSchema = FinancialDonationSchema.merge(
 	z.object({
-		status: z.enum([
-			PAYMENT_STATUS.PENDING,
-			PAYMENT_STATUS.SUCCESS,
-			PAYMENT_STATUS.FAILED,
-		]),
+		status: z.enum(STATUS_LIST),
 		acceptance_notes: z.string().optional(),
 	})
 );
@@ -71,19 +70,13 @@ const FinancialDonationForm = ({ initial, action, label }) => {
 				<React.Fragment>
 					<div>
 						<Label htmlFor='status'>Status</Label>
-						<select
-							className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
-							{...register('status')}>
-							<option value={PAYMENT_STATUS.PENDING}>
-								{PAYMENT_STATUS.PENDING}
-							</option>
-							<option value={PAYMENT_STATUS.SUCCESS}>
-								{PAYMENT_STATUS.SUCCESS}
-							</option>
-							<option value={PAYMENT_STATUS.FAILED}>
-								{PAYMENT_STATUS.FAILED}
-							</option>
-						</select>
+						<Select {...register('status')}>
+							{STATUS_LIST.map((status) => (
+								<option key={status} value={status}>
+									{status}
+								</option>
+							))}
+						</Select>
 						<Hint>Status of the financial donation process.</Hint>
 						{errors.status && (
 							<span className='text-red-500'>{errors.status.message}</span>

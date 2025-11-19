@@ -35,7 +35,10 @@ const DonationItemForm = ({ initial, action, label }) => {
 					placeholder='Enter your ISBN'
 					{...register('isbn')}
 				/>
-				<Hint>International Standard Book Number uniquely identifying this publication.</Hint>
+				<Hint>
+					International Standard Book Number uniquely identifying this
+					publication.
+				</Hint>
 				{errors.isbn && (
 					<span className='text-red-500'>{errors.isbn.message}</span>
 				)}

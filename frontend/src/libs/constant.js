@@ -17,10 +17,10 @@ import {
 } from 'lucide-react';
 
 export const ROLES = {
-	GUEST: 'guest',
-	ADMIN: 'admin',
-	LIBRARIAN: 'librarian',
-	SUPERADMIN: 'superadmin',
+	GUEST: 'Guest',
+	ADMIN: 'Admin',
+	LIBRARIAN: 'Librarian',
+	SUPERADMIN: 'Superadmin',
 };
 
 export const STEPS = {

@@ -31,14 +31,13 @@ const EditAddress = () => {
 			await axios.put('/addresses/' + id, data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
-
 			toast('Address updated', {
 				description: 'Successfully updated address',
 			});
 
 			mutate('/addresses');
 			mutate('/addresses/' + id);
-			navigate('/dashboard/addresses');
+			navigate('/dashboard/addresses/' + id + '/detail');
 		} catch (error) {
 			toast.error('Failed to update address', {
 				description: error.response?.data?.message || error.message,

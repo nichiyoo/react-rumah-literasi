@@ -25,7 +25,7 @@ const FinancialDonationController = {
 				filters,
 				{ page, limit },
 				['user'],
-				['$user.name$', 'notes', 'acceptance_notes']
+				['$user.name$', '$user.email$', 'notes', 'acceptance_notes']
 			);
 
 			return res.json(

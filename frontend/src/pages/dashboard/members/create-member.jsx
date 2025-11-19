@@ -22,7 +22,6 @@ const CreateMember = () => {
 			await axios.post('/members', data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
-
 			toast('Member created', {
 				description: 'Successfully created member',
 			});

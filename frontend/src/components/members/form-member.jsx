@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Hint } from '@/components/ui/hint';
 import { ROLES } from '@/libs/constant';
+import { Select } from '@/components/ui/select';
 
 const ROLE_LIST = Object.values(ROLES);
 
@@ -70,7 +71,10 @@ const MemberForm = ({ initial, action, label }) => {
 					placeholder='Enter your password'
 					{...register('password')}
 				/>
-				<Hint>Password for the member account (leave empty to keep current password).</Hint>
+				<Hint>
+					Password for the member account (leave empty to keep current
+					password).
+				</Hint>
 				{errors.password && (
 					<span className='text-red-500'>{errors.password.message}</span>
 				)}
@@ -78,15 +82,13 @@ const MemberForm = ({ initial, action, label }) => {
 
 			<div>
 				<Label htmlFor='role'>Role</Label>
-				<select
-					className='block w-full p-3 capitalize border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
-					{...register('role')}>
+				<Select {...register('role')}>
 					{ROLE_LIST.map((role) => (
 						<option key={role} value={role}>
 							{role}
 						</option>
 					))}
-				</select>
+				</Select>
 				<Hint>Role assigned to the member in the system.</Hint>
 				{errors.role && (
 					<span className='text-red-500'>{errors.role.message}</span>
@@ -95,15 +97,11 @@ const MemberForm = ({ initial, action, label }) => {
 
 			<div>
 				<Label htmlFor='is_verified'>Verified</Label>
-
-				<select
-					className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
-					{...register('is_verified')}>
+				<Select {...register('is_verified')}>
 					<option value='true'>Yes</option>
 					<option value='false'>No</option>
-				</select>
+				</Select>
 				<Hint>Indicates whether the member's account has been verified.</Hint>
-
 				{errors.is_verified && (
 					<span className='text-red-500'>{errors.is_verified.message}</span>
 				)}

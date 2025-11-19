@@ -22,7 +22,6 @@ const CreateEvent = () => {
 			await axios.post('/events', data, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			});
-
 			toast('Event created', {
 				description: 'Successfully created event',
 			});

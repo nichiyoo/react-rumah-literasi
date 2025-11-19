@@ -70,11 +70,11 @@ const ReviewBookDonation = () => {
 					toast.success('Book donation submitted successfully', {
 						description: 'Your book donation has been successfully submitted',
 					});
-					reset();
 
-					mutate('/book-donations');
+					reset();
 					window.open(result.data.payment_url, '_blank');
 					animate();
+					mutate('/book-donations');
 					navigate('/dashboard/book-donations');
 				} catch (error) {
 					toast.error('Failed to submit book donation', {

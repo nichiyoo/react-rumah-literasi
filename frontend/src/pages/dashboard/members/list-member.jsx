@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/table';
 
 import { Button } from '@/components/ui/button';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarGroup } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
@@ -94,7 +94,7 @@ const ListMembers = () => {
 					placeholder='Search by name, email...'
 					onChange={(e) => setSearch(e.target.value)}
 				/>
-				<Link to='/dashboard/members/create'>
+				<Link to='/dashboard/members/create' className='flex-none'>
 					<Button>Create Member</Button>
 				</Link>
 			</div>
@@ -104,7 +104,6 @@ const ListMembers = () => {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Name</TableHead>
-							<TableHead>Email</TableHead>
 							<TableHead>Role</TableHead>
 							<TableHead>Verified</TableHead>
 							<TableHead>Action</TableHead>
@@ -114,12 +113,8 @@ const ListMembers = () => {
 						{result.map((member) => (
 							<TableRow key={member.uuid}>
 								<TableCell>
-									<div className='flex items-center gap-4'>
-										<Avatar name={member.name} className='flex-none' />
-										<span className='font-medium'>{member.name}</span>
-									</div>
+									<AvatarGroup user={member} />
 								</TableCell>
-								<TableCell>{member.email}</TableCell>
 								<TableCell>{member.role}</TableCell>
 								<TableCell>
 									<Badge>{member.is_verified ? 'Yes' : 'No'}</Badge>

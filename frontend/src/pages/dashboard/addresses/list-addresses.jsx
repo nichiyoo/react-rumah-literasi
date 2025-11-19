@@ -28,7 +28,7 @@ import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { Badge } from '@/components/ui/badge';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarGroup } from '@/components/ui/avatar';
 import { Pagination } from '@/components/pagination';
 
 const ListAddresses = () => {
@@ -140,10 +140,7 @@ const ListAddresses = () => {
 						{result.map((address) => (
 							<TableRow key={address.id}>
 								<TableCell>
-									<div className='flex items-center gap-4'>
-										<Avatar name={address.user.name} className='flex-none' />
-										<span className='font-medium'>{address.user.name}</span>
-									</div>
+									<AvatarGroup user={address.user} />
 								</TableCell>
 								<TableCell>{address.name}</TableCell>
 								<TableCell>

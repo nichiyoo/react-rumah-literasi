@@ -31,24 +31,12 @@ const BookDonationController = {
 				search,
 				filters,
 				{ page, limit },
-				[
-					{
-						association: 'user',
-						attributes: ['id', 'name', 'email'],
-					},
-					{
-						association: 'address',
-						attributes: ['id', 'name', 'street_address'],
-					},
-					{
-						association: 'book_donation_items',
-						attributes: ['id', 'title', 'author'],
-					},
-				],
+				['user', 'address', 'book_donation_items'],
 				[
 					'$user.name$',
+					'$user.email$',
 					'$address.name$',
-					'$book_donation_items.title$',
+					'$address.street_address$',
 					'acceptance_notes',
 				]
 			);

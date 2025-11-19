@@ -14,13 +14,12 @@ import { Map } from '@/components/map';
 import { DonationItem } from '@/components/book-donations/donation-item-card';
 import { HeadingSubtitle } from '@/components/ui/heading';
 import { Hint } from '@/components/ui/hint';
+import { Select } from '@/components/ui/select';
+
+const STATUS_LIST = Object.values(PAYMENT_STATUS);
 
 const BookDonationSchema = z.object({
-	status: z.enum([
-		PAYMENT_STATUS.PENDING,
-		PAYMENT_STATUS.SUCCESS,
-		PAYMENT_STATUS.FAILED,
-	]),
+	status: z.enum(STATUS_LIST),
 	acceptance_notes: z.string().optional(),
 });
 
@@ -172,13 +171,13 @@ const BookDonationForm = ({ initial, action, label }) => {
 
 			<div>
 				<Label htmlFor='status'>Update Status</Label>
-				<select
-					className='block w-full p-3 border border-zinc-200 rounded-xl focus:border-primary-500 focus:ring-primary-500 sm:text-sm bg-zinc-100'
-					{...register('status')}>
-					<option value={PAYMENT_STATUS.PENDING}>Pending</option>
-					<option value={PAYMENT_STATUS.SUCCESS}>Success</option>
-					<option value={PAYMENT_STATUS.FAILED}>Failed</option>
-				</select>
+				<Select {...register('status')}>
+					{STATUS_LIST.map((status) => (
+						<option key={status} value={status}>
+							{status}
+						</option>
+					))}
+				</Select>
 				<Hint>Status of the book donation process.</Hint>
 				{errors.status && (
 					<span className='text-red-500'>{errors.status.message}</span>

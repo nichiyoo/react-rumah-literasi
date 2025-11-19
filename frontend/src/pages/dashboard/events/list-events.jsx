@@ -95,7 +95,7 @@ const ListEvents = () => {
 					onChange={(e) => setSearch(e.target.value)}
 				/>
 
-				<Link to='/dashboard/events/create'>
+				<Link to='/dashboard/events/create' className='flex-none'>
 					<Button>Create Event</Button>
 				</Link>
 			</div>

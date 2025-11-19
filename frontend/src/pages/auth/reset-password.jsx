@@ -55,9 +55,6 @@ const ResetPassword = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
-			toast('Resetting password...', {
-				description: 'We are resetting your password',
-			});
 			await axios.post('/auth/reset-password', data);
 			toast('Password reset successfully', {
 				description: 'Please login with your new password',

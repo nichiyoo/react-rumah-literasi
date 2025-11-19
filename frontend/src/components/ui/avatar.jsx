@@ -27,4 +27,21 @@ const Avatar = React.forwardRef(({ name, className, ...props }, ref) => {
 
 Avatar.displayName = 'Avatar';
 
-export { Avatar };
+const AvatarGroup = React.forwardRef(({ user, className, ...props }, ref) => {
+	return (
+		<div
+			{...props}
+			ref={ref}
+			className={cn('flex items-center gap-4', className)}>
+			<Avatar name={user.name} className='flex-none' />
+			<div>
+				<h5 className='font-medium'>{user.name}</h5>
+				<span className='text-zinc-500'>{user.email}</span>
+			</div>
+		</div>
+	);
+});
+
+AvatarGroup.displayName = 'AvatarGroup';
+
+export { Avatar, AvatarGroup };

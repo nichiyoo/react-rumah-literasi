@@ -25,7 +25,14 @@ const AddressController = {
 				filters,
 				{ page, limit },
 				['user', 'province', 'city', 'district'],
-				['name', 'contact_name', 'contact_phone', 'street_address', 'zipcode']
+				[
+					'$user.name$',
+					'$user.email$',
+					'contact_name',
+					'contact_phone',
+					'street_address',
+					'zipcode',
+				]
 			);
 
 			return res.json(

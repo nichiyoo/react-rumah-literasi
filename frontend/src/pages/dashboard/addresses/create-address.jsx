@@ -22,7 +22,6 @@ const CreateAddress = () => {
 			await axios.post('/addresses', data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
-
 			toast('Address created', {
 				description: 'Successfully created address',
 			});
