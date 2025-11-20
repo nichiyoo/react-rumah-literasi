@@ -83,6 +83,12 @@ export const SIDEBAR_MENUS = [
 				icon: Store,
 				roles: [ROLES.ADMIN, ROLES.SUPERADMIN],
 			},
+			{
+				href: '/dashboard/logs',
+				label: 'Logs',
+				icon: Bolt,
+				roles: [ROLES.ADMIN, ROLES.SUPERADMIN],
+			},
 		],
 	},
 ];

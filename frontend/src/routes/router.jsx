@@ -85,6 +85,9 @@ const ShowAddress = load(() => import('~/addresses/show-address'));
 const ShowMerchant = load(() => import('~/merchant/show-merchant'));
 const EditMerchant = load(() => import('~/merchant/edit-merchant'));
 
+const ListLogs = load(() => import('~/logs/list-logs'));
+const ShowLog = load(() => import('~/logs/show-log'));
+
 const Router = () => {
 	return (
 		<BrowserRouter>
@@ -178,6 +181,15 @@ const Router = () => {
 						<Route path='edit' element={<AuthorizeLayout />}>
 							<Route index element={<EditMerchant />} />
 						</Route>
+					</Route>
+
+					<Route
+						path='logs'
+						element={
+							<AuthorizeLayout allowed={[ROLES.ADMIN, ROLES.SUPERADMIN]} />
+						}>
+						<Route index element={<ListLogs />} />
+						<Route path=':uuid/detail' element={<ShowLog />} />
 					</Route>
 				</Route>
 

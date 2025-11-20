@@ -70,6 +70,7 @@ const addressRoutes = require('../routes/address.routes');
 const eventRoutes = require('../routes/event.routes');
 const userRoutes = require('../routes/user.routes');
 const merchantRoutes = require('../routes/merchant.routes');
+const logRoutes = require('../routes/log.routes');
 
 app.use('/api/_healthcheck', (req, res) => {
 	res.status(200).json({
@@ -90,6 +91,7 @@ app.use('/api/addresses', addressRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/members', userRoutes);
 app.use('/api/merchant', merchantRoutes);
+app.use('/api/logs', logRoutes);
 
 app.use(errorHandler);
 app.get('*', (req, res) => {

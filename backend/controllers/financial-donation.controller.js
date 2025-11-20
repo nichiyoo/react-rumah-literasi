@@ -5,6 +5,7 @@ const { ROLES, PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
 const { FinancialDonation, sequelize } = require('../models');
 const { Op } = require('sequelize');
 const PaymentController = require('./payment.controller');
+const LogService = require('../libs/log-service');
 
 const searchService = new SearchService(sequelize);
 
@@ -61,6 +62,21 @@ const FinancialDonationController = {
 				payment_url: data.redirect_url,
 				status: PAYMENT_STATUS.PENDING,
 			});
+
+			await LogService.createLog(
+				'New financial donation created',
+				req.user.id,
+				'Financial Donation',
+				financialDonation.id,
+				`${req.user.name} created a financial donation of Rp ${financialDonation.amount}`,
+				{
+					user_id: req.user.id,
+					donation_id: financialDonation.id,
+					amount: financialDonation.amount,
+					status: financialDonation.status,
+				},
+				req
+			);
 
 			return res.json(
 				new ApiResponse(

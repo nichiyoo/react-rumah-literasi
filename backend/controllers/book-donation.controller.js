@@ -6,6 +6,7 @@ const SearchService = require('../libs/search-service');
 const { bookDonationSchema } = require('../libs/schemas');
 const { ROLES, PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
 const { Op } = require('sequelize');
+const LogService = require('../libs/log-service');
 
 const PaymentController = require('./payment.controller');
 const DeliveryController = require('./delivery.controller');
@@ -121,6 +122,21 @@ const BookDonationController = {
 
 				return donation;
 			});
+
+			await LogService.createLog(
+				'New book donation created',
+				req.user.id,
+				'Book Donation',
+				result.id,
+				`${req.user.name} created a book donation of Rp ${result.shipping_fee}`,
+				{
+					user_id: req.user.id,
+					donation_id: result.id,
+					amount: result.shipping_fee,
+					status: result.status,
+				},
+				req
+			);
 
 			return res.json(
 				new ApiResponse('Book donation submitted successfully', result)

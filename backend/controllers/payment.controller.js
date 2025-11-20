@@ -1,5 +1,6 @@
 const midtrans = require('../libs/midtrans');
 const ApiError = require('../libs/error');
+const LogService = require('../libs/log-service');
 
 const { FinancialDonation, BookDonation } = require('../models');
 const { PAYMENT_STATUS, DONATION_TYPES } = require('../libs/constant');
@@ -65,8 +66,8 @@ const PaymentController = {
 			const statuses = ['settlement', 'cancel', 'failure', 'expire'];
 			if (!statuses.includes(transaction_status)) return res.sendStatus(204);
 
-			const isBook = req.query.type === DONATION_TYPES.BOOK;
-			const model = isBook ? BookDonation : FinancialDonation;
+			const book = req.query.type === DONATION_TYPES.BOOK;
+			const model = book ? BookDonation : FinancialDonation;
 			const donation = await model.findOne({
 				where: { uuid: order_id },
 			});
@@ -76,7 +77,7 @@ const PaymentController = {
 				return res.sendStatus(IGNORE);
 			}
 
-			const amount = isBook ? donation.shipping_fee : donation.amount;
+			const amount = book ? donation.shipping_fee : donation.amount;
 			if (!Number(gross_amount) === amount) return res.sendStatus(204);
 
 			const mapper = {
@@ -86,9 +87,30 @@ const PaymentController = {
 				expire: PAYMENT_STATUS.FAILED,
 			};
 
+			const old = donation.status;
+			const status = mapper[transaction_status];
 			await donation.update({
-				status: mapper[transaction_status],
+				status: status,
 			});
+
+			const resource = req.query.type === 'book' ? 'Book' : 'Financial';
+			await LogService.createLog(
+				'Payment status changed',
+				donation.user_id,
+				resource,
+				donation.id,
+				`Payment status for ${resource} changed from ${old} to ${status}`,
+				{
+					donation_id: donation.id,
+					donation_type: req.query.type,
+					old_status: old,
+					new_status: status,
+					transaction_status,
+					gross_amount,
+				},
+				req
+			);
+
 			return res.sendStatus(200);
 		} catch (error) {
 			if (error instanceof ApiError) return next(error);
