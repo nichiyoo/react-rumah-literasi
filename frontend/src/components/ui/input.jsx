@@ -10,7 +10,10 @@ const Input = React.forwardRef(({ type, className, ...props }, ref) => {
 	const Icon = show ? EyeOff : Eye;
 
 	return (
-		<div className='relative w-full'>
+		<div
+			className={cn('relative w-full', {
+				'max-w-sm': type === 'search',
+			})}>
 			<input
 				type={type == 'password' && show ? 'text' : type}
 				ref={ref}
@@ -19,7 +22,7 @@ const Input = React.forwardRef(({ type, className, ...props }, ref) => {
 					'border border-zinc-200 bg-zinc-100',
 					'focus:border-primary-500 focus:ring-primary-500',
 					{
-						'pl-12 max-w-sm': type === 'search',
+						'pl-12': type === 'search',
 						'pr-12': type === 'password',
 					},
 					className

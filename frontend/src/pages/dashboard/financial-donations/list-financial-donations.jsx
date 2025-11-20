@@ -3,7 +3,7 @@ import * as React from 'react';
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
-import { usePagination } from '@/hooks/use-pagination';
+import { usePagination, useString } from '@/hooks/use-pagination';
 import { Input } from '@/components/ui/input';
 
 import axios from '@/libs/axios';
@@ -29,14 +29,16 @@ import { Avatar, AvatarGroup } from '@/components/ui/avatar';
 import { Loading } from '@/components/loading';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
-import { currency } from '@/libs/utils';
+import { currency, formatDate } from '@/libs/utils';
 import { PAYMENT_STATUS } from '@/libs/constant';
 import { useResultState } from '@/hooks/use-result-state';
 import { Pagination } from '@/components/pagination';
+import { Select } from '@/components/ui/select';
 
 const ListDonations = () => {
 	const { confirm } = useConfirm();
 	const { page, limit, search, setSearch, debounced } = usePagination();
+	const [status, setStatus] = useString('status');
 
 	const {
 		error,
@@ -50,6 +52,7 @@ const ListDonations = () => {
 				page: page,
 				limit: limit,
 				search: debounced,
+				status: status,
 			},
 		},
 	]);
@@ -92,12 +95,26 @@ const ListDonations = () => {
 			</Heading>
 
 			<div className='flex items-center justify-between'>
-				<Input
-					value={search}
-					type='search'
-					placeholder='Search by member, notes...'
-					onChange={(e) => setSearch(e.target.value)}
-				/>
+				<div className='flex items-center w-full gap-2'>
+					<Input
+						value={search}
+						type='search'
+						placeholder='Search by member name, address...'
+						onChange={(e) => setSearch(e.target.value)}
+					/>
+					<Select
+						value={status}
+						className='max-w-40'
+						onChange={(e) => setStatus(e.target.value)}>
+						<option value=''>Select a status</option>
+						{Object.values(PAYMENT_STATUS).map((status) => (
+							<option key={status} value={status}>
+								{status}
+							</option>
+						))}
+					</Select>
+				</div>
+
 				<Link to='/dashboard/financial-donations/create' className='flex-none'>
 					<Button>Create Financial Donation</Button>
 				</Link>
@@ -110,7 +127,7 @@ const ListDonations = () => {
 							<TableHead>Member</TableHead>
 							<TableHead>Amount</TableHead>
 							<TableHead>Status</TableHead>
-							<TableHead>Notes</TableHead>
+							<TableHead>Created At</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -124,7 +141,7 @@ const ListDonations = () => {
 								<TableCell>
 									<Badge>{financialDonation.status}</Badge>
 								</TableCell>
-								<TableCell>{financialDonation.notes}</TableCell>
+								<TableCell>{formatDate(financialDonation.createdAt)}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
 										{financialDonation.status === PAYMENT_STATUS.PENDING && (

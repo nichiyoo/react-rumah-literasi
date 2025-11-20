@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
-import { usePagination } from '@/hooks/use-pagination';
+import { usePagination, useString } from '@/hooks/use-pagination';
 
 import axios from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
@@ -30,10 +30,13 @@ import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { useResultState } from '@/hooks/use-result-state';
 import { Pagination } from '@/components/pagination';
+import { ROLES } from '@/libs/constant';
+import { Select } from '@/components/ui/select';
 
 const ListMembers = () => {
 	const { confirm } = useConfirm();
 	const { page, limit, search, setSearch, debounced } = usePagination();
+	const [role, setRole] = useString('role');
 
 	const {
 		error,
@@ -47,6 +50,7 @@ const ListMembers = () => {
 				page: page,
 				limit: limit,
 				search: debounced,
+				role: role,
 			},
 		},
 	]);
@@ -88,12 +92,25 @@ const ListMembers = () => {
 			</Heading>
 
 			<div className='flex items-center justify-between'>
-				<Input
-					type='search'
-					value={search}
-					placeholder='Search by name, email...'
-					onChange={(e) => setSearch(e.target.value)}
-				/>
+				<div className='flex items-center w-full gap-2'>
+					<Input
+						value={search}
+						type='search'
+						placeholder='Search by member name, address...'
+						onChange={(e) => setSearch(e.target.value)}
+					/>
+					<Select
+						value={status}
+						className='max-w-40'
+						onChange={(e) => setRole(e.target.value)}>
+						<option value=''>Select a status</option>
+						{Object.values(ROLES).map((status) => (
+							<option key={status} value={status}>
+								{status}
+							</option>
+						))}
+					</Select>
+				</div>
 				<Link to='/dashboard/members/create' className='flex-none'>
 					<Button>Create Member</Button>
 				</Link>

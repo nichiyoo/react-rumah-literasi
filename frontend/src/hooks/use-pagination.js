@@ -2,12 +2,12 @@ import { debounce } from 'nuqs';
 import { useQueryState, parseAsInteger, parseAsString } from 'nuqs';
 import { useDebounce } from '@/hooks/use-debounced';
 
-const useInteger = (key, defaultValue) => {
+export const useInteger = (key, defaultValue) => {
 	const parser = parseAsInteger.withDefault(defaultValue);
 	return useQueryState(key, parser);
 };
 
-const useString = (key, defaultValue, options) => {
+export const useString = (key, defaultValue, options) => {
 	const parser = parseAsString.withDefault(defaultValue);
 	return useQueryState(key, {
 		...parser,

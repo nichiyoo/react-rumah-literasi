@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { Link } from 'react-router';
-import { usePagination } from '@/hooks/use-pagination';
+import { usePagination, useString } from '@/hooks/use-pagination';
 
 import axios from '@/libs/axios';
 import { useConfirm } from '@/hooks/use-confirm';
@@ -27,16 +27,18 @@ import { Badge } from '@/components/ui/badge';
 import { Empty } from '@/components/empty';
 import { Error } from '@/components/error';
 import { Avatar, AvatarGroup } from '@/components/ui/avatar';
-import { currency } from '@/libs/utils';
+import { currency, formatDate } from '@/libs/utils';
 import { PAYMENT_STATUS } from '@/libs/constant';
 import { useResultState } from '@/hooks/use-result-state';
 import { Pagination } from '@/components/pagination';
 
 import { Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 
 const ListBookDonations = () => {
 	const { confirm } = useConfirm();
 	const { page, limit, search, setSearch, debounced } = usePagination();
+	const [status, setStatus] = useString('status');
 
 	const {
 		error,
@@ -50,6 +52,7 @@ const ListBookDonations = () => {
 				page: page,
 				limit: limit,
 				search: debounced,
+				status: status,
 			},
 		},
 	]);
@@ -91,12 +94,26 @@ const ListBookDonations = () => {
 			</Heading>
 
 			<div className='flex items-center justify-between'>
-				<Input
-					value={search}
-					type='search'
-					placeholder='Search by member name, address...'
-					onChange={(e) => setSearch(e.target.value)}
-				/>
+				<div className='flex items-center w-full gap-2'>
+					<Input
+						value={search}
+						type='search'
+						placeholder='Search by member name, address...'
+						onChange={(e) => setSearch(e.target.value)}
+					/>
+					<Select
+						value={status}
+						className='max-w-40'
+						onChange={(e) => setStatus(e.target.value)}>
+						<option value=''>Select a status</option>
+						{Object.values(PAYMENT_STATUS).map((status) => (
+							<option key={status} value={status}>
+								{status}
+							</option>
+						))}
+					</Select>
+				</div>
+
 				<Link to='/dashboard/book-donations/create' className='flex-none'>
 					<Button>Create Book Donation</Button>
 				</Link>
@@ -107,9 +124,9 @@ const ListBookDonations = () => {
 					<TableHeader>
 						<TableRow>
 							<TableHead>Member</TableHead>
-							<TableHead>Address</TableHead>
 							<TableHead>Shipping Fee</TableHead>
 							<TableHead>Status</TableHead>
+							<TableHead>Created At</TableHead>
 							<TableHead>Action</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -119,11 +136,11 @@ const ListBookDonations = () => {
 								<TableCell>
 									<AvatarGroup user={bookDonation.user} />
 								</TableCell>
-								<TableCell>{bookDonation.address.street_address}</TableCell>
 								<TableCell>{currency(bookDonation.shipping_fee)}</TableCell>
 								<TableCell>
 									<Badge>{bookDonation.status}</Badge>
 								</TableCell>
+								<TableCell>{formatDate(bookDonation.createdAt)}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
 										{bookDonation.status === PAYMENT_STATUS.PENDING && (

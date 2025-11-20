@@ -9,10 +9,10 @@ const searchService = new SearchService(sequelize);
 const UserController = {
 	async index(req, res, next) {
 		try {
-			const { search, page, limit, status } = req.query;
+			const { search, page, limit, role } = req.query;
 
 			const filters = {};
-			if (status) filters.role = status;
+			if (role) filters.role = role;
 
 			const paginate = searchService.paginate({ page, limit });
 			const result = await searchService.search(
