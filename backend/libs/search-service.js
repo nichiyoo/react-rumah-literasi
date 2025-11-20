@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 class SearchService {
 	constructor(sequelize) {
 		this.sequelize = sequelize;
+		this.maximum = 50;
 	}
 
 	async search(model, search, filters, pagination, include = [], fields = []) {
@@ -42,7 +43,7 @@ class SearchService {
 
 	paginate(pagination) {
 		const page = parseInt(pagination.page) || 1;
-		const limit = parseInt(pagination.limit) || 5;
+		const limit = Math.min(parseInt(pagination.limit) || 5, this.maximum);
 		const offset = (page - 1) * limit;
 
 		return { limit, offset };
