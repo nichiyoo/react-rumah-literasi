@@ -85,8 +85,12 @@ const ShowAddress = load(() => import('~/addresses/show-address'));
 const ShowMerchant = load(() => import('~/merchant/show-merchant'));
 const EditMerchant = load(() => import('~/merchant/edit-merchant'));
 
-const ListLogs = load(() => import('~/logs/list-logs'));
-const ShowLog = load(() => import('~/logs/show-log'));
+const ListLogs = load(() =>
+	import('@/pages/dashboard/transaction-log/list-logs')
+);
+const ShowLog = load(() =>
+	import('@/pages/dashboard/transaction-log/show-log')
+);
 
 const Router = () => {
 	return (
