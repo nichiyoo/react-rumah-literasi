@@ -80,7 +80,6 @@ const CreateBookDonation = () => {
 					<Link to='/dashboard/book-donations/create/append'>
 						<Button variant='outline'>Add item</Button>
 					</Link>
-
 					<Button variant='destructive' onClick={() => handleReset()}>
 						Remove
 					</Button>

@@ -138,7 +138,7 @@ const ListMembers = () => {
 								</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={member.uuid + '/edit'} relative='path'>
+										<Link to={'/dashboard/members/' + member.uuid + '/edit'}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Edit
 											</button>

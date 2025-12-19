@@ -132,21 +132,21 @@ const ListDonations = () => {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{result.map((financialDonation) => (
-							<TableRow key={financialDonation.id}>
+						{result.map((donation) => (
+							<TableRow key={donation.id}>
 								<TableCell>
-									<AvatarGroup user={financialDonation.user} />
+									<AvatarGroup user={donation.user} />
 								</TableCell>
-								<TableCell>{currency(financialDonation.amount)}</TableCell>
+								<TableCell>{currency(donation.amount)}</TableCell>
 								<TableCell>
-									<Badge>{financialDonation.status}</Badge>
+									<Badge>{donation.status}</Badge>
 								</TableCell>
-								<TableCell>{formatDate(financialDonation.createdAt)}</TableCell>
+								<TableCell>{formatDate(donation.createdAt)}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										{financialDonation.status === PAYMENT_STATUS.PENDING && (
+										{donation.status === PAYMENT_STATUS.PENDING && (
 											<a
-												href={financialDonation.payment_url}
+												href={donation.payment_url}
 												target='_blank'
 												rel='noreferrer'>
 												<button className='bg-transparent hover:text-blue-500'>
@@ -154,13 +154,13 @@ const ListDonations = () => {
 												</button>
 											</a>
 										)}
-										<Link to={financialDonation.id.toString()} relative='path'>
+										<Link to={'/dashboard/financial-donations/' + donation.id}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
 											</button>
 										</Link>
 										<button
-											onClick={() => handleDelete(financialDonation.id)}
+											onClick={() => handleDelete(donation.id)}
 											className='bg-transparent hover:text-red-500'>
 											Delete
 										</button>

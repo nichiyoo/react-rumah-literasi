@@ -78,6 +78,7 @@ const ShowMerchant = () => {
 							<Label htmlFor='title'>Name</Label>
 							<Input disabled type='text' defaultValue={result.data.name} />
 						</div>
+
 						<div className='col-span-full'>
 							<Label htmlFor='description'>Address</Label>
 							<Textarea
@@ -86,10 +87,12 @@ const ShowMerchant = () => {
 								defaultValue={result.data.address}
 							/>
 						</div>
+
 						<div className='col-span-full'>
 							<Label htmlFor='description'>Zipcode</Label>
 							<Input disabled type='text' defaultValue={result.data.zipcode} />
 						</div>
+
 						<div className='col-span-full'>
 							<Label htmlFor='location'>Location</Label>
 							<div className='mt-2'>
@@ -106,12 +109,10 @@ const ShowMerchant = () => {
 					</div>
 
 					{allowed && (
-						<div className='col-span-full'>
-							<div className='flex items-center gap-2'>
-								<Link to='edit' relative='path'>
-									<Button>Edit Merchant</Button>
-								</Link>
-							</div>
+						<div className='flex items-center gap-2'>
+							<Link to={'/dashboard/merchant/edit'}>
+								<Button>Edit Merchant</Button>
+							</Link>
 						</div>
 					)}
 				</React.Fragment>

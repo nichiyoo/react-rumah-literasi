@@ -88,7 +88,10 @@ const ShowDonation = () => {
 							)}
 
 							{allowed && (
-								<Link to='../edit' relative='path'>
+								<Link
+									to={
+										'/dashboard/financial-donations/' + result.data.id + '/edit'
+									}>
 									<Button>Edit Donation</Button>
 								</Link>
 							)}

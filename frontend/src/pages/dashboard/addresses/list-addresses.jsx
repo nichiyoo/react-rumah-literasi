@@ -163,7 +163,7 @@ const ListAddresses = () => {
 								<TableCell>{address.zipcode}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={address.id + '/detail'} relative='path'>
+										<Link to={'/dashboard/addresses/' + address.id}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
 											</button>

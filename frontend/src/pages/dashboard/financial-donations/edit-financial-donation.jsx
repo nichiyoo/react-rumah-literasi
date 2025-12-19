@@ -34,7 +34,7 @@ const EditDonation = () => {
 
 			mutate('/financial-donations');
 			mutate('/financial-donations/' + id);
-			navigate('/dashboard/financial-donations/' + id + '/detail');
+			navigate('/dashboard/financial-donations/');
 		} catch (error) {
 			toast.error('Failed to update donation', {
 				description: error.response?.data?.message || error.message,

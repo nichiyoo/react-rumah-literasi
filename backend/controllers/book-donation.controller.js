@@ -68,80 +68,71 @@ const BookDonationController = {
 					id: validated.detail.address_id,
 				},
 			});
-
 			if (!address) throw new ApiError(404, 'Address not found');
-			const courier = await DeliveryController.courier(
-				validated.detail,
-				validated.courier,
-				req.user
+
+			const created = await BookDonation.create(
+				{
+					user_id: req.user.id,
+					address_id: address.id,
+					estimated_value: validated.detail.estimated_value,
+					length: validated.detail.length,
+					width: validated.detail.width,
+					height: validated.detail.height,
+					weight: validated.detail.weight,
+					order_id: null,
+					tracking_id: null,
+					shipping_eta: validated.courier.duration,
+					courier_code: validated.courier.courier_code,
+					courier_service_code: validated.courier.courier_service_code,
+					book_donation_items: validated.items,
+					status: PAYMENT_STATUS.PENDING,
+				},
+				{
+					include: ['book_donation_items'],
+				}
 			);
 
-			if (!courier) throw new ApiError(400, 'Invalid courier selection');
-			if (courier.shipping_fee !== validated.courier.shipping_fee) {
-				throw new ApiError(400, "There's a change in the courier price.");
-			}
+			const donation = await BookDonation.findOne({
+				where: { id: created.id },
+				include: ['user', 'address', 'book_donation_items'],
+			});
+			const { data: draft } = await DeliveryController.draft(donation);
+			await donation.update({
+				order_id: draft.id,
+				shipping_fee: draft.price,
+			});
 
-			const result = await sequelize.transaction(async (t) => {
-				const donation = await BookDonation.create(
-					{
-						address_id: validated.detail.address_id,
-						user_id: req.user.id,
-						estimated_value: validated.detail.estimated_value,
-						length: validated.detail.length,
-						width: validated.detail.width,
-						height: validated.detail.height,
-						weight: validated.detail.weight,
-						order_id: null,
-						tracking_id: null,
-						shipping_fee: courier.shipping_fee,
-						shipping_eta: courier.duration,
-						courier_code: courier.courier_code,
-						courier_service_code: courier.courier_service_code,
-						status: PAYMENT_STATUS.PENDING,
-						book_donation_items: validated.items,
-					},
-					{
-						include: ['book_donation_items'],
-						transaction: t,
-					}
-				);
-
-				const { data } = await PaymentController.midtrans(
-					donation,
-					req.user,
-					DONATION_TYPES.BOOK
-				);
-
-				await donation.update(
-					{
-						payment_url: data.redirect_url,
-						status: PAYMENT_STATUS.PENDING,
-					},
-					{ transaction: t }
-				);
-
-				return donation;
+			const { data: payment } = await PaymentController.midtrans(
+				donation,
+				req.user,
+				DONATION_TYPES.BOOK
+			);
+			await donation.update({
+				payment_url: payment.redirect_url,
 			});
 
 			await LogService.createLog(
-				'New book donation created',
+				'book_donation_created',
 				req.user.id,
-				'Book Donation',
-				result.id,
-				`${req.user.name} created a book donation of Rp ${result.shipping_fee}`,
+				'book_donation',
+				donation.id,
+				`Book donation #${donation.id} created by user ${req.user.name}`,
 				{
 					user_id: req.user.id,
-					donation_id: result.id,
-					amount: result.shipping_fee,
-					status: result.status,
+					donation_id: donation.id,
+					amount: donation.shipping_fee,
+					order_id: donation.order_id,
+					status: donation.status,
 				},
 				req
 			);
 
+			await donation.save();
 			return res.json(
-				new ApiResponse('Book donation submitted successfully', result)
+				new ApiResponse('Book donation submitted successfully', donation)
 			);
 		} catch (error) {
+			console.log(JSON.stringify(error, null, 2));
 			if (error instanceof ApiError) return next(error);
 			if (error instanceof ValidationError) {
 				return next(
@@ -211,23 +202,24 @@ const BookDonationController = {
 			const id = req.params.id;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const bookDonation = await BookDonation.scope({
+			const donation = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
 			});
-			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
 
-			if (bookDonation.status !== PAYMENT_STATUS.PENDING) {
+			if (!donation) throw new ApiError(404, 'Book donation not found');
+			if (donation.status !== PAYMENT_STATUS.PENDING) {
 				throw new ApiError(
 					400,
 					'Cannot delete bookDonation unless the status is pending'
 				);
 			}
 
-			await bookDonation.destroy();
+			if (donation.order_id) await DeliveryController.cancel(donation);
+			await donation.destroy();
 			return res.json(
-				new ApiResponse('Book donation deleted successfully', bookDonation)
+				new ApiResponse('Book donation deleted successfully', donation)
 			);
 		} catch (error) {
 			next(error);
@@ -239,24 +231,23 @@ const BookDonationController = {
 			const { id } = req.params;
 			if (!id) throw new ApiError(400, 'ID is required');
 
-			const bookDonation = await BookDonation.scope({
+			const donation = await BookDonation.scope({
 				method: ['authorize', req.user, [ROLES.LIBRARIAN]],
 			}).findOne({
 				where: { id },
 			});
 
-			if (!bookDonation) throw new ApiError(404, 'Book donation not found');
-			if (!bookDonation.tracking_id)
+			if (!donation) throw new ApiError(404, 'Book donation not found');
+			if (!donation.tracking_id) {
 				throw new ApiError(404, 'Tracking ID not available');
+			}
 
-			const trackingResult = await DeliveryController.track(
-				bookDonation.tracking_id
-			);
+			const { data: tracking } = await DeliveryController.track(donation);
 
 			return res.json(
 				new ApiResponse(
 					'Book donation tracking retrieved successfully',
-					trackingResult
+					tracking
 				)
 			);
 		} catch (error) {

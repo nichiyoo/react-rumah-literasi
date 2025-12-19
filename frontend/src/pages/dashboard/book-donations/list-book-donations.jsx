@@ -153,7 +153,7 @@ const ListBookDonations = () => {
 												</button>
 											</a>
 										)}
-										<Link to={bookDonation.id + '/detail'} relative='path'>
+										<Link to={'/dashboard/book-donations/' + bookDonation.id}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
 											</button>

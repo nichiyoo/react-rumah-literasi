@@ -50,6 +50,9 @@ const AddBookDonation = load(() =>
 const AppendBookDonation = load(() =>
 	import('~/book-donations/append-book-donation')
 );
+const UpdateBookDonation = load(() =>
+	import('~/book-donations/update-book-donation')
+);
 const EditBookDonation = load(() =>
 	import('~/book-donations/edit-book-donation')
 );
@@ -129,7 +132,7 @@ const Router = () => {
 						element={<AuthorizeLayout allowed={[ROLES.ADMIN]} />}>
 						<Route index element={<ListEvents />} />
 						<Route path='create' element={<AddEvent />} />
-						<Route path=':id/detail' element={<ShowEvent />} />
+						<Route path=':id' element={<ShowEvent />} />
 						<Route path=':id/edit' element={<EditEvent />} />
 					</Route>
 
@@ -138,7 +141,7 @@ const Router = () => {
 						element={<AuthorizeLayout allowed={[ROLES.GUEST, ROLES.ADMIN]} />}>
 						<Route index element={<ListDonations />} />
 						<Route path='create' element={<AddDonation />} />
-						<Route path=':id/detail' element={<ShowDonation />} />
+						<Route path=':id' element={<ShowDonation />} />
 					</Route>
 
 					<Route
@@ -155,10 +158,11 @@ const Router = () => {
 						<Route index element={<ListBookDonations />} />
 						<Route path='create' element={<AddBookDonation />} />
 						<Route path='create/append' element={<AppendBookDonation />} />
+						<Route path='create/:id/edit' element={<UpdateBookDonation />} />
 						<Route path='create/detail' element={<DetailBookDonation />} />
 						<Route path='create/courier' element={<CourierBookDonation />} />
 						<Route path='create/review' element={<ReviewBookDonation />} />
-						<Route path=':id/detail' element={<ShowBookDonation />} />
+						<Route path=':id' element={<ShowBookDonation />} />
 					</Route>
 
 					<Route
@@ -175,7 +179,7 @@ const Router = () => {
 						<Route index element={<ListAddresses />} />
 						<Route path='create' element={<AddAddress />} />
 						<Route path=':id/edit' element={<EditAddress />} />
-						<Route path=':id/detail' element={<ShowAddress />} />
+						<Route path=':id' element={<ShowAddress />} />
 					</Route>
 
 					<Route
@@ -193,7 +197,7 @@ const Router = () => {
 							<AuthorizeLayout allowed={[ROLES.ADMIN, ROLES.SUPERADMIN]} />
 						}>
 						<Route index element={<ListLogs />} />
-						<Route path=':uuid/detail' element={<ShowLog />} />
+						<Route path=':uuid' element={<ShowLog />} />
 					</Route>
 				</Route>
 

@@ -175,7 +175,7 @@ const ShowAddress = () => {
 									Set as Default
 								</Button>
 							)}
-							<Link to='../edit' relative='path'>
+							<Link to={'/dashboard/addresses/' + result.data.id + '/edit'}>
 								<Button>Edit Address</Button>
 							</Link>
 						</div>

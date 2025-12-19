@@ -33,7 +33,7 @@ const EditEvent = () => {
 
 			mutate('/events');
 			mutate('/events/' + id);
-			navigate('/dashboard/events/' + id + '/detail');
+			navigate('/dashboard/events/');
 		} catch (error) {
 			toast.error('Failed to update event', {
 				description: error.response?.data?.message || error.message,

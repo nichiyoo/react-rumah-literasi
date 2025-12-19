@@ -37,7 +37,7 @@ const EditAddress = () => {
 
 			mutate('/addresses');
 			mutate('/addresses/' + id);
-			navigate('/dashboard/addresses/' + id + '/detail');
+			navigate('/dashboard/addresses/');
 		} catch (error) {
 			toast.error('Failed to update address', {
 				description: error.response?.data?.message || error.message,

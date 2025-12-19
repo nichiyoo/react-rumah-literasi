@@ -120,7 +120,7 @@ const ListEvents = () => {
 								<TableCell>{event.location}</TableCell>
 								<TableCell>
 									<div className='flex items-center gap-2'>
-										<Link to={event.id + '/detail'} relative='path'>
+										<Link to={'/dashboard/events/' + event.id}>
 											<button className='bg-transparent hover:text-amber-500'>
 												Detail
 											</button>

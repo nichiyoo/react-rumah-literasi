@@ -33,7 +33,7 @@ const EditBookDonationMain = () => {
 
 			mutate('/book-donations');
 			mutate('/book-donations/' + id);
-			navigate('/dashboard/book-donations/' + id + '/detail');
+			navigate('/dashboard/book-donations/');
 		} catch (error) {
 			toast.error('Failed to update book donation', {
 				description: error.response?.data?.message || error.message,

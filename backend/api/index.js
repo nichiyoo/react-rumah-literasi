@@ -21,6 +21,7 @@ const store = new sequelizeStore({
 	tableName: 'sessions',
 });
 
+app.set('trust proxy', true);
 app.use(
 	cors({
 		origin: ORIGIN,
