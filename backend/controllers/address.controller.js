@@ -64,7 +64,7 @@ const AddressController = {
 				);
 			}
 
-			const { data } = await biteship.post('/v1/locations', {
+			const { data } = await biteship.post('/locations', {
 				name: req.body.name,
 				contact_name: req.body.contact_name,
 				contact_phone: req.body.contact_phone,
@@ -157,7 +157,7 @@ const AddressController = {
 
 			if (!address) throw new ApiError(404, 'Address not found');
 			await address.update(req.body);
-			await biteship.post('/v1/locations/' + address.area_id, {
+			await biteship.post('/locations/' + address.area_id, {
 				name: req.body.name,
 				contact_name: req.body.contact_name,
 				contact_phone: req.body.contact_phone,
@@ -188,7 +188,7 @@ const AddressController = {
 
 			if (!address) throw new ApiError(404, 'Address not found');
 			await address.destroy();
-			await biteship.delete('/v1/locations/' + address.area_id);
+			await biteship.delete('/locations/' + address.area_id);
 
 			return res.json(new ApiResponse('Address deleted successfully', address));
 		} catch (error) {
